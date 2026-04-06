@@ -1,44 +1,51 @@
 const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
 const cors = require('cors');
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const PORT = 5000;
 
 app.use(cors());
 app.use(express.json());
 
-// Base de Datos
+// Conexión a la base de datos
 const dbPath = path.resolve(__dirname, '../data/red_ennier.sqlite');
 const db = new sqlite3.Database(dbPath);
 
-// Crear todas las tablas necesarias si no existen
-db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS customers (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, cedula TEXT, telefono TEXT, direccion TEXT, status TEXT DEFAULT 'Activo')`);
-    db.run(`CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY AUTOINCREMENT, titulo TEXT, descripcion TEXT, cliente_id INTEGER, tecnico_id INTEGER, estado TEXT DEFAULT 'Pendiente')`);
-    db.run(`CREATE TABLE IF NOT EXISTS technicians (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, status TEXT DEFAULT 'Activo')`);
+// Ruta de prueba
+app.get('/', (req, res) => {
+    res.send('Servidor RED ENNIER Operativo');
 });
 
-// --- IMPORTACIÓN DE RUTAS ---
-const clientesRoutes = require('./routes/clientes');
-const tareasRoutes = require('./routes/tareas');
-const tecnicosRoutes = require('./routes/tecnicos');
-const authRoutes = require('./routes/auth');
+// --- CAMBIO AQUÍ: Ruta en inglés para que coincida con el Frontend ---
+app.post('/api/customers', (req, res) => {
+    const { nombre, identificacion, telefono, direccion } = req.body;
+    
+    // Insertamos en la tabla customers (asegúrate que los nombres de columnas coincidan)
+    const sql = `INSERT INTO customers (nombre, cedula, telefono, direccion) VALUES (?, ?, ?, ?)`;
+    
+    db.run(sql, [nombre, identificacion, telefono, direccion || ''], function(err) {
+        if (err) {
+            console.error("Error SQL:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        console.log("✅ Cliente guardado con ID:", this.lastID);
+        res.status(200).json({ message: "Cliente guardado", id: this.lastID });
+    });
+});
 
-// --- ACTIVACIÓN DE RUTAS ---
-app.use('/api/customers', clientesRoutes);
-app.use('/api/tasks', tareasRoutes);
-app.use('/api/technicians', tecnicosRoutes);
-app.use('/api/auth', authRoutes);
+// Ruta para listar (GET)
+app.get('/api/customers', (req, res) => {
+    db.all("SELECT * FROM customers", [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
 
-const PORT = 5000;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log('-----------------------------------------');
-    console.log('🚀 MOTOR RED ENNIER V2 - FULL CONECTADO');
-    console.log('📦 Menús cargados: Clientes, Tareas, Técnicos, Auth');
+    console.log(`🚀 MOTOR RED ENNIER V2 - CONECTADO`);
+    console.log(`📡 Escuchando en http://localhost:${PORT}`);
     console.log('-----------------------------------------');
 });

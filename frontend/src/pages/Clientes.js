@@ -1,98 +1,95 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { UserPlus, Search, Users, Phone, CreditCard, MapPin } from 'lucide-react';
 
 const Clientes = () => {
+    const [showForm, setShowForm] = useState(false);
     const [clientes, setClientes] = useState([]);
-    const [busqueda, setBusqueda] = useState('');
-    const [nuevoCliente, setNuevoCliente] = useState({ nombre: '', cedula: '', telefono: '', direccion: '' });
-    const [mostrarForm, setMostrarForm] = useState(false);
+    const [formData, setFormData] = useState({ nombre: '', identificacion: '', telefono: '', direccion: '' });
 
-    // Cargar clientes al iniciar
-    useEffect(() => {
-        obtenerClientes();
-    }, []);
-
-    const obtenerClientes = async () => {
+    // Función para cargar clientes de la base de datos
+    const cargarClientes = async () => {
         try {
-            const res = await axios.get('/api/customers/all');
-            setClientes(res.data);
+            const res = await fetch('http://localhost:5000/api/customers');
+            const data = await res.json();
+            setClientes(data);
         } catch (err) {
-            console.error("Error cargando clientes", err);
+            console.error("Error cargando:", err);
         }
     };
 
-    const manejarGuardar = async (e) => {
+    useEffect(() => { cargarClientes(); }, []);
+
+    // FUNCIÓN PARA GUARDAR
+    const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/api/customers', nuevoCliente);
-            setNuevoCliente({ nombre: '', cedula: '', telefono: '', direccion: '' });
-            setMostrarForm(false);
-            obtenerClientes();
-            alert("Cliente guardado con éxito");
+            const response = await fetch('http://localhost:5000/api/customers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                alert("¡Cliente guardado con éxito en RED ENNIER!");
+                setShowForm(false);
+                setFormData({ nombre: '', identificacion: '', telefono: '', direccion: '' }); // Limpiar
+                cargarClientes(); // Refrescar lista
+            }
         } catch (err) {
-            alert("Error al guardar cliente");
+            alert("Error al conectar con el servidor");
         }
     };
 
-    const clientesFiltrados = clientes.filter(c => 
-        c.nombre.toLowerCase().includes(busqueda.toLowerCase()) || 
-        c.cedula.includes(busqueda)
-    );
-
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center bg-white p-4 rounded-xl shadow-sm">
-                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                    <Users className="text-blue-600" /> Gestión de Clientes
-                </h2>
+        <div className="relative">
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold text-gray-800">Clientes RED ENNIER</h1>
                 <button 
-                    onClick={() => setMostrarForm(!mostrarForm)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+                    onClick={() => setShowForm(true)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold shadow-lg transition-all"
                 >
-                    <UserPlus size={20} /> {mostrarForm ? 'Cerrar' : 'Nuevo Cliente'}
+                    + Nuevo Cliente
                 </button>
             </div>
 
-            {mostrarForm && (
-                <form onSubmit={manejarGuardar} className="bg-white p-6 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 gap-4 animate-in fade-in duration-300">
-                    <input type="text" placeholder="Nombre Completo" className="border p-2 rounded" value={nuevoCliente.nombre} onChange={e => setNuevoCliente({...nuevoCliente, nombre: e.target.value})} required />
-                    <input type="text" placeholder="Cédula / RIF" className="border p-2 rounded" value={nuevoCliente.cedula} onChange={e => setNuevoCliente({...nuevoCliente, cedula: e.target.value})} required />
-                    <input type="text" placeholder="Teléfono" className="border p-2 rounded" value={nuevoCliente.telefono} onChange={e => setNuevoCliente({...nuevoCliente, telefono: e.target.value})} />
-                    <input type="text" placeholder="Dirección" className="border p-2 rounded" value={nuevoCliente.direccion} onChange={e => setNuevoCliente({...nuevoCliente, direccion: e.target.value})} />
-                    <button type="submit" className="md:col-span-2 bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700">Guardar Cliente</button>
-                </form>
-            )}
-
-            <div className="relative">
-                <Search className="absolute left-3 top-3 text-gray-400" size={20} />
-                <input 
-                    type="text" 
-                    placeholder="Buscar por nombre o cédula..." 
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border-none shadow-sm focus:ring-2 focus:ring-blue-500"
-                    value={busqueda}
-                    onChange={(e) => setBusqueda(e.target.value)}
-                />
-            </div>
-
+            {/* Lista de Clientes Real */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {clientesFiltrados.map(c => (
-                    <div key={c.id} className="bg-white p-5 rounded-xl shadow-sm border-l-4 border-blue-500 hover:shadow-md transition-shadow">
-                        <div className="flex justify-between items-start mb-3">
-                            <h3 className="font-bold text-lg text-gray-800">{c.nombre}</h3>
-                            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">Activo</span>
-                        </div>
-                        <div className="space-y-2 text-sm text-gray-600">
-                            <p className="flex items-center gap-2"><CreditCard size={14}/> {c.cedula}</p>
-                            <p className="flex items-center gap-2"><Phone size={14}/> {c.telefono || 'Sin teléfono'}</p>
-                            <p className="flex items-center gap-2"><MapPin size={14}/> {c.direccion || 'Sin dirección'}</p>
-                        </div>
+                {clientes.map(c => (
+                    <div key={c.id} className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                        <h3 className="font-bold text-lg text-blue-700">{c.nombre}</h3>
+                        <p className="text-sm text-gray-500">ID: {c.cedula}</p>
+                        <p className="text-sm text-gray-600 mt-2">📞 {c.telefono}</p>
                     </div>
                 ))}
             </div>
-            
-            {clientesFiltrados.length === 0 && (
-                <div className="text-center py-10 text-gray-500">No se encontraron clientes.</div>
+
+            {/* Modal del Formulario */}
+            {showForm && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[9999] p-4">
+                    <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-gray-100">
+                        <h2 className="text-2xl font-bold mb-6 text-gray-800">Registrar Cliente</h2>
+                        <form onSubmit={handleSubmit} className="space-y-4">
+                            <input 
+                                type="text" placeholder="Nombre o Empresa" 
+                                className="w-full p-3 bg-gray-50 border rounded-lg outline-none focus:border-blue-500"
+                                onChange={e => setFormData({...formData, nombre: e.target.value})} required 
+                            />
+                            <input 
+                                type="text" placeholder="Cédula o RIF" 
+                                className="w-full p-3 bg-gray-50 border rounded-lg outline-none focus:border-blue-500"
+                                onChange={e => setFormData({...formData, identificacion: e.target.value})} required 
+                            />
+                            <input 
+                                type="text" placeholder="Teléfono" 
+                                className="w-full p-3 bg-gray-50 border rounded-lg outline-none focus:border-blue-500"
+                                onChange={e => setFormData({...formData, telefono: e.target.value})} 
+                            />
+                            <div className="flex gap-2 pt-4">
+                                <button type="button" onClick={() => setShowForm(false)} className="flex-1 py-3 text-gray-500 font-bold hover:bg-gray-100 rounded-lg">Cancelar</button>
+                                <button type="submit" className="flex-1 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 shadow-md">Guardar Datos</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             )}
         </div>
     );

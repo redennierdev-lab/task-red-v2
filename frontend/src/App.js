@@ -1,28 +1,28 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Clientes from './pages/Clientes';
 
-const Page = ({ name }) => (
-  <div className="p-10">
-    <h1 className="text-2xl font-bold text-ennier-blue">Panel de {name}</h1>
-    <div className="mt-4 p-6 bg-white rounded-xl shadow-md border border-gray-200">
-      Estás en el módulo de {name.toLowerCase()}.
-    </div>
-  </div>
+// Componente simple para las otras páginas mientras las creamos
+const Placeholder = ({ name }) => (
+  <div className="p-10"><h1 className="text-2xl font-bold">{name}</h1></div>
 );
 
 function App() {
   return (
     <Router>
-      <div className="flex bg-ennier-bg min-h-screen">
-        <Navbar />
-        <main className="flex-1 ml-64 p-4">
+      <div className="flex bg-gray-50 min-h-screen">
+        {/* Navbar fijo a la izquierda */}
+        <Navbar /> 
+        
+        {/* Contenido principal desplazado a la derecha por el ancho del navbar */}
+        <main className="flex-1 ml-64 p-8">
           <Routes>
-            <Route path="/" element={<Page name="Dashboard" />} />
-            <Route path="/tasks" element={<Page name="Tareas" />} />
-            <Route path="/users" element={<Page name="Clientes" />} />
-            <Route path="/technicians" element={<Page name="Técnicos" />} />
-            <Route path="/services" element={<Page name="Servicios" />} />
+            <Route path="/" element={<Placeholder name="Dashboard" />} />
+            <Route path="/tasks" element={<Placeholder name="Tareas" />} />
+            <Route path="/users" element={<Clientes />} /> {/* Clientes en la ruta /users */}
+            <Route path="/technicians" element={<Placeholder name="Técnicos" />} />
+            <Route path="/services" element={<Placeholder name="Servicios" />} />
           </Routes>
         </main>
       </div>

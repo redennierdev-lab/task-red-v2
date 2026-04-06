@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Red Ennier - Task Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ennier: {
+                blue: '#15438B',   /* AZUL DE TU LOGO */
+                silver: '#909295', /* GRIS DE TU LOGO */
+                dark: '#0D2B5B',   /* AZUL MÁS OSCURO PARA CLICS */
+                bg: '#F8FAFC'
+              }
+            },
+            boxShadow: {
+              'glow': '0 0 15px -3px rgba(255, 255, 255, 0.2)',
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-ennier-bg">
+    <div id="root"></div>
+</body>
+</html>

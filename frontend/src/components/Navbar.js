@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock } from 'lucide-react';
+import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock, DollarSign } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
-import Modal from './Modal';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +13,7 @@ const Navbar = () => {
   const menuItems = [
     { path: '/', name: 'Panel Inicio', icon: <LayoutList size={22} />, roles: ['Admin', 'Técnico'] },
     { path: '/tasks', name: 'Gestión Tareas', icon: <FileText size={22} />, roles: ['Admin'] },
+    { path: '/gastos', name: 'Gestión Gastos', icon: <DollarSign size={22} />, roles: ['Admin'] },
     { path: '/historial', name: 'Historial', icon: <History size={22} />, roles: ['Admin'] },
     { path: '/mis-tareas', name: 'Mis Tareas', icon: <History size={22} />, roles: ['Técnico'] },
     { path: '/users', name: 'Directorio Clientes', icon: <Users size={22} />, roles: ['Admin'] },
@@ -44,117 +44,121 @@ const Navbar = () => {
   return (
     <>
       {/* Top Bar for Mobile */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/80 backdrop-blur-md z-40 flex items-center justify-between px-6 border-b border-gray-100">
-         <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Logo" className="h-8 object-contain" />
-            <span className="text-sm font-black tracking-tight text-slate-800">TASK-RED</span>
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-20 bg-white/95 backdrop-blur-xl z-40 flex items-center justify-between px-8 border-b-2 border-orange-50 shadow-sm">
+         <div className="flex items-center gap-4">
+            <div className="w-10 h-10 bg-logo-gradient rounded-xl p-1.5 shadow-lg">
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain brightness-0 invert" />
+            </div>
+            <span className="text-base font-black tracking-tighter text-slate-800 uppercase italic">RED ENNIER</span>
          </div>
-         <button onClick={() => setIsOpen(true)} className="p-2 text-slate-600">
-            <Menu size={24} />
+         <button onClick={() => setIsOpen(true)} className="p-3 bg-orange-50 text-orange-600 rounded-2xl active:scale-90 transition-all">
+            <Menu size={26} />
          </button>
       </div>
 
       {/* Sidebar Overlay for Mobile */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[55] lg:hidden"
+          className="fixed inset-0 bg-orange-900/20 backdrop-blur-md z-[55] lg:hidden animate-in fade-in duration-500"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar - Desktop & Mobile */}
-      <aside className={`fixed inset-y-0 left-0 bg-slate-900 text-white w-64 flex flex-col z-[60] transform transition-all duration-500 ease-in-out border-r border-white/5
+      <aside className={`fixed inset-y-0 left-0 bg-white text-slate-800 w-64 flex flex-col z-[60] transform transition-all duration-500 ease-in-out border-r-2 border-orange-50 shadow-2xl
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         
-        {/* Logo Area */}
-        <div className="p-6 flex flex-col items-center justify-center relative overflow-hidden">
+        {/* Logo Area Refined */}
+        <div className="p-6 flex flex-col items-center justify-center relative overflow-hidden bg-orange-50/50">
           <div className="absolute top-0 left-0 w-full h-1 bg-logo-gradient"></div>
           <button 
             onClick={() => setIsOpen(false)}
-            className="lg:hidden absolute top-4 right-4 p-2 text-white/40 hover:text-white"
+            className="lg:hidden absolute top-4 right-4 p-2 text-slate-300 hover:text-orange-500 bg-white rounded-full shadow-sm transition-all"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
           
           <div className="relative z-10 flex flex-col items-center">
-            <div className="w-12 h-12 bg-white rounded-xl p-2 shadow-2xl mb-4 relative group">
-              <div className="absolute inset-0 bg-logo-gradient rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
+            <div className="w-12 h-12 bg-white rounded-xl p-2.5 shadow-xl mb-4 relative group border border-orange-100 transform -rotate-2 hover:rotate-0 transition-transform">
               <img src="/logo.png" alt="RED ENNIER Logo" className="w-full h-full object-contain" />
             </div>
-            <h2 className="text-sm font-black uppercase tracking-[0.3em] text-white/90">RED ENNIER</h2>
-            <p className="text-[10px] text-white/40 font-bold tracking-widest mt-1 uppercase">Task Manager v3</p>
+            <h2 className="text-base font-black uppercase tracking-tighter text-slate-900 italic">RED ENNIER</h2>
+            <p className="text-[9px] text-orange-500/70 font-black tracking-[0.2em] mt-0.5 uppercase">Task Manager v3</p>
           </div>
         </div>
         
         {/* Navigation */}
-        <nav className="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 px-5 py-6 space-y-2 overflow-y-auto custom-scrollbar">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               onClick={() => setIsOpen(false)}
               className={({ isActive }) => 
-                `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 group
+                `flex items-center space-x-4 px-5 py-4 rounded-3xl transition-all duration-300 group relative overflow-hidden
                 ${isActive 
-                  ? 'bg-white/10 text-secondary shadow-lg border border-white/5' 
-                  : 'text-gray-400 hover:bg-white/5 hover:text-white'}`
+                  ? 'bg-logo-gradient text-white shadow-xl shadow-orange-500/20 scale-105' 
+                  : 'text-slate-400 hover:bg-orange-50 hover:text-orange-600'}`
               }
             >
-              <div className="transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+              <div className="relative z-10 transition-transform duration-500 group-hover:scale-125 group-hover:rotate-12">
                 {item.icon}
               </div>
-              <span className="font-bold text-[11px] uppercase tracking-widest">{item.name}</span>
+              <span className="relative z-10 font-black text-[11px] uppercase tracking-widest italic">{item.name}</span>
             </NavLink>
           ))}
         </nav>
 
         {/* User Profile Info Footer */}
-        <div className="p-4 mt-auto space-y-3">
-          <button onClick={toggleRole} className={`w-full flex items-center justify-center gap-2 p-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${userRole === 'Admin' ? 'bg-orange-500/20 text-orange-400' : 'bg-fuchsia-500/20 text-fuchsia-400'}`}>
-            {userRole === 'Admin' ? <ToggleRight size={16}/> : <ToggleLeft size={16}/>}
-            Cambiar Rol: {userRole}
+        <div className="p-6 mt-auto space-y-4 bg-orange-50/20">
+          <button onClick={toggleRole} className={`w-full flex items-center justify-center gap-3 p-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all shadow-sm transform active:scale-95 ${userRole === 'Admin' ? 'bg-orange-500 text-white shadow-orange-500/20' : 'bg-fuchsia-500 text-white shadow-fuchsia-500/20'}`}>
+            {userRole === 'Admin' ? <ToggleRight size={18}/> : <ToggleLeft size={18}/>}
+            {userRole}
           </button>
-          <div className="bg-white/5 rounded-2xl p-3 border border-white/5 flex items-center gap-3">
-             <div className="w-8 h-8 rounded-lg bg-logo-gradient flex items-center justify-center text-[10px] font-black shadow-lg">
+          <div className="bg-white rounded-3xl p-4 border-2 border-orange-50 flex items-center gap-4 shadow-xl">
+             <div className="w-10 h-10 rounded-xl bg-logo-gradient flex items-center justify-center text-xs font-black text-white shadow-lg rotate-3 group-hover:rotate-0 transition-transform">
                 {userRole === 'Admin' ? 'AD' : 'TE'}
              </div>
              <div>
-                <p className="text-[10px] font-black uppercase tracking-widest line-clamp-1">{userRole === 'Admin' ? 'Ennier' : 'Instalador'}</p>
-                <p className="text-[9px] text-gray-500 font-bold">Modo Operativo</p>
+                <p className="text-sm font-black uppercase tracking-tighter text-slate-800 italic">{userRole === 'Admin' ? 'Ennier' : 'Instalador'}</p>
+                <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <p className="text-[9px] text-slate-400 font-extrabold uppercase tracking-widest">En Línea</p>
+                </div>
              </div>
           </div>
         </div>
       </aside>
 
-      {/* Modal Contraseña Premium */}
+      {/* Modal Contraseña Premium (VIBRANTE) */}
       {isPasswordModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-xl transition-all duration-500" onClick={() => setIsPasswordModalOpen(false)}></div>
-            <div className="bg-slate-900 border border-white/10 w-full max-w-sm rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-300">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/20 blur-[80px] rounded-full -mr-10 -mt-10 pointer-events-none"></div>
-                <div className="p-8 relative z-10">
-                    <button onClick={() => setIsPasswordModalOpen(false)} className="absolute top-6 right-6 p-2 text-white/40 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-all">
-                        <X size={18} />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <div className="absolute inset-0 bg-white/80 backdrop-blur-2xl transition-all duration-500" onClick={() => setIsPasswordModalOpen(false)}></div>
+            <div className="bg-white border-2 border-orange-100 w-full max-w-sm rounded-[3rem] shadow-[0_40px_100px_rgba(249,115,22,0.15)] relative overflow-hidden flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-500">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-logo-gradient opacity-5 blur-[100px] rounded-full -mr-20 -mt-20 pointer-events-none"></div>
+                <div className="p-10 relative z-10">
+                    <button onClick={() => setIsPasswordModalOpen(false)} className="absolute top-8 right-8 p-2.5 text-slate-300 hover:text-orange-500 bg-orange-50 hover:bg-orange-100 rounded-full transition-all">
+                        <X size={20} />
                     </button>
                     
-                    <div className="text-center mb-8 mt-2">
-                        <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-500 rounded-[2rem] flex items-center justify-center mb-6 shadow-[0_10px_30px_rgba(249,115,22,0.3)] text-white transform hover:scale-105 transition-all">
-                           <Lock size={36} strokeWidth={2.5} />
+                    <div className="text-center mb-10 mt-4">
+                        <div className="mx-auto w-24 h-24 bg-logo-gradient rounded-[2.5rem] flex items-center justify-center mb-6 shadow-2xl text-white transform hover:scale-110 hover:-rotate-6 transition-all duration-500">
+                           <Lock size={42} strokeWidth={3} />
                         </div>
-                        <h3 className="text-xl font-black text-white uppercase tracking-widest">Protocolo de<br/>Seguridad</h3>
-                        <p className="text-xs font-bold tracking-widest text-white/40 uppercase mt-3">Credencial Requerida</p>
+                        <h3 className="text-2xl font-black text-slate-800 uppercase tracking-tighter italic">Acceso de Mando</h3>
+                        <p className="text-[10px] font-black tracking-[0.2em] text-orange-500 uppercase mt-2">Seguridad Biométrica Red Ennier</p>
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-5">
                        <div className="space-y-2">
                          <div className="relative group">
-                           <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-white/30 group-focus-within:text-orange-400 transition-colors">
-                              <Lock size={16} />
+                           <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none text-slate-300 group-focus-within:text-orange-500 transition-colors">
+                              <Lock size={18} />
                            </div>
                            <input 
                              type="password" 
-                             className={`w-full pl-12 pr-5 py-4 bg-white/5 border ${passwordError ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-orange-500/50'} rounded-2xl outline-none focus:bg-white/10 transition-all font-bold text-white shadow-inner tracking-widest`} 
-                             placeholder="••••••••••••" 
+                             className={`w-full pl-14 pr-6 py-5 bg-orange-50/50 border-2 ${passwordError ? 'border-red-400 focus:border-red-500' : 'border-orange-50 focus:border-orange-500'} rounded-3xl outline-none focus:bg-white transition-all font-black text-slate-800 shadow-inner tracking-widest text-lg`} 
+                             placeholder="••••••••" 
                              value={passwordInput} 
                              onChange={e => { setPasswordInput(e.target.value); setPasswordError(''); }}
                              onKeyDown={e => { if (e.key === 'Enter') handlePasswordSubmit(); }}
@@ -162,13 +166,13 @@ const Navbar = () => {
                            />
                          </div>
                          <div className="h-4">
-                            {passwordError && <p className="text-[10px] text-red-400 font-bold ml-2 uppercase tracking-wider animate-pulse">{passwordError}</p>}
+                            {passwordError && <p className="text-[10px] text-red-500 font-black ml-3 uppercase tracking-widest animate-pulse italic">{passwordError}</p>}
                          </div>
                        </div>
                        
-                       <button onClick={handlePasswordSubmit} className="w-full py-4 text-sm font-black uppercase tracking-widest flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all hover:-translate-y-1 mt-2">
-                         <span>Verificar</span>
-                         <Rocket size={16} />
+                       <button onClick={handlePasswordSubmit} className="w-full py-5 text-sm font-black uppercase tracking-widest flex items-center justify-center gap-3 bg-logo-gradient text-white rounded-3xl hover:shadow-[0_20px_40px_rgba(249,115,22,0.3)] transition-all hover:-translate-y-2 mt-4 active:scale-95 shadow-xl">
+                         <span className="italic">Desbloquear</span>
+                         <Rocket size={18} className="animate-bounce" />
                        </button>
                     </div>
                 </div>

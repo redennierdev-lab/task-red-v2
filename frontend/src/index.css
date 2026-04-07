@@ -12,7 +12,6 @@
 
 @layer base {
   html {
-    font-size: 14px; /* Un poco más pequeño para mayor densidad */
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
   }
@@ -33,19 +32,23 @@
   }
 
   .btn-gradient {
-    @apply bg-logo-gradient text-white font-bold py-2.5 px-5 rounded-full shadow-lg shadow-orange-500/10 active:scale-95 transition-all flex items-center justify-center gap-2;
+    @apply bg-logo-gradient text-white font-black uppercase tracking-widest text-[11px] py-4 px-8 rounded-full shadow-xl shadow-orange-500/20 active:scale-95 transition-all flex items-center justify-center gap-3 italic;
   }
 
   .view-header {
-    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-900 p-5 rounded-[1.5rem] shadow-xl relative overflow-hidden text-slate-50;
+    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-white p-8 lg:p-10 rounded-[3rem] shadow-[0_25px_60px_rgba(249,115,22,0.05)] relative overflow-hidden text-slate-900 border-2 border-orange-50;
   }
 
   .view-title {
-    @apply text-lg lg:text-xl font-black tracking-tight uppercase;
+    @apply text-2xl lg:text-4xl font-black tracking-tighter uppercase italic text-slate-900 flex items-center gap-4;
   }
 
   .view-subtitle {
-    @apply text-slate-400 text-[8px] font-bold uppercase tracking-[0.2em] mt-0.5;
+    @apply text-orange-500/50 text-[10px] font-black uppercase tracking-[0.4em] mt-2 italic;
+  }
+
+  .brand-icon {
+    @apply flex items-center justify-center w-14 h-14 bg-logo-gradient text-white rounded-2xl shadow-xl shadow-orange-500/20 transform -rotate-3 group-hover:rotate-0 transition-transform;
   }
 }
 

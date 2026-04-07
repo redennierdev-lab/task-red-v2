@@ -1,1 +1,0 @@
-const express = require('express'); const router = express.Router(); router.post('/login', (req, res) => res.json({token: 'mock-token', user: {username: 'admin', role: 'admin'}})); module.exports = router;

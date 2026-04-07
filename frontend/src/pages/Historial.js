@@ -1,22 +1,47 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
-import { History, CheckCircle2, XCircle } from 'lucide-react';
+import { History, CheckCircle2, XCircle, Search } from 'lucide-react';
 
 const Historial = () => {
   const { tareas, clientes } = useContext(AppContext);
+  const [searchTerm, setSearchTerm] = useState('');
 
   // Consider "Completada" and "No completada" as history for a technician
-  const historialTareas = tareas.filter(t => t.estado === 'Completada' || t.estado === 'No completada');
+  const historialTareas = tareas.filter(t => 
+    (t.estado === 'Completada' || t.estado === 'No completada') &&
+    (t.titulo.toLowerCase().includes(searchTerm.toLowerCase()) || 
+     (t.ticket_id && t.ticket_id.toLowerCase().includes(searchTerm.toLowerCase())))
+  );
 
   const getCliente = (id) => clientes.find(c => c.id === Number(id)) || {};
 
   return (
     <div className="space-y-8 page-transition">
       <div className="view-header">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-logo-gradient opacity-10 blur-[80px] rounded-full -mr-10 -mt-10"></div>
-        <div className="relative z-10">
-          <h2 className="view-title flex items-center gap-2"><History className="text-secondary"/> Historial</h2>
-          <p className="view-subtitle tracking-[0.3em]">Registro Histórico Técnico</p>
+        <div className="relative z-10 flex items-center gap-6">
+            <div className="brand-icon">
+                <History size={32} />
+            </div>
+            <div>
+              <h2 className="view-title italic uppercase tracking-tighter">Historial Técnico</h2>
+              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Registro Operativo Finalizado RED ENNIER</p>
+            </div>
+        </div>
+      </div>
+
+      {/* Consistency Search */}
+      <div className="max-w-4xl mx-auto md:mx-0">
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500 group-focus-within:scale-110">
+            <Search size={22} />
+          </div>
+          <input
+            type="text"
+            placeholder="Rastrear registros operativos finalizados..."
+            className="w-full pl-16 pr-8 py-5 bg-white rounded-[2rem] border-2 border-orange-100 shadow-xl focus:ring-8 focus:ring-orange-500/5 focus:border-orange-400 transition-all outline-none font-bold text-slate-700 placeholder:text-slate-300 tracking-wide text-lg"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
       </div>
 

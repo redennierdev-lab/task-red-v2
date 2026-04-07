@@ -13,6 +13,7 @@ const tecnicosRoutes = require('./routes/tecnicos');
 const tareasRoutes = require('./routes/tareas');
 const serviciosRoutes = require('./routes/servicios');
 const logsRoutes = require('./routes/logs').router;
+const statusRoutes = require('./routes/status');
 
 // CONEXIÓN DE RUTAS
 app.use('/api/customers', clientesRoutes);
@@ -20,6 +21,7 @@ app.use('/api/technicians', tecnicosRoutes);
 app.use('/api/tasks', tareasRoutes);
 app.use('/api/services', serviciosRoutes);
 app.use('/api/audit', logsRoutes);
+app.use('/api/status', statusRoutes);
 
 app.get('/', (req, res) => {
     res.send('Servidor RED ENNIER Operativo');

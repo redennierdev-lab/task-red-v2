@@ -1,11 +1,10 @@
 import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import { Plus, X, ArrowRight, ArrowLeft, Send, CheckCircle2, UserCircle, Building2, MapPin, ShieldCheck, Wifi, Map as MapIcon } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, Send, CheckCircle2, UserCircle, Building2, MapPin, ShieldCheck, Wifi, Map as MapIcon } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
+import { db, logAction } from '../db/db';
 
-const ClientWizard = () => {
-    const { fetchClientes } = useContext(AppContext);
-    const [isOpen, setIsOpen] = useState(false);
+const ClientWizard = ({ isOpen, setIsOpen }) => {
+    const { refreshAll } = useContext(AppContext);
     const [step, setStep] = useState(1);
     
     // States
@@ -85,48 +84,49 @@ const ClientWizard = () => {
         }
 
         try {
-            const payload = {
+            const customerData = {
                 tipo, 
                 clasificacion, 
                 nombre: customer.nombre,
                 apellidos: customer.apellidos,
                 correo: customer.correo,
-                whatsapp: customer.whatsapp, // Extra whatsapp si es interno
+                whatsapp: customer.whatsapp,
                 direccion: customer.direccion,
                 cedula: `${prefijoId}-${idNumber}`,
                 telefono: `${phoneCode}${phoneNumber}`,
                 coordenadas: `${lat}, ${lon}`,
-                equipments: servicioRequerido ? {
+                status: 'Activo'
+            };
+            
+            // Guardar cliente en LocalDB
+            const clienteId = await db.customers.add(customerData);
+            
+            // Guardar ficha técnica si existe equipo
+            if (servicioRequerido) {
+                await db.client_equipments.add({
+                    cliente_id: clienteId,
                     servicio_requerido: servicioRequerido,
                     tipo_instalacion: tipoInstalacion,
                     tipo_soporte: tipoSoporte,
                     soporte_fallas: soporteFallas,
                     soporte_fecha_hora: soporteFechaHora,
                     ...eq
-                } : null
-            };
+                });
+            }
+
+            await logAction('Admin', 'CREACIÓN', 'Customers', clienteId, `Cliente registrado: ${customer.nombre}`);
             
-            await axios.post('http://10.51.182.11:5000/api/customers', payload);
-            
-            fetchClientes();
-            alert('¡Cliente y Ficha Técnica guardados con éxito!');
+            refreshAll();
+            alert('¡Cliente y Ficha Técnica guardados en el teléfono con éxito!');
             handleClose();
         } catch (error) {
-            console.error('Error guardando cliente:', error);
-            alert('Ocurrió un error al procesar la alta de cliente.');
+            console.error('Error guardando cliente localmente:', error);
+            alert('Ocurrió un error al procesar la alta de cliente en la memoria local.');
         }
     };
 
     if (!isOpen) {
-        return (
-            <button 
-                onClick={() => setIsOpen(true)}
-                className="fixed bottom-24 lg:bottom-10 right-6 lg:right-10 w-16 h-16 rounded-full bg-logo-gradient text-white shadow-[0_10px_40px_rgba(217,70,239,0.4)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group border-[3px] border-white/20"
-                title="Añadir Cliente"
-            >
-                <Plus size={32} className="group-hover:rotate-90 transition-transform duration-300" />
-            </button>
-        );
+        return null;
     }
 
     return (

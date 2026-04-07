@@ -3,11 +3,11 @@ import { AppContext } from '../context/AppContext';
 import Modal from '../components/Modal';
 import ClientWizard from '../components/ClientWizard';
 import { Search, Edit3, Trash2, Phone, Rocket, Users, MapPin } from 'lucide-react';
-import axios from 'axios';
 
 const Clientes = () => {
   const { clientes, fetchClientes, deleteRecord, updateRecord } = useContext(AppContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingId, setEditingId] = useState(null);
   
@@ -29,18 +29,17 @@ const Clientes = () => {
       const payload = { ...formData };
       if (editingId) {
         payload.identificacion = `${editPrefijo}-${editDocNum}`;
+        payload.cedula = payload.identificacion; // Sync both fields for compatibility
         payload.telefono = `${editPhoneCode}${editPhoneNum}`;
         await updateRecord('customers', editingId, payload);
-      } else {
-        await axios.post('http://10.51.182.11:5000/api/customers', formData);
       }
       setIsModalOpen(false);
       setEditingId(null);
       setFormData({ nombre: '', identificacion: '', telefono: '', direccion: '' });
-      fetchClientes();
+      // Clientes refresh is handled by updateRecord -> refreshAll
     } catch (error) {
-      console.error('Error:', error);
-      alert('Hubo un error al procesar la solicitud');
+      console.error('Error updating client locally:', error);
+      alert('Hubo un error al procesar la actualización en la base de datos local');
     }
   };
 
@@ -80,7 +79,6 @@ const Clientes = () => {
 
   const handleDelete = async (e, id) => {
     e.stopPropagation();
-    console.log(`🗑️ FRONTEND: Iniciando eliminación de cliente ID: ${id}`);
     const success = await deleteRecord('customers', id);
     if (success) {
       alert('Cliente eliminado con éxito');
@@ -97,26 +95,51 @@ const Clientes = () => {
   return (
     <div className="space-y-8 page-transition">
       {/* Premium Header */}
-      <div className="view-header bg-slate-900">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-logo-gradient opacity-10 blur-[80px] rounded-full -mr-10 -mt-10"></div>
-        <div className="relative z-10">
-          <h2 className="view-title text-white">Directorio de Clientes</h2>
-          <p className="view-subtitle tracking-[0.3em] text-slate-400">Gestión de Base de Datos</p>
+      <div className="view-header">
+        <div className="relative z-10 flex items-center gap-6">
+            <div className="brand-icon">
+                <Users size={32} />
+            </div>
+            <div>
+              <h2 className="view-title italic uppercase">Directorio de Clientes</h2>
+              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Gestión de Base de Datos Maestro</p>
+            </div>
         </div>
+        <button onClick={() => setIsWizardOpen(true)} className="btn-gradient relative z-10 w-full sm:w-auto">
+          <Users size={18} />
+          <span>Nuevo Cliente</span>
+        </button>
       </div>
 
-      {/* Modern Search */}
-      <div className="relative group max-w-md px-1">
-        <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors">
-          <Search size={18} />
+      {/* Premium Search & Grouped Filter List */}
+      <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500 group-focus-within:scale-110">
+            <Search size={22} />
+          </div>
+          <input
+            type="text"
+            placeholder="Rastrear identidad o nombre del cliente..."
+            className="w-full pl-16 pr-8 py-5 bg-white rounded-[2rem] border-2 border-orange-100 shadow-xl focus:ring-8 focus:ring-orange-500/5 focus:border-orange-400 transition-all outline-none font-bold text-slate-700 placeholder:text-slate-300 tracking-wide text-lg"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
-        <input
-          type="text"
-          placeholder="Buscar por nombre o ID..."
-          className="w-full pl-14 pr-6 py-4 bg-white rounded-3xl border border-slate-100 shadow-sm focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500/20 transition-all outline-none font-medium text-sm"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+
+        <div className="flex flex-col gap-2">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 ml-4 mb-1 italic">Filtrar por Segmento:</span>
+            <div className="inline-flex flex-wrap p-1 gap-1 bg-white border-2 border-orange-50 rounded-[2rem] shadow-lg w-fit">
+                {['Todos', 'Corporativo', 'Residencial', 'Internet', 'Soporte'].map(tag => (
+                    <button 
+                      key={tag}
+                      onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)} 
+                      className={`px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-logo-gradient text-white shadow-lg shadow-orange-500/30' : 'text-slate-400 hover:bg-orange-50 hover:text-orange-600'}`}
+                    >
+                        {tag}
+                    </button>
+                ))}
+            </div>
+        </div>
       </div>
 
       {/* Grid of Premium Cards */}
@@ -245,7 +268,7 @@ const Clientes = () => {
         </form>
       </Modal>
 
-      <ClientWizard />
+      <ClientWizard isOpen={isWizardOpen} setIsOpen={setIsWizardOpen} />
     </div>
   );
 };

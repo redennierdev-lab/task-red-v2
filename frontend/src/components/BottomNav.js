@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutList, FileText, Users, Wrench, Rocket, History } from 'lucide-react';
+import { LayoutList, FileText, Users, Wrench, Rocket, History, DollarSign } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
 const BottomNav = () => {
@@ -10,6 +10,7 @@ const BottomNav = () => {
     { icon: <LayoutList size={18} />, label: 'Inicio', path: '/', roles: ['Admin', 'Técnico'] },
     { icon: <FileText size={18} />, label: 'Tareas', path: '/tasks', roles: ['Admin'] },
     { icon: <History size={18} />, label: 'Log', path: '/historial', roles: ['Admin'] },
+    { icon: <DollarSign size={18} />, label: 'Gastos', path: '/gastos', roles: ['Admin'] },
     { icon: <History size={18} />, label: 'Tareas', path: '/mis-tareas', roles: ['Técnico'] },
     { icon: <Users size={18} />, label: 'Clientes', path: '/users', roles: ['Admin'] },
     { icon: <Wrench size={18} />, label: 'Staff', path: '/technicians', roles: ['Admin'] },

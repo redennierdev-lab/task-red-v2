@@ -1,9 +1,7 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { db, logAction } from '../db/db';
 
 export const AppContext = createContext();
-
-const API_BASE_URL = 'http://10.51.182.11:5000/api';
 
 export const AppProvider = ({ children }) => {
   const [clientes, setClientes] = useState([]);
@@ -15,37 +13,42 @@ export const AppProvider = ({ children }) => {
 
   const fetchClientes = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API_BASE_URL}/customers`);
-      setClientes(data);
+      const all = await db.customers.toArray();
+      // Unir con fichas tecnicas
+      const enriched = await Promise.all(all.map(async (c) => {
+          const eq = await db.client_equipments.where('cliente_id').equals(c.id).first();
+          return { ...c, ...eq };
+      }));
+      setClientes(enriched);
     } catch (error) {
-      console.error('Error fetching clientes:', error);
+      console.error('Error fetching clientes de LocalDB:', error);
     }
   }, []);
 
   const fetchTecnicos = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API_BASE_URL}/technicians`);
+      const data = await db.technicians.toArray();
       setTecnicos(data);
     } catch (error) {
-      console.error('Error fetching tecnicos:', error);
+      console.error('Error fetching tecnicos de LocalDB:', error);
     }
   }, []);
 
   const fetchTareas = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API_BASE_URL}/tasks`);
+      const data = await db.tasks.toArray();
       setTareas(data);
     } catch (error) {
-      console.error('Error fetching tareas:', error);
+      console.error('Error fetching tareas de LocalDB:', error);
     }
   }, []);
 
   const fetchServicios = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${API_BASE_URL}/services`);
+      const data = await db.services.toArray();
       setServicios(data);
     } catch (error) {
-      console.error('Error fetching servicios:', error);
+      console.error('Error fetching servicios de LocalDB:', error);
     }
   }, []);
 
@@ -56,45 +59,64 @@ export const AppProvider = ({ children }) => {
   }, [fetchClientes, fetchTecnicos, fetchTareas, fetchServicios]);
 
   const deleteRecord = async (endpoint, id) => {
-    console.log(`🔷 FRONTEND: Intentando eliminar ${endpoint} con ID: ${id}`);
-    if (!id) {
-      console.error("❌ ERROR: No se proporcionó una ID válida para eliminar.");
-      return false;
-    }
+    if (!id) return false;
     
-    // Optimistic Update: Eliminación visual inmediata
-    if (endpoint === 'customers') setClientes(prev => prev.filter(c => c.id !== id));
-    if (endpoint === 'technicians') setTecnicos(prev => prev.filter(t => t.id !== id));
-    if (endpoint === 'tasks') setTareas(prev => prev.filter(t => t.id !== id));
-    if (endpoint === 'services') setServicios(prev => prev.filter(s => s.id !== id));
+    // Map endpoints to table names
+    const tableMap = {
+        'customers': 'customers',
+        'technicians': 'technicians',
+        'tasks': 'tasks',
+        'services': 'services'
+    };
+    const table = tableMap[endpoint];
 
     try {
-      const response = await axios.delete(`${API_BASE_URL}/${endpoint}/${id}`);
-      console.log(`✅ FRONTEND: Respuesta de eliminación:`, response.data);
-      // Actualizar en segundo plano para asegurar consistencia
-      fetchClientes(); fetchTecnicos(); fetchTareas(); fetchServicios();
+      if (endpoint === 'customers') {
+          await db.client_equipments.where('cliente_id').equals(id).delete();
+      }
+      await db[table].delete(id);
+      
+      logAction('Admin', 'ELIMINACIÓN', endpoint, id, `Registro eliminado de LocalDB`);
+      await refreshAll();
       return true;
     } catch (error) {
-      console.error(`❌ FRONTEND Error deleting ${endpoint}:`, error.response?.data || error.message);
-      // Revertir en caso de fallo
-      await refreshAll();
+      console.error(`Error deleting from LocalDB:`, error);
       return false;
     }
   };
 
   const updateRecord = async (endpoint, id, data) => {
+    const tableMap = {
+        'customers': 'customers',
+        'technicians': 'technicians',
+        'tasks': 'tasks',
+        'services': 'services'
+    };
+    const table = tableMap[endpoint];
     try {
-      await axios.put(`${API_BASE_URL}/${endpoint}/${id}`, data);
+      await db[table].update(id, data);
+      logAction('Admin', 'EDICIÓN', endpoint, id, `Actualizado en LocalDB`);
       await refreshAll();
       return true;
     } catch (error) {
-      console.error(`Error updating ${endpoint}:`, error);
+      console.error(`Error updating LocalDB:`, error);
       return false;
     }
   };
 
   useEffect(() => {
-    refreshAll();
+    // Inicializar DB con datos de ejemplo si esta vacia (Opcional)
+    const init = async () => {
+        const count = await db.services.count();
+        if (count === 0) {
+            await db.services.bulkAdd([
+                { nombre: 'Instalación Premium', descripcion: 'Configuración 5G', precio: 150 },
+                { nombre: 'Mantenimiento Preventivo', descripcion: 'Limpieza de antena', precio: 45 }
+            ]);
+        }
+        refreshAll();
+    };
+    init();
   }, [refreshAll]);
 
   return (

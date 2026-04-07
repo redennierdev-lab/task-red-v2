@@ -10,11 +10,16 @@ import Servicios from './pages/Servicios';
 import { AppProvider } from './context/AppContext';
 
 import Dashboard from './pages/Dashboard';
+import Gastos from './pages/Gastos';
 import BottomNav from './components/BottomNav';
+import SplashScreen from './components/SplashScreen';
 
 function App() {
+  const [showSplash, setShowSplash] = React.useState(true);
+
   return (
     <AppProvider>
+      {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <div className="flex bg-[#FDFDFD] min-h-screen font-jakarta text-[#1e293b]">
           <TopHeader /> 
@@ -29,6 +34,7 @@ function App() {
                 <Route path="/historial" element={<HistorialAdmin />} />
                 <Route path="/mis-tareas" element={<Historial />} />
                 <Route path="/services" element={<Servicios />} />
+                <Route path="/gastos" element={<Gastos />} />
               </Routes>
             </div>
             

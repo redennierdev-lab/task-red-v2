@@ -2,31 +2,34 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Clientes from './pages/Clientes';
-
-// Componente simple para las otras páginas mientras las creamos
-const Placeholder = ({ name }) => (
-  <div className="p-10"><h1 className="text-2xl font-bold">{name}</h1></div>
-);
+import Tecnicos from './pages/Tecnicos';
+import Tareas from './pages/Tareas';
+import Servicios from './pages/Servicios';
+import { AppProvider } from './context/AppContext';
 
 function App() {
   return (
-    <Router>
-      <div className="flex bg-gray-50 min-h-screen">
-        {/* Navbar fijo a la izquierda */}
-        <Navbar /> 
-        
-        {/* Contenido principal desplazado a la derecha por el ancho del navbar */}
-        <main className="flex-1 ml-64 p-8">
-          <Routes>
-            <Route path="/" element={<Placeholder name="Dashboard" />} />
-            <Route path="/tasks" element={<Placeholder name="Tareas" />} />
-            <Route path="/users" element={<Clientes />} /> {/* Clientes en la ruta /users */}
-            <Route path="/technicians" element={<Placeholder name="Técnicos" />} />
-            <Route path="/services" element={<Placeholder name="Servicios" />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
+    <AppProvider>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <div className="flex bg-light min-h-screen font-sans text-gray-800">
+          <Navbar /> 
+          <main className="flex-1 lg:ml-64 p-4 lg:p-8 w-full max-w-[100vw] overflow-x-hidden pt-16 lg:pt-8 transition-all duration-300">
+            <div className="max-w-6xl mx-auto">
+              <Routes>
+                <Route path="/" element={<div className="bg-white rounded-2xl shadow-sm p-10 border border-gray-100 flex flex-col items-center justify-center text-center py-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <h1 className="text-4xl font-bold text-primary mb-4">Bienvenido al Sistema</h1>
+                  <p className="text-gray-500 text-lg">RED ENNIER C.A. Task Management</p>
+                </div>} />
+                <Route path="/users" element={<Clientes />} />
+                <Route path="/technicians" element={<Tecnicos />} />
+                <Route path="/tasks" element={<Tareas />} />
+                <Route path="/services" element={<Servicios />} />
+              </Routes>
+            </div>
+          </main>
+        </div>
+      </Router>
+    </AppProvider>
   );
 }
 

@@ -28,9 +28,9 @@ db.run("ALTER TABLE tasks ADD COLUMN started_at BIGINT", (err) => {
     }
 });
 
-// CRON JOB AUTOMÁTICO - Busca tareas "En proceso" con > 1 minuto de antigüedad
+// CRON JOB AUTOMÁTICO - Busca tareas "En proceso" con > 1 hora de antigüedad
 setInterval(() => {
-    const limitTime = Date.now() - (60 * 1000); 
+    const limitTime = Date.now() - (60 * 60 * 1000); 
     db.all(`SELECT id, ticket_id FROM tasks WHERE estado = 'En proceso' AND started_at < ?`, [limitTime], (err, rows) => {
         if (!err && rows && rows.length > 0) {
             rows.forEach(row => {

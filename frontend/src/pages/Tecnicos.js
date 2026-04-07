@@ -17,7 +17,7 @@ const Tecnicos = () => {
       if (editingId) {
         await updateRecord('technicians', editingId, formData);
       } else {
-        await axios.post('http://localhost:5000/api/technicians', formData);
+        await axios.post('http://10.51.182.11:5000/api/technicians', formData);
       }
       setIsModalOpen(false);
       setEditingId(null);

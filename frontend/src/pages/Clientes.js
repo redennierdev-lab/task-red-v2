@@ -18,18 +18,26 @@ const Clientes = () => {
     direccion: ''
   });
 
+  const [editPrefijo, setEditPrefijo] = useState('V');
+  const [editDocNum, setEditDocNum] = useState('');
+  const [editPhoneCode, setEditPhoneCode] = useState('+58');
+  const [editPhoneNum, setEditPhoneNum] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const payload = { ...formData };
       if (editingId) {
-        await updateRecord('customers', editingId, formData);
+        payload.identificacion = `${editPrefijo}-${editDocNum}`;
+        payload.telefono = `${editPhoneCode}${editPhoneNum}`;
+        await updateRecord('customers', editingId, payload);
       } else {
-        await axios.post('http://localhost:5000/api/customers', formData);
+        await axios.post('http://10.51.182.11:5000/api/customers', formData);
       }
       setIsModalOpen(false);
       setEditingId(null);
       setFormData({ nombre: '', identificacion: '', telefono: '', direccion: '' });
-      fetchClientes(); 
+      fetchClientes();
     } catch (error) {
       console.error('Error:', error);
       alert('Hubo un error al procesar la solicitud');
@@ -39,10 +47,32 @@ const Clientes = () => {
   const handleEdit = (e, cliente) => {
     e.stopPropagation();
     setEditingId(cliente.id);
+    
+    let docFull = cliente.cedula || cliente.identificacion || 'V-';
+    let p = docFull.split('-')[0] || 'V';
+    let num = docFull.split('-')[1] || '';
+    setEditPrefijo(['V','E','J','G','P'].includes(p) ? p : 'V');
+    setEditDocNum(num);
+
+    let telFull = cliente.telefono || '';
+    if (telFull.startsWith('+58')) {
+        setEditPhoneCode('+58');
+        setEditPhoneNum(telFull.substring(3));
+    } else if (telFull.startsWith('+1')) {
+        setEditPhoneCode('+1');
+        setEditPhoneNum(telFull.substring(2));
+    } else if (telFull.startsWith('+57')) {
+        setEditPhoneCode('+57');
+        setEditPhoneNum(telFull.substring(3));
+    } else {
+        setEditPhoneCode('+58');
+        setEditPhoneNum(telFull);
+    }
+
     setFormData({
       nombre: cliente.nombre,
-      identificacion: cliente.cedula || cliente.identificacion,
-      telefono: cliente.telefono,
+      identificacion: docFull,
+      telefono: telFull,
       direccion: cliente.direccion
     });
     setIsModalOpen(true);
@@ -156,7 +186,7 @@ const Clientes = () => {
             <input 
               required
               type="text" 
-              className="w-full px-4 py-2.5 bg-gray-50 border border-transparent rounded-xl outline-none focus:bg-white focus:border-violet transition-all font-medium text-sm"
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-full outline-none focus:bg-white focus:border-orange-500 transition-all font-bold text-slate-700 shadow-inner text-sm"
               value={formData.nombre}
               onChange={e => setFormData({...formData, nombre: e.target.value})}
             />
@@ -164,23 +194,35 @@ const Clientes = () => {
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
               <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-0.5">ID / RIF</label>
-              <input 
-                required
-                type="text" 
-                className="w-full px-4 py-2.5 bg-gray-50 border border-transparent rounded-xl outline-none focus:bg-white focus:border-orange-500 transition-all font-medium font-mono text-sm"
-                value={formData.identificacion}
-                onChange={e => setFormData({...formData, identificacion: e.target.value})}
-              />
+              <div className="flex bg-slate-50 border border-slate-200 rounded-full focus-within:bg-white focus-within:border-orange-500 transition-all shadow-inner overflow-hidden">
+                  <select className="bg-transparent pl-4 pr-1 font-black text-slate-600 outline-none border-r border-slate-200" value={editPrefijo} onChange={e => setEditPrefijo(e.target.value)}>
+                      <option value="V">V</option>
+                      <option value="E">E</option>
+                      <option value="J">J</option>
+                      <option value="G">G</option>
+                      <option value="P">P</option>
+                  </select>
+                  <div className="flex items-center text-slate-400 font-black pl-2">-</div>
+                  <input required type="text" placeholder="12345678" className="flex-1 bg-transparent px-3 py-3.5 outline-none font-black text-slate-700 tracking-wider text-sm" value={editDocNum} onChange={e=>setEditDocNum(e.target.value.replace(/\D/g, ''))} />
+              </div>
             </div>
             <div className="space-y-1">
-              <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-0.5">Teléfono</label>
-              <input 
-                required
-                type="text" 
-                className="w-full px-4 py-2.5 bg-gray-50 border border-transparent rounded-xl outline-none focus:bg-white focus:border-violet transition-all font-medium text-sm"
-                value={formData.telefono}
-                onChange={e => setFormData({...formData, telefono: e.target.value})}
-              />
+              <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-0.5 flex justify-between">
+                <span>Teléfono</span>
+                {!/^(412|414|424|416|426|422|286)\d{7}$/.test(editPhoneNum) && editPhoneNum.length > 2 && <span className="text-red-500 text-[8px]">Invalido</span>}
+              </label>
+              <div className={`flex bg-slate-50 border rounded-full focus-within:bg-white transition-all shadow-inner overflow-hidden ${!/^(412|414|424|416|426|422|286)\d{7}$/.test(editPhoneNum) && editPhoneNum.length > 2 ? 'border-red-400' : 'border-slate-200 focus-within:border-orange-500'}`}>
+                  <select className="bg-transparent pl-4 pr-1 font-black text-slate-600 outline-none border-r border-slate-200" value={editPhoneCode} onChange={e => setEditPhoneCode(e.target.value)}>
+                      <option value="+58">🇻🇪 +58</option>
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+57">🇨🇴 +57</option>
+                  </select>
+                  <input required type="text" placeholder="4141234567" className="flex-1 bg-transparent px-3 py-3.5 outline-none font-black text-slate-700 tracking-wider text-sm" value={editPhoneNum} onChange={(e) => {
+                      let val = e.target.value.replace(/\D/g, '');
+                      if (val.length > 10) val = val.substring(0, 10);
+                      setEditPhoneNum(val);
+                  }} />
+              </div>
             </div>
           </div>
           <div className="space-y-1">
@@ -188,14 +230,14 @@ const Clientes = () => {
             <textarea 
               required
               rows="2"
-              className="w-full px-4 py-2.5 bg-gray-50 border border-transparent rounded-xl outline-none focus:bg-white focus:border-violet transition-all font-medium resize-none text-sm"
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.5rem] outline-none focus:bg-white focus:border-orange-500 transition-all font-bold text-slate-700 shadow-inner resize-none text-sm"
               value={formData.direccion}
               onChange={e => setFormData({...formData, direccion: e.target.value})}
             />
           </div>
           <button 
             type="submit"
-            className="btn-gradient w-full mt-6"
+            className="btn-gradient w-full mt-6 py-4 rounded-full"
           >
             <span>Confirmar Registro</span>
             <Rocket size={18} />

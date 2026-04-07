@@ -1,10 +1,14 @@
 import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight } from 'lucide-react';
+import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
+import Modal from './Modal';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const { userRole, setUserRole } = useContext(AppContext);
 
   const menuItems = [
@@ -18,7 +22,23 @@ const Navbar = () => {
   ].filter(i => i.roles.includes(userRole));
 
   const toggleRole = () => {
-      setUserRole(userRole === 'Admin' ? 'Técnico' : 'Admin');
+      if (userRole === 'Técnico') {
+          setIsPasswordModalOpen(true);
+          setPasswordInput('');
+          setPasswordError('');
+      } else {
+          setUserRole('Técnico');
+      }
+  };
+
+  const handlePasswordSubmit = () => {
+      if (passwordInput === 'G89qpjksr**..') {
+          setUserRole('Admin');
+          setIsPasswordModalOpen(false);
+          setPasswordInput('');
+      } else {
+          setPasswordError('Contraseña incorrecta. Acceso denegado.');
+      }
   };
 
   return (
@@ -105,6 +125,56 @@ const Navbar = () => {
           </div>
         </div>
       </aside>
+
+      {/* Modal Contraseña Premium */}
+      {isPasswordModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-xl transition-all duration-500" onClick={() => setIsPasswordModalOpen(false)}></div>
+            <div className="bg-slate-900 border border-white/10 w-full max-w-sm rounded-[2.5rem] shadow-[0_0_50px_rgba(0,0,0,0.5)] relative overflow-hidden flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-300">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/20 blur-[80px] rounded-full -mr-10 -mt-10 pointer-events-none"></div>
+                <div className="p-8 relative z-10">
+                    <button onClick={() => setIsPasswordModalOpen(false)} className="absolute top-6 right-6 p-2 text-white/40 hover:text-white bg-white/5 hover:bg-white/10 rounded-full transition-all">
+                        <X size={18} />
+                    </button>
+                    
+                    <div className="text-center mb-8 mt-2">
+                        <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-500 rounded-[2rem] flex items-center justify-center mb-6 shadow-[0_10px_30px_rgba(249,115,22,0.3)] text-white transform hover:scale-105 transition-all">
+                           <Lock size={36} strokeWidth={2.5} />
+                        </div>
+                        <h3 className="text-xl font-black text-white uppercase tracking-widest">Protocolo de<br/>Seguridad</h3>
+                        <p className="text-xs font-bold tracking-widest text-white/40 uppercase mt-3">Credencial Requerida</p>
+                    </div>
+                    
+                    <div className="space-y-4">
+                       <div className="space-y-2">
+                         <div className="relative group">
+                           <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-white/30 group-focus-within:text-orange-400 transition-colors">
+                              <Lock size={16} />
+                           </div>
+                           <input 
+                             type="password" 
+                             className={`w-full pl-12 pr-5 py-4 bg-white/5 border ${passwordError ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-orange-500/50'} rounded-2xl outline-none focus:bg-white/10 transition-all font-bold text-white shadow-inner tracking-widest`} 
+                             placeholder="••••••••••••" 
+                             value={passwordInput} 
+                             onChange={e => { setPasswordInput(e.target.value); setPasswordError(''); }}
+                             onKeyDown={e => { if (e.key === 'Enter') handlePasswordSubmit(); }}
+                             autoFocus
+                           />
+                         </div>
+                         <div className="h-4">
+                            {passwordError && <p className="text-[10px] text-red-400 font-bold ml-2 uppercase tracking-wider animate-pulse">{passwordError}</p>}
+                         </div>
+                       </div>
+                       
+                       <button onClick={handlePasswordSubmit} className="w-full py-4 text-sm font-black uppercase tracking-widest flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all hover:-translate-y-1 mt-2">
+                         <span>Verificar</span>
+                         <Rocket size={16} />
+                       </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      )}
     </>
   );
 };

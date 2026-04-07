@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const AppContext = createContext();
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://10.51.182.11:5000/api';
 
 export const AppProvider = ({ children }) => {
   const [clientes, setClientes] = useState([]);
@@ -61,13 +61,23 @@ export const AppProvider = ({ children }) => {
       console.error("❌ ERROR: No se proporcionó una ID válida para eliminar.");
       return false;
     }
+    
+    // Optimistic Update: Eliminación visual inmediata
+    if (endpoint === 'customers') setClientes(prev => prev.filter(c => c.id !== id));
+    if (endpoint === 'technicians') setTecnicos(prev => prev.filter(t => t.id !== id));
+    if (endpoint === 'tasks') setTareas(prev => prev.filter(t => t.id !== id));
+    if (endpoint === 'services') setServicios(prev => prev.filter(s => s.id !== id));
+
     try {
       const response = await axios.delete(`${API_BASE_URL}/${endpoint}/${id}`);
       console.log(`✅ FRONTEND: Respuesta de eliminación:`, response.data);
-      await refreshAll();
+      // Actualizar en segundo plano para asegurar consistencia
+      fetchClientes(); fetchTecnicos(); fetchTareas(); fetchServicios();
       return true;
     } catch (error) {
       console.error(`❌ FRONTEND Error deleting ${endpoint}:`, error.response?.data || error.message);
+      // Revertir en caso de fallo
+      await refreshAll();
       return false;
     }
   };

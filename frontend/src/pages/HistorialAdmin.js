@@ -12,7 +12,7 @@ const HistorialAdmin = () => {
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/audit');
+      const res = await axios.get('http://10.51.182.11:5000/api/audit');
       setLogs(res.data);
     } catch (error) {
       console.error("Error fetching logs:", error);

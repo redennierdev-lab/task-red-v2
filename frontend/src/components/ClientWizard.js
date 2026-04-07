@@ -29,6 +29,11 @@ const ClientWizard = () => {
     const [servicioRequerido, setServicioRequerido] = useState('');
     const [tipoInstalacion, setTipoInstalacion] = useState('');
     
+    // Tech Info (Soporte)
+    const [tipoSoporte, setTipoSoporte] = useState('');
+    const [soporteFallas, setSoporteFallas] = useState('');
+    const [soporteFechaHora, setSoporteFechaHora] = useState('');
+
     // Tech Info (Internet)
     const [eq, setEq] = useState({
         antena_tipo: '', antena_modelo: '', antena_marca: '', antena_serial: '', 
@@ -38,6 +43,7 @@ const ClientWizard = () => {
 
     const resetFlow = () => {
         setStep(1); setTipo(''); setClasificacion(''); setServicioRequerido(''); setTipoInstalacion('');
+        setTipoSoporte(''); setSoporteFallas(''); setSoporteFechaHora('');
         setPrefijoId('V'); setIdNumber(''); setPhoneCode('+58'); setPhoneNumber(''); setLat(''); setLon('');
         setCustomer({ nombre: '', apellidos: '', correo: '', whatsapp: '', direccion: '' });
         setEq({ antena_tipo: '', antena_modelo: '', antena_marca: '', antena_serial: '', antena_usuario: '', antena_password: '', antena_ip: '', puerto_forward: '', router_modelo: '', router_tipo: '', router_version: '' });
@@ -93,11 +99,14 @@ const ClientWizard = () => {
                 equipments: servicioRequerido ? {
                     servicio_requerido: servicioRequerido,
                     tipo_instalacion: tipoInstalacion,
+                    tipo_soporte: tipoSoporte,
+                    soporte_fallas: soporteFallas,
+                    soporte_fecha_hora: soporteFechaHora,
                     ...eq
                 } : null
             };
             
-            await axios.post('http://localhost:5000/api/customers', payload);
+            await axios.post('http://10.51.182.11:5000/api/customers', payload);
             
             fetchClientes();
             alert('¡Cliente y Ficha Técnica guardados con éxito!');
@@ -129,7 +138,7 @@ const ClientWizard = () => {
                     <button onClick={handleClose} className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all">
                         <X size={20} />
                     </button>
-                    <h2 className="text-2xl font-black uppercase tracking-widest mb-1">Alta de Cliente</h2>
+                    <h2 className="text-2xl font-black uppercase tracking-widest mb-1">Registro Nuevo</h2>
                     <p className="text-white/80 text-sm font-medium tracking-widest uppercase">Ficha Técnica & Administrativa</p>
                     
                     <div className="flex gap-2 mt-6">
@@ -267,14 +276,18 @@ const ClientWizard = () => {
                     {step === 4 && (
                         <div className="space-y-6 page-transition">
                             <h3 className="text-xl font-black text-slate-800 text-center mb-8 uppercase tracking-widest">¿Qué servicio requiere?</h3>
-                            <div className="grid grid-cols-2 gap-4">
-                                <button onClick={() => { setServicioRequerido('Acceso a internet'); setStep(5); }} className="p-8 rounded-[2rem] border-2 border-slate-100 hover:border-emerald-500 hover:bg-emerald-50 flex flex-col items-center gap-4 transition-all">
+                            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                                <button onClick={() => { setServicioRequerido('Acceso a internet'); setStep(5); }} className="p-8 lg:p-6 rounded-[2rem] border-2 border-slate-100 hover:border-emerald-500 hover:bg-emerald-50 flex flex-col items-center gap-4 transition-all">
                                     <Wifi size={48} className="text-emerald-500" />
-                                    <span className="font-black text-slate-700 uppercase tracking-widest text-center">Acceso a<br/>Internet</span>
+                                    <span className="font-black text-xs text-slate-700 uppercase tracking-widest text-center">Acceso a<br/>Internet</span>
                                 </button>
-                                <button onClick={() => { setServicioRequerido('Cámaras de seguridad'); setStep(6); }} className="p-8 rounded-[2rem] border-2 border-slate-100 hover:border-slate-500 hover:bg-slate-50 flex flex-col items-center gap-4 transition-all">
+                                <button onClick={() => { setServicioRequerido('Cámaras de seguridad'); setStep(6); }} className="p-8 lg:p-6 rounded-[2rem] border-2 border-slate-100 hover:border-slate-500 hover:bg-slate-50 flex flex-col items-center gap-4 transition-all">
                                     <ShieldCheck size={48} className="text-slate-500" />
-                                    <span className="font-black text-slate-700 uppercase tracking-widest text-center">Cámaras de<br/>Seguridad</span>
+                                    <span className="font-black text-xs text-slate-700 uppercase tracking-widest text-center">Cámaras de<br/>Seguridad</span>
+                                </button>
+                                <button onClick={() => { setServicioRequerido('Soporte Técnico'); setStep(7); }} className="p-8 lg:p-6 rounded-[2rem] border-2 border-slate-100 hover:border-blue-500 hover:bg-blue-50 flex flex-col items-center gap-4 transition-all col-span-2 lg:col-span-1">
+                                    <ShieldCheck size={48} className="text-blue-500" />
+                                    <span className="font-black text-xs text-slate-700 uppercase tracking-widest text-center">Soporte<br/>Técnico</span>
                                 </button>
                             </div>
                         </div>
@@ -325,6 +338,40 @@ const ClientWizard = () => {
                             <p className="text-xs font-medium text-slate-400 mt-2">Los metadatos y material de instalación se definirán en el Ticket del Técnico.</p>
                         </div>
                     )}
+
+                    {step === 7 && servicioRequerido === 'Soporte Técnico' && (
+                        <div className="space-y-6 page-transition">
+                            <h3 className="text-xl font-black text-slate-800 text-center mb-8 uppercase tracking-widest">¿Qué tipo de soporte necesita?</h3>
+                            <div className="grid grid-cols-2 gap-3">
+                                {['Internet', 'Cámaras', 'Hardware', 'Software'].map(ts => (
+                                    <button key={ts} onClick={() => { setTipoSoporte(ts); setStep(8); }} className="p-4 rounded-[2rem] border-2 border-slate-100 hover:border-blue-500 hover:bg-blue-50 flex flex-col items-center gap-2 transition-all">
+                                        <span className="font-black text-xs text-slate-700 uppercase tracking-widest text-center">Soporte de<br/>{ts}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {step === 8 && servicioRequerido === 'Soporte Técnico' && (
+                        <div className="space-y-6 page-transition">
+                            <h3 className="text-xl font-black text-slate-800 text-center mb-6 uppercase tracking-widest border-b border-slate-100 pb-4">Detalles del Soporte ({tipoSoporte})</h3>
+                            
+                            <div className="space-y-1.5 flex flex-col">
+                                <label className="text-[10px] font-black uppercase text-slate-400 pl-1">Agenda: ¿Para cuándo lo necesita?</label>
+                                <input required type="datetime-local" className="px-5 py-4 bg-slate-50 border border-transparent rounded-full focus:bg-white focus:border-blue-500 transition-all font-bold text-slate-700 outline-none shadow-sm text-sm" value={soporteFechaHora} onChange={e=>setSoporteFechaHora(e.target.value)} />
+                            </div>
+
+                            <div className="space-y-1.5 flex flex-col mt-4">
+                                <label className="text-[10px] font-black uppercase text-slate-400 pl-1 mt-2">
+                                    {tipoSoporte === 'Internet' && '¿Qué fallas presenta? (Ej: Lentitud, caída total)'}
+                                    {tipoSoporte === 'Cámaras' && 'Detalles (Ej: Sin acceso remoto, no se ven cámaras)'}
+                                    {tipoSoporte === 'Hardware' && 'Especificaciones (Ej: Mantenimiento de PC, Cambio disco)'}
+                                    {tipoSoporte === 'Software' && 'Requerimientos (Ej: ¿Qué tipo de software desarrollar?)'}
+                                </label>
+                                <input required type="text" placeholder="Describa el requerimiento del cliente..." className="px-5 py-4 bg-slate-50 border border-transparent rounded-full focus:bg-white focus:border-blue-500 transition-all font-bold text-slate-700 outline-none shadow-sm text-sm" value={soporteFallas} onChange={e=>setSoporteFallas(e.target.value)} />
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="p-6 bg-slate-50 flex justify-between items-center shrink-0 border-t border-slate-200 rounded-b-[2.5rem]">
@@ -341,7 +388,7 @@ const ClientWizard = () => {
                             Continuar <ArrowRight size={16}/>
                         </button>
                     )}
-                    {(step === 5 || step === 6) && (
+                    {(step === 5 || step === 6 || step === 8) && (
                         <button type="button" onClick={handleSubmit} className="btn-gradient shadow-emerald-500/20 bg-emerald-500 hover:bg-emerald-600 rounded-full px-8">
                             Guardar Cliente <Send size={16}/>
                         </button>

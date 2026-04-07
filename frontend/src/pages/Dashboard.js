@@ -74,7 +74,7 @@ const TechnicianView = ({ tareas, clientes, refreshAll }) => {
           if (nuevoEstado === 'En proceso') {
               payload.started_at = Date.now();
           }
-          await axios.put(`http://localhost:5000/api/tasks/${id}/state`, payload);
+          await axios.put(`http://10.51.182.11:5000/api/tasks/${id}/state`, payload);
           refreshAll();
       } catch (error) {
           console.error("Error actualizando estado:", error);

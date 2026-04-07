@@ -23,12 +23,38 @@ router.get('/', (req, res) => {
     });
 });
 
+// GUARDAR CLIENTE
 router.post('/', (req, res) => {
-    const { nombre, identificacion, telefono, direccion } = req.body;
+    const { nombre, cedula, identificacion, telefono, direccion } = req.body;
     db.run(`INSERT INTO customers (nombre, cedula, telefono, direccion) VALUES (?, ?, ?, ?)`, 
-    [nombre, identificacion, telefono, direccion], function(err) {
-        if (err) return res.status(500).send(err);
+        [nombre, cedula || identificacion, telefono, direccion], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
         res.json({ id: this.lastID });
+    });
+});
+
+// EDITAR CLIENTE
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const { nombre, cedula, identificacion, telefono, direccion } = req.body;
+    db.run(`UPDATE customers SET nombre = ?, cedula = ?, telefono = ?, direccion = ? WHERE id = ?`,
+        [nombre, cedula || identificacion, telefono, direccion, id], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true });
+    });
+});
+
+// ELIMINAR CLIENTE
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    console.log(`🗑️ Solicitud de eliminación cliente ID: ${id}`);
+    db.run(`DELETE FROM customers WHERE id = ?`, [id], function(err) {
+        if (err) {
+            console.error("❌ Error eliminando cliente:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        console.log(`✅ Cliente ${id} eliminado correctamente`);
+        res.json({ success: true });
     });
 });
 

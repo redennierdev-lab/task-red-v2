@@ -1,140 +1,194 @@
 import React, { useContext, useState } from 'react';
+import axios from 'axios';
+import { Layers, CheckCircle2, CircleDashed, Rocket, ArrowRight, Edit3, Trash2, Wrench } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import Modal from '../components/Modal';
-import { Layers, CheckCircle2, CircleDashed } from 'lucide-react';
-import axios from 'axios';
 
 const Tareas = () => {
-  const { tareas, clientes, tecnicos, fetchTareas } = useContext(AppContext);
+  const { tareas, clientes, tecnicos, fetchTareas, updateRecord, deleteRecord } = useContext(AppContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const [formData, setFormData] = useState({
-    titulo: '',
-    descripcion: '',
-    cliente_id: '',
-    tecnico_id: ''
-  });
+  const [editingId, setEditingId] = useState(null);
+  const [formData, setFormData] = useState({ titulo: '', descripcion: '', estado: 'Pendiente', cliente_id: '', tecnico_id: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/tasks', formData);
+      if (editingId) {
+        await updateRecord('tasks', editingId, formData);
+      } else {
+        await axios.post('http://localhost:5000/api/tasks', formData);
+      }
       setIsModalOpen(false);
-      setFormData({ titulo: '', descripcion: '', cliente_id: '', tecnico_id: '' });
+      setEditingId(null);
+      setFormData({ titulo: '', descripcion: '', estado: 'Pendiente', cliente_id: '', tecnico_id: '' });
       fetchTareas();
     } catch (error) {
       console.error('Error:', error);
-      alert('Hubo un error al crear la tarea');
+      alert('Hubo un error al procesar la solicitud');
     }
   };
 
-  const getClienteNombre = (id) => clientes.find(c => c.id == id)?.nombre || 'Cliente Desconocido';
-  const getTecnicoNombre = (id) => tecnicos.find(t => t.id == id)?.nombre || 'No asignado';
+  const handleEdit = (e, tarea) => {
+    e.stopPropagation();
+    setEditingId(tarea.id);
+    setFormData({
+      titulo: tarea.titulo,
+      descripcion: tarea.descripcion,
+      estado: tarea.estado,
+      cliente_id: tarea.cliente_id,
+      tecnico_id: tarea.tecnico_id
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
+    console.log(`🗑️ FRONTEND: Iniciando eliminación de tarea ID: ${id}`);
+    if (window.confirm('¿Deseas eliminar este ticket permanentemente?')) {
+      const success = await deleteRecord('tasks', id);
+      if (success) {
+        alert('Ticket eliminado con éxito');
+      } else {
+        alert('Error al eliminar el ticket');
+      }
+    }
+  };
+
+  const getClienteNombre = (id) => clientes.find(c => c.id === Number(id))?.nombre || 'Cliente Desconocido';
+  const getTecnicoNombre = (id) => tecnicos.find(t => t.id === Number(id))?.nombre || 'No asignado';
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <div>
-          <h2 className="text-2xl font-bold text-primary">Gestión de Tareas</h2>
-          <p className="text-gray-500 text-sm mt-1">Control de tickets y asignaciones</p>
+    <div className="space-y-8 page-transition">
+      {/* Premium Header */}
+      <div className="view-header">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-logo-gradient opacity-10 blur-[80px] rounded-full -mr-10 -mt-10"></div>
+        <div className="relative z-10">
+          <h2 className="view-title">Gestión de Tareas</h2>
+          <p className="view-subtitle tracking-[0.3em]">Centro Operativo de Tickets</p>
         </div>
         <button 
-          onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 bg-secondary hover:bg-primary text-white px-6 py-2.5 rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto justify-center"
+          onClick={() => { setEditingId(null); setFormData({ titulo: '', descripcion: '', estado: 'Pendiente', cliente_id: '', tecnico_id: '' }); setIsModalOpen(true); }}
+          className="btn-gradient relative z-10 w-full sm:w-auto"
         >
-          <Layers size={20} />
-          <span>Crear Nueva Tarea</span>
+          <Layers size={18} />
+          <span className="uppercase tracking-widest text-[10px]">Nuevo Ticket</span>
         </button>
       </div>
 
-      {/* List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {tareas.map((tarea, index) => (
-          <div key={tarea.id || index} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 group relative">
-            <div className="flex justify-between items-start mb-3">
-              <h3 className="text-lg font-bold text-gray-800 line-clamp-1 pr-4">{tarea.titulo}</h3>
-              <div className={`px-2.5 py-1 rounded-md text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap
-                ${tarea.estado === 'Pendiente' ? 'bg-amber-50 text-amber-600' : 'bg-green-50 text-green-600'}`}>
-                {tarea.estado === 'Pendiente' ? <CircleDashed size={14}/> : <CheckCircle2 size={14}/>}
+      {/* Grid of Styled Tickets */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {tareas.map((tarea) => (
+          <div key={tarea.id} className="premium-card p-6 group flex flex-col relative overflow-hidden">
+            <div className="absolute top-4 right-6 flex items-center gap-3 z-10">
+              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
+                <button onClick={(e) => handleEdit(e, tarea)} className="p-2 bg-slate-50 text-slate-400 hover:text-secondary hover:bg-white hover:shadow-md rounded-xl transition-all border border-transparent hover:border-slate-100">
+                  <Edit3 size={14} />
+                </button>
+                <button onClick={(e) => handleDelete(e, tarea.id)} className="p-2 bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-white hover:shadow-md rounded-xl transition-all border border-transparent hover:border-slate-100">
+                  <Trash2 size={14} />
+                </button>
+              </div>
+              <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-1.5 shadow-sm border
+                ${tarea.estado === 'Pendiente' ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}>
+                {tarea.estado === 'Pendiente' ? <CircleDashed size={12} className="animate-spin-slow"/> : <CheckCircle2 size={12}/>}
                 <span>{tarea.estado}</span>
               </div>
             </div>
             
-            <p className="text-gray-600 text-sm mb-5 line-clamp-2">{tarea.descripcion}</p>
-            
-            <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs">
-              <div>
-                <span className="block text-gray-400 mb-0.5">Asignado a:</span>
-                <span className="font-semibold text-secondary">{getTecnicoNombre(tarea.tecnico_id) || tarea.tecnico_id}</span>
-              </div>
-              <div className="text-right">
-                <span className="block text-gray-400 mb-0.5">Cliente:</span>
-                <span className="font-semibold text-gray-700">{getClienteNombre(tarea.cliente_id) || tarea.cliente_id}</span>
-              </div>
+            <div className="relative z-10">
+               <h3 className="text-xl font-black text-slate-800 mb-1 pr-24 group-hover:text-secondary transition-colors uppercase tracking-tight line-clamp-1 italic">{tarea.titulo}</h3>
+               <p className="text-slate-400 text-[11px] mb-6 leading-relaxed font-medium line-clamp-2">{tarea.descripcion}</p>
+               
+               <div className="mt-auto space-y-4 pt-6 border-t border-slate-50/50">
+                 <div className="flex items-center justify-between">
+                   <div className="flex flex-col">
+                     <span className="text-[8px] font-black uppercase tracking-widest text-slate-300 mb-1">Técnico</span>
+                     <div className="flex items-center gap-2">
+                       <div className="w-7 h-7 rounded-lg bg-violet-50 flex items-center justify-center text-slate-400 shadow-sm">
+                         <Wrench size={10} />
+                       </div>
+                       <span className="font-bold text-[10px] text-slate-600 group-hover:text-secondary transition-colors italic">{getTecnicoNombre(tarea.tecnico_id)}</span>
+                     </div>
+                   </div>
+                   <ArrowRight size={14} className="text-slate-200" />
+                   <div className="flex flex-col text-right">
+                     <span className="text-[8px] font-black uppercase tracking-widest text-slate-300 mb-1">Cliente Solicitante</span>
+                     <span className="font-bold text-[10px] text-slate-600 group-hover:text-secondary transition-colors line-clamp-1 italic">{getClienteNombre(tarea.cliente_id)}</span>
+                   </div>
+                 </div>
+               </div>
             </div>
           </div>
         ))}
       </div>
 
       {tareas.length === 0 && (
-        <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-gray-300">
-          <p className="text-gray-500">No hay tareas pendientes en el sistema.</p>
+        <div className="text-center py-24 bg-white rounded-[3rem] border-2 border-dashed border-slate-100 shadow-sm px-10">
+          <div className="mx-auto w-24 h-24 bg-slate-50 rounded-[2.5rem] flex items-center justify-center mb-8 text-slate-200">
+            <Layers size={48} />
+          </div>
+          <h3 className="text-xl font-black text-slate-300 uppercase tracking-[0.2em] mb-3">Sin tickets activos</h3>
+          <p className="text-slate-200 text-sm font-bold uppercase tracking-widest">El sistema está libre de tareas pendientes</p>
         </div>
       )}
 
-      {/* Create Modal */}
+      {/* Create/Edit Modal */}
       <Modal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)}
-        title="Crear Nueva Tarea"
+        onClose={() => {
+          setIsModalOpen(false);
+          setEditingId(null);
+        }}
+        title={editingId ? "Actualizar Ticket" : "Nuevo Ticket de Servicio"}
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Título de Tarea</label>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="space-y-1.5">
+            <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-0.5">Título del Ticket</label>
             <input 
               required
+              placeholder="Ej: Mantenimiento Preventivo"
               type="text" 
-              className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:bg-white focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all"
+              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-secondary/20 transition-all font-bold text-slate-700 shadow-inner"
               value={formData.titulo}
               onChange={e => setFormData({...formData, titulo: e.target.value})}
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Descripción de Solicitud</label>
+          <div className="space-y-1.5">
+            <label className="block text-[10px] font-black text-accent uppercase tracking-widest ml-0.5">Descripción de la Tarea</label>
             <textarea 
               required
+              placeholder="Detalles del requerimiento..."
               rows="3"
-              className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:bg-white focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all resize-none"
+              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-accent/20 transition-all font-medium text-slate-600 resize-none shadow-inner"
               value={formData.descripcion}
               onChange={e => setFormData({...formData, descripcion: e.target.value})}
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-               <div>
-                 <label className="block text-sm font-medium text-gray-700 mb-1">Cliente</label>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+               <div className="space-y-1.5">
+                 <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-0.5">Cliente</label>
                  <select
                    required
-                   className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:bg-white focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all"
+                   className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-slate-200 transition-all font-bold text-slate-700 appearance-none shadow-sm"
                    value={formData.cliente_id}
                    onChange={e => setFormData({...formData, cliente_id: e.target.value})}
                  >
-                   <option value="">Selecciona Cliente</option>
+                   <option value="">Seleccionar...</option>
                    {clientes.map(c => (
                      <option key={c.id} value={c.id}>{c.nombre}</option>
                    ))}
                  </select>
                </div>
-               <div>
-                 <label className="block text-sm font-medium text-gray-700 mb-1">Técnico Asignado</label>
+               <div className="space-y-1.5">
+                 <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-0.5">Técnico</label>
                  <select
                    required
-                   className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:bg-white focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all"
+                   className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-slate-200 transition-all font-bold text-slate-700 appearance-none shadow-sm"
                    value={formData.tecnico_id}
                    onChange={e => setFormData({...formData, tecnico_id: e.target.value})}
                  >
-                   <option value="">Selecciona Técnico</option>
+                   <option value="">Seleccionar...</option>
                    {tecnicos.map(t => (
                      <option key={t.id} value={t.id}>{t.nombre}</option>
                    ))}
@@ -142,11 +196,24 @@ const Tareas = () => {
                </div>
           </div>
 
+          <div className="space-y-1.5">
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-0.5">Estado Operativo</label>
+            <select
+              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-slate-200 transition-all font-bold text-slate-700 appearance-none shadow-sm"
+              value={formData.estado}
+              onChange={e => setFormData({...formData, estado: e.target.value})}
+            >
+              <option value="Pendiente">Pendiente</option>
+              <option value="Completada">Completada</option>
+            </select>
+          </div>
+
           <button 
             type="submit"
-            className="w-full bg-primary hover:bg-[#091f42] text-white font-medium py-3 rounded-lg mt-6 shadow-md transition-all active:scale-[0.98]"
+            className="btn-gradient w-full py-4 mt-6 text-xs"
           >
-            Registrar Ticket
+            <span>{editingId ? 'Guardar Cambios' : 'Emitir Nuevo Ticket'}</span>
+            <Rocket size={18} />
           </button>
         </form>
       </Modal>

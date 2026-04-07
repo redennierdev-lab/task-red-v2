@@ -6,13 +6,24 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#0D2B5B",
-        secondary: "#15438B",
+        primary: "#EF4444", // Rojo corporativo
+        secondary: "#F97316", // Naranja
+        accent: "#D946EF", // Fucsia
+        success: "#10B981",
+        warning: "#EAB308", // Amarillo
+        danger: "#EF4444",
+        background: "#F8FAFC",
         surface: "#FFFFFF",
-        light: "#F3F4F6",
+      },
+      backgroundImage: {
+        "logo-gradient": "linear-gradient(135deg, #D946EF 0%, #EF4444 33%, #F97316 66%, #EAB308 100%)",
       },
       fontFamily: {
-        sans: ['Inter', 'Roboto', 'sans-serif'],
+        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+        outfit: ['Outfit', 'sans-serif'],
+      },
+      animation: {
+        'spin-slow': 'spin 3s linear infinite',
       }
     },
   },

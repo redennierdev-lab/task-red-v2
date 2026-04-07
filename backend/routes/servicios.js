@@ -24,21 +24,45 @@ router.get('/', (req, res) => {
 
 // GUARDAR SERVICIO
 router.post('/', (req, res) => {
-    const { nombre, precio } = req.body;
+    const { nombre, descripcion, precio } = req.body;
     
     if (!nombre) {
         return res.status(400).json({ error: "El nombre es obligatorio" });
     }
 
-    const sql = `INSERT INTO services (nombre, precio) VALUES (?, ?)`;
+    const sql = `INSERT INTO services (nombre, descripcion, precio) VALUES (?, ?, ?)`;
     
-    db.run(sql, [nombre, precio || 0], function(err) {
+    db.run(sql, [nombre, descripcion, precio || 0], function(err) {
         if (err) {
             console.error("❌ ERROR EN BD:", err.message);
             return res.status(500).json({ error: err.message });
         }
-        console.log(`✅ Servicio Guardado ID: ${this.lastID}`);
         res.status(200).json({ success: true, id: this.lastID });
+    });
+});
+
+// EDITAR SERVICIO
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const { nombre, descripcion, precio } = req.body;
+    db.run(`UPDATE services SET nombre = ?, descripcion = ?, precio = ? WHERE id = ?`, 
+        [nombre, descripcion, precio, id], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true });
+    });
+});
+
+// ELIMINAR SERVICIO
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    console.log(`🗑️ Solicitud de eliminación servicio ID: ${id}`);
+    db.run(`DELETE FROM services WHERE id = ?`, [id], function(err) {
+        if (err) {
+            console.error("❌ Error eliminando servicio:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        console.log(`✅ Servicio ${id} eliminado correctamente`);
+        res.json({ success: true });
     });
 });
 

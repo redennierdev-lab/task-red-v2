@@ -27,13 +27,30 @@ router.get('/', (req, res) => {
 // RUTA PARA GUARDAR LA TAREA
 router.post('/', (req, res) => {
     const { titulo, descripcion, cliente_id, tecnico_id } = req.body;
-    const sql = `INSERT INTO tasks (titulo, descripcion, cliente_id, tecnico_id, estado) VALUES (?, ?, ?, ?, 'Pendiente')`;
-    
-    db.run(sql, [titulo, descripcion, cliente_id, tecnico_id], function(err) {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.status(200).json({ message: "Tarea creada", id: this.lastID });
+    db.run(`INSERT INTO tasks (titulo, descripcion, cliente_id, tecnico_id, estado) VALUES (?, ?, ?, ?, 'Pendiente')`,
+        [titulo, descripcion, cliente_id, tecnico_id], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ id: this.lastID });
+    });
+});
+
+// EDITAR TAREA
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const { titulo, descripcion, cliente_id, tecnico_id, estado } = req.body;
+    db.run(`UPDATE tasks SET titulo = ?, descripcion = ?, cliente_id = ?, tecnico_id = ?, estado = ? WHERE id = ?`,
+        [titulo, descripcion, cliente_id, tecnico_id, estado, id], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true });
+    });
+});
+
+// ELIMINAR TAREA
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    db.run(`DELETE FROM tasks WHERE id = ?`, [id], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ success: true });
     });
 });
 

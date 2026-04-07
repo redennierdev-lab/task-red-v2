@@ -113,27 +113,27 @@ const Clientes = () => {
 
       {/* Premium Search & Grouped Filter List */}
       <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
-        <div className="relative group">
+        <div className="relative group text-slate-900 dark:text-white">
           <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500 group-focus-within:scale-110">
             <Search size={22} />
           </div>
           <input
             type="text"
             placeholder="Rastrear identidad o nombre del cliente..."
-            className="w-full pl-16 pr-8 py-5 bg-white rounded-[2rem] border-2 border-orange-100 shadow-xl focus:ring-8 focus:ring-orange-500/5 focus:border-orange-400 transition-all outline-none font-bold text-slate-700 placeholder:text-slate-300 tracking-wide text-lg"
+            className="w-full pl-16 pr-8 py-5 bg-white dark:bg-slate-900 rounded-[2rem] border-2 border-orange-100 dark:border-slate-800 shadow-xl focus:ring-8 focus:ring-orange-500/5 dark:focus:ring-fuchsia-500/5 focus:border-orange-400 dark:focus:border-fuchsia-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-lg"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
         <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 ml-4 mb-1 italic">Filtrar por Segmento:</span>
-            <div className="inline-flex flex-wrap p-1 gap-1 bg-white border-2 border-orange-50 rounded-[2rem] shadow-lg w-fit">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 ml-4 mb-1 italic">Filtrar por Segmento:</span>
+            <div className="inline-flex flex-wrap p-1 gap-1 bg-white dark:bg-slate-900 border-2 border-orange-50 dark:border-slate-800 rounded-[2rem] shadow-lg w-fit">
                 {['Todos', 'Corporativo', 'Residencial', 'Internet', 'Soporte'].map(tag => (
                     <button 
                       key={tag}
                       onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)} 
-                      className={`px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-logo-gradient text-white shadow-lg shadow-orange-500/30' : 'text-slate-400 hover:bg-orange-50 hover:text-orange-600'}`}
+                      className={`px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-logo-gradient text-white shadow-lg shadow-orange-500/30' : 'text-slate-400 dark:text-slate-500 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-fuchsia-400'}`}
                     >
                         {tag}
                     </button>
@@ -145,35 +145,35 @@ const Clientes = () => {
       {/* Grid of Premium Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 px-1">
         {filteredClientes.map((cliente) => (
-          <div key={cliente.id} className="premium-card p-4 group flex flex-col relative overflow-hidden bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all">
-            <div className="absolute -right-3 -top-3 w-20 h-20 bg-slate-50 rounded-full transition-all group-hover:bg-orange-500 group-hover:opacity-5"></div>
+          <div key={cliente.id} className="premium-card p-4 group flex flex-col relative overflow-hidden">
+            <div className="absolute -right-3 -top-3 w-20 h-20 bg-slate-50 dark:bg-fuchsia-500/5 rounded-full transition-all group-hover:bg-orange-500 dark:group-hover:bg-fuchsia-500 group-hover:opacity-5"></div>
             
             <div className="flex justify-between items-start mb-3 relative z-10">
-              <div className="w-9 h-9 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-orange-500 group-hover:text-white transition-all duration-500 shadow-sm">
+              <div className="w-9 h-9 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-orange-500 dark:group-hover:bg-fuchsia-500 group-hover:text-white transition-all duration-500 shadow-sm">
                 <Users size={16} />
               </div>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
-                <button onClick={(e) => handleEdit(e, cliente)} className="p-2 bg-white text-slate-400 hover:text-orange-500 hover:shadow-md rounded-lg transition-all border border-slate-50">
+                <button onClick={(e) => handleEdit(e, cliente)} className="p-2 bg-white dark:bg-slate-800 text-slate-400 hover:text-orange-500 dark:hover:text-fuchsia-400 hover:shadow-md rounded-lg transition-all border border-slate-50 dark:border-slate-700">
                   <Edit3 size={14} />
                 </button>
-                <button onClick={(e) => handleDelete(e, cliente.id)} className="p-2 bg-white text-slate-400 hover:text-red-500 hover:shadow-md rounded-lg transition-all border border-slate-50">
+                <button onClick={(e) => handleDelete(e, cliente.id)} className="p-2 bg-white dark:bg-slate-800 text-slate-400 hover:text-red-500 dark:hover:text-red-400 hover:shadow-md rounded-lg transition-all border border-slate-50 dark:border-slate-700">
                   <Trash2 size={14} />
                 </button>
               </div>
             </div>
             <div className="relative z-10">
-              <h3 className="text-base font-black text-slate-800 mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
-              <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-3 italic">ID: {cliente.cedula || cliente.identificacion}</p>
+              <h3 className="text-base font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 dark:group-hover:text-fuchsia-400 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
+              <p className="text-[8px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3 italic">ID: {cliente.cedula || cliente.identificacion}</p>
               
-              <div className="space-y-2 pt-3 border-t border-slate-50">
-                <div className="flex items-center gap-2.5 text-slate-500">
-                  <div className="w-7 h-7 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+              <div className="space-y-2 pt-3 border-t border-slate-50 dark:border-slate-800">
+                <div className="flex items-center gap-2.5 text-slate-500 dark:text-slate-400">
+                  <div className="w-7 h-7 rounded-lg bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-slate-400">
                     <Phone size={12} />
                   </div>
                   <span className="text-xs font-bold">{cliente.telefono}</span>
                 </div>
-                <div className="flex items-center gap-2 text-slate-500">
-                  <div className="w-6 h-6 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                  <div className="w-6 h-6 rounded-lg bg-slate-50 dark:bg-slate-800/50 flex items-center justify-center text-slate-400">
                     <MapPin size={10} />
                   </div>
                   <span className="text-[10px] font-bold line-clamp-1">{cliente.direccion}</span>
@@ -185,12 +185,12 @@ const Clientes = () => {
       </div>
 
       {filteredClientes.length === 0 && (
-        <div className="text-center py-20 bg-white rounded-[3rem] border-2 border-dashed border-slate-100 shadow-sm">
-          <div className="mx-auto w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-6 text-slate-200">
+        <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-[3rem] border-2 border-dashed border-slate-100 dark:border-slate-800 shadow-sm transition-colors">
+          <div className="mx-auto w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center mb-6 text-slate-200 dark:text-slate-700">
             <Users size={40} />
           </div>
-          <h3 className="text-lg font-black text-slate-400 uppercase tracking-widest">No se encontraron clientes</h3>
-          <p className="text-slate-300 text-sm mt-2 font-medium">Prueba con otros términos de búsqueda</p>
+          <h3 className="text-lg font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">No se encontraron clientes</h3>
+          <p className="text-slate-300 dark:text-slate-600 text-sm mt-2 font-medium">Prueba con otros términos de búsqueda</p>
         </div>
       )}
 

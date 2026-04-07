@@ -8,7 +8,8 @@ import { AppContext } from '../context/AppContext';
 
 const Gastos = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const { deleteRecord } = useContext(AppContext);
+  const { theme, deleteRecord } = useContext(AppContext);
+  const isDark = theme === 'dark';
 
   // Consultar gastos de la DB local en tiempo real
   const rawGastos = useLiveQuery(() => db.expenses.reverse().toArray(), []);
@@ -37,7 +38,7 @@ const Gastos = () => {
         .reduce((sum, g) => sum + (parseFloat(g.monto) || 0), 0);
   }, [rawGastos]);
 
-  if (!rawGastos) return <div className="p-20 text-center font-black animate-pulse text-slate-300 tracking-[0.5em] uppercase">Sincronizando Bóveda...</div>;
+  if (!rawGastos) return <div className="p-20 text-center font-black animate-pulse text-slate-300 dark:text-slate-700 tracking-[0.5em] uppercase">Sincronizando Bóveda...</div>;
 
   return (
     <div className="space-y-8 page-transition pb-20">
@@ -47,14 +48,14 @@ const Gastos = () => {
                 <TrendingUp size={32} />
             </div>
             <div>
-              <h2 className="view-title italic uppercase tracking-tighter">Análisis de Gastos</h2>
-              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Control Financiero Operativo RED ENNIER</p>
+              <h2 className="view-title">Análisis de Gastos</h2>
+              <p className="view-subtitle">Control Financiero Operativo RED ENNIER</p>
             </div>
         </div>
         
         <button 
           onClick={() => setIsWizardOpen(true)}
-          className="btn-gradient relative z-10 flex items-center gap-3 px-10 shadow-2xl shadow-orange-500/20 active:scale-95 transition-all text-white font-black uppercase tracking-widest italic"
+          className="btn-gradient relative z-10 flex items-center gap-3 px-10 shadow-2xl shadow-orange-500/20"
         >
           <TrendingUp size={18} />
           <span>Nuevo Gasto</span>
@@ -79,23 +80,26 @@ const Gastos = () => {
         </div>
         
         {/* Card Grafica */}
-        <div className="premium-card p-8 col-span-2 border-2 border-orange-50">
+        <div className="premium-card p-8 col-span-2 border-2 border-orange-50 dark:border-slate-800">
             <div className="w-full">
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8 flex items-center gap-2"><TrendingUp size={16} className="text-fuchsia-500" /> Flujo de Egreso Anual (Proyectado)</p>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-8 flex items-center gap-2 italic"><TrendingUp size={16} className="text-fuchsia-500" /> Flujo de Egreso Anual (Proyectado)</p>
                 <div className="h-[180px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorGasto" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
+                                    <stop offset="5%" stopColor={isDark ? '#f43f5e' : '#ef4444'} stopOpacity={0.3}/>
                                     <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                            <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#cbd5e1', fontWeight: 900 }} />
-                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#cbd5e1', fontWeight: 900 }} />
-                            <Tooltip contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', color: '#1e293b', fontSize: '11px', fontWeight: 900, fontFamily: 'Plus Jakarta Sans', textTransform: 'uppercase' }} />
-                            <Area type="monotone" dataKey="monto" stroke="#f43f5e" strokeWidth={5} fillOpacity={1} fill="url(#colorGasto)" />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#334155' : '#f1f5f9'} />
+                            <XAxis dataKey="mes" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
+                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
+                            <Tooltip 
+                                contentStyle={{ backgroundColor: isDark ? '#0f172a' : '#fff', border: 'none', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', color: isDark ? '#fff' : '#1e293b', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase' }} 
+                                itemStyle={{ color: isDark ? '#fff' : '#1e293b' }}
+                            />
+                            <Area type="monotone" dataKey="monto" stroke={isDark ? '#fb7185' : '#f43f5e'} strokeWidth={5} fillOpacity={1} fill="url(#colorGasto)" />
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
@@ -106,44 +110,44 @@ const Gastos = () => {
       {/* Listado de Gastos Recientes */}
       <div className="space-y-4">
         <div className="flex items-center gap-3 px-2">
-            <History size={16} className="text-slate-400" />
-            <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest">Registros de Bóveda</h3>
+            <History size={16} className="text-slate-400 dark:text-slate-600" />
+            <h3 className="text-xs font-black text-slate-500 dark:text-slate-600 uppercase tracking-widest italic">Registros de Bóveda</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {rawGastos.length === 0 ? (
-                <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-100 rounded-[2.5rem]">
-                    <Wallet size={40} className="mx-auto text-slate-100 mb-4" />
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">No hay gastos registrados en la memoria local</p>
+                <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[2.5rem] transition-colors">
+                    <Wallet size={40} className="mx-auto text-slate-100 dark:text-slate-800 mb-4" />
+                    <p className="text-xs font-bold text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] italic">No hay gastos registrados en la memoria local</p>
                 </div>
             ) : (
                 rawGastos.map(g => (
-                    <div key={g.id} className="premium-card p-5 group hover:border-slate-300 transition-all">
+                    <div key={g.id} className="premium-card p-5 group hover:border-slate-300 dark:hover:border-slate-700 transition-all">
                         <div className="flex justify-between items-start mb-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${g.categoria === 'Producto' ? 'bg-orange-50 text-orange-500' : 'bg-fuchsia-50 text-fuchsia-500'}`}>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${g.categoria === 'Producto' ? 'bg-orange-50 dark:bg-orange-500/10 text-orange-500' : 'bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-500'}`}>
                                 {g.categoria === 'Producto' ? <Plus size={20} /> : <DollarSign size={20} />}
                             </div>
                             <div className="text-right">
-                                <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-full ${g.metodo_pago === 'Divisa' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
+                                <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-full ${g.metodo_pago === 'Divisa' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                                     {g.metodo_pago}
                                 </span>
-                                <p className="text-[9px] text-slate-400 font-bold mt-1 uppercase">{g.fecha}</p>
+                                <p className="text-[9px] text-slate-400 dark:text-slate-600 font-bold mt-1 uppercase italic">{g.fecha}</p>
                             </div>
                         </div>
                         
-                        <h4 className="font-black text-slate-800 text-sm uppercase truncate mb-1">
+                        <h4 className="font-black text-slate-800 dark:text-white text-sm uppercase truncate mb-1 italic">
                             {g.producto_nombre || g.descripcion || 'Sin nombre'}
                         </h4>
                         <div className="flex gap-2 mb-4">
-                            {g.marca && <span className="text-[8px] font-bold bg-slate-50 text-slate-400 px-2 py-0.5 rounded border border-slate-100 uppercase">{g.marca}</span>}
-                            <span className="text-[8px] font-bold bg-slate-50 text-slate-400 px-2 py-0.5 rounded border border-slate-100 uppercase">{g.categoria}</span>
+                            {g.marca && <span className="text-[8px] font-bold bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700 uppercase italic">{g.marca}</span>}
+                            <span className="text-[8px] font-bold bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700 uppercase italic">{g.categoria}</span>
                         </div>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-50">
-                            <span className="text-lg font-black text-slate-900">${parseFloat(g.monto).toLocaleString()}</span>
+                        <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800">
+                            <span className="text-lg font-black text-slate-900 dark:text-emerald-400 italic">${parseFloat(g.monto).toLocaleString()}</span>
                             <button 
                                 onClick={() => db.expenses.delete(g.id)}
-                                className="p-2 text-slate-300 hover:text-red-500 transition-colors"
+                                className="p-2 text-slate-300 dark:text-slate-700 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                             >
                                 <X size={16} />
                             </button>

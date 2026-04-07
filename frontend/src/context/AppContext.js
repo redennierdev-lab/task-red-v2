@@ -10,6 +10,13 @@ export const AppProvider = ({ children }) => {
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState('Admin'); // 'Admin' | 'Técnico'
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
   const fetchClientes = useCallback(async () => {
     try {
@@ -123,6 +130,7 @@ export const AppProvider = ({ children }) => {
     <AppContext.Provider value={{
       clientes, tecnicos, tareas, servicios, loading,
       userRole, setUserRole,
+      theme, toggleTheme,
       refreshAll, deleteRecord, updateRecord,
       fetchClientes, fetchTecnicos, fetchTareas, fetchServicios
     }}>

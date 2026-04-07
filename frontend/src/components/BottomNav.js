@@ -19,7 +19,7 @@ const BottomNav = () => {
 
   return (
     <nav className="lg:hidden fixed bottom-6 left-6 right-6 z-50">
-      <div className="glass-effect rounded-[2rem] p-2 flex items-center justify-around shadow-2xl border border-white/50 bg-white/80 backdrop-blur-lg">
+      <div className="glass-effect rounded-[2rem] p-2 flex items-center justify-around shadow-2xl border border-white/50 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg">
         {navItems.map((item) => (
           <NavLink
             key={item.path}

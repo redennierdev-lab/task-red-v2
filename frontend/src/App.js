@@ -7,21 +7,22 @@ import Tareas from './pages/Tareas';
 import Historial from './pages/Historial';
 import HistorialAdmin from './pages/HistorialAdmin';
 import Servicios from './pages/Servicios';
-import { AppProvider } from './context/AppContext';
+import { AppContext, AppProvider } from './context/AppContext';
 
 import Dashboard from './pages/Dashboard';
 import Gastos from './pages/Gastos';
 import BottomNav from './components/BottomNav';
 import SplashScreen from './components/SplashScreen';
 
-function App() {
+const AppContent = () => {
+  const { theme } = React.useContext(AppContext);
   const [showSplash, setShowSplash] = React.useState(true);
 
   return (
-    <AppProvider>
+    <div className={theme === 'dark' ? 'dark' : ''}>
       {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <div className="flex bg-[#FDFDFD] min-h-screen font-jakarta text-[#1e293b]">
+        <div className="flex bg-[#FDFDFD] dark:bg-slate-950 min-h-screen font-jakarta text-[#1e293b] dark:text-slate-100 transition-colors duration-500">
           <TopHeader /> 
           
           <main className="flex-1 lg:ml-64 p-4 lg:p-10 w-full max-w-[100vw] overflow-x-hidden pt-24 lg:pt-10 transition-all duration-300">
@@ -38,13 +39,20 @@ function App() {
               </Routes>
             </div>
             
-            {/* Espaciador para no tapar contenido con el BottomNav en móvil */}
             <div className="h-24 lg:hidden"></div>
           </main>
 
           <BottomNav />
         </div>
       </Router>
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <AppProvider>
+      <AppContent />
     </AppProvider>
   );
 }

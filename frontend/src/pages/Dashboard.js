@@ -5,8 +5,11 @@ import { Users, Wrench, FileText, Rocket, TrendingUp, CheckCircle2, Play, Pause,
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const AdminView = ({ stats, tareas, clientes }) => {
+  const { theme } = useContext(AppContext);
   const [dbStatus, setDbStatus] = useState({ state: 'checking', ping: 0 });
   const [isExporting, setIsExporting] = useState(false);
+
+  const isDark = theme === 'dark';
 
   const handleBackup = async () => {
     try {
@@ -77,8 +80,8 @@ const AdminView = ({ stats, tareas, clientes }) => {
                     <LayoutDashboard size={32} />
                 </div>
                 <div>
-                   <h2 className="view-title italic uppercase">Centro de Mando</h2>
-                   <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Monitoreo absoluto RED ENNIER V3</p>
+                   <h2 className="view-title">Centro de Mando</h2>
+                   <p className="view-subtitle">Monitoreo absoluto RED ENNIER V3</p>
                 </div>
             </div>
           
@@ -92,14 +95,14 @@ const AdminView = ({ stats, tareas, clientes }) => {
                   <span className="relative z-10">{isExporting ? 'Generando...' : 'Respaldo Maestro JSON'}</span>
                 </button>
 
-                <div className="flex items-center gap-4 bg-orange-50 px-6 py-4 rounded-[2rem] border-2 border-orange-100 shadow-inner">
+                <div className="flex items-center gap-4 bg-orange-50 dark:bg-slate-800 px-6 py-4 rounded-[2rem] border-2 border-orange-100 dark:border-slate-700 shadow-inner">
                     <div className="relative flex h-4 w-4">
                       {(dbStatus.state === 'online') && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
                       <span className={`relative inline-flex rounded-full h-4 w-4 ${dbStatus.state === 'online' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                     </div>
                     <div className="flex flex-col">
                         <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest italic">Vault Local DB</span>
-                        <span className="text-[11px] font-black text-slate-800 uppercase italic">
+                        <span className="text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase italic">
                             Autónomo <span className="text-orange-500 opacity-60 ml-1">{dbStatus.ping}ms</span>
                         </span>
                     </div>
@@ -109,7 +112,7 @@ const AdminView = ({ stats, tareas, clientes }) => {
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center justify-between px-4">
-        <span className="text-[10px] font-black uppercase text-slate-400 tracking-[0.3em] flex items-center gap-2">
+        <span className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-[0.3em] flex items-center gap-2">
             <Database size={14} className="text-orange-500"/> Modo 100% Desconectado Activo para Seguridad de Datos
         </span>
       </div>
@@ -118,15 +121,15 @@ const AdminView = ({ stats, tareas, clientes }) => {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, idx) => (
           <div key={idx} className="premium-card p-8 flex flex-col justify-between group overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
-            <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center mb-6 transition-all duration-500 group-hover:rotate-12 text-orange-500 group-hover:bg-logo-gradient group-hover:text-white relative z-10">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-orange-50 dark:bg-fuchsia-500/5 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+            <div className="w-14 h-14 rounded-2xl bg-orange-50 dark:bg-slate-800 flex items-center justify-center mb-6 transition-all duration-500 group-hover:rotate-12 text-orange-500 dark:text-fuchsia-400 group-hover:bg-logo-gradient group-hover:text-white relative z-10">
               {React.cloneElement(stat.icon, { size: 24 })}
             </div>
             <div className="relative z-10">
               <div className="flex items-end justify-between mb-2">
-                <span className="text-4xl font-black tracking-tighter text-slate-900 group-hover:text-orange-600 transition-colors italic">{stat.value}</span>
+                <span className="text-4xl font-black tracking-tighter text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-fuchsia-400 transition-colors italic">{stat.value}</span>
               </div>
-              <p className="text-slate-400 font-extrabold uppercase tracking-[0.2em] text-[10px] italic">{stat.label}</p>
+              <p className="text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-[0.2em] text-[10px] italic">{stat.label}</p>
             </div>
           </div>
         ))}
@@ -155,13 +158,13 @@ const AdminView = ({ stats, tareas, clientes }) => {
                               ))}
                           </Pie>
                           <Tooltip 
-                              contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '1rem', color: '#fff', fontSize: '10px', textTransform: 'uppercase', fontWeight: 900 }} 
-                              itemStyle={{ color: '#fff' }}
+                              contentStyle={{ backgroundColor: isDark ? '#0f172a' : '#fff', borderColor: isDark ? '#334155' : '#f1f5f9', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', fontSize: '11px', color: isDark ? '#fff' : '#1e293b', fontWeight: 900, textTransform: 'uppercase' }} 
+                              itemStyle={{ color: isDark ? '#fff' : '#1e293b' }}
                           />
                       </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                      <span className="text-2xl font-black text-white">{(tareas || []).length}</span>
+                      <span className="text-2xl font-black text-slate-900 dark:text-white">{(tareas || []).length}</span>
                       <span className="text-[8px] font-black uppercase tracking-widest text-slate-500">Total</span>
                   </div>
               </div>
@@ -169,32 +172,32 @@ const AdminView = ({ stats, tareas, clientes }) => {
                   {taskData.map(d => (
                       <div key={d.name} className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full" style={{backgroundColor: d.color}}></div>
-                          <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">{d.name} ({d.value})</span>
+                          <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">{d.name} ({d.value})</span>
                       </div>
                   ))}
               </div>
           </div>
 
-          <div className="col-span-1 lg:col-span-2 premium-card p-10 flex flex-col justify-between border-2 border-emerald-50">
+          <div className="col-span-1 lg:col-span-2 premium-card p-10 flex flex-col justify-between border-2 border-emerald-50 dark:border-emerald-500/10">
               <div className="flex justify-between items-start mb-8">
                 <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-500 flex items-center gap-2 italic">
                     <TrendingUp size={18} className="text-emerald-500"/> Ingresos Operativos
                 </h3>
                 <div className="text-right">
                     <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Total Estimado</span>
-                    <h4 className="text-3xl font-black text-emerald-600 italic">${totalIngreso}<span className="text-base text-emerald-300">.00</span></h4>
+                    <h4 className="text-3xl font-black text-emerald-600 dark:text-emerald-400 italic">${totalIngreso}<span className="text-base text-emerald-300">.00</span></h4>
                 </div>
               </div>
               
               <div className="h-[220px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={ingresosData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
-                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#cbd5e1', fontWeight: 900 }} />
-                          <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#cbd5e1', fontWeight: 900 }} />
+                          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#334155' : '#f1f5f9'} />
+                          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
+                          <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
                           <Tooltip 
-                              cursor={{fill: '#f8fafc', opacity: 0.5}} 
-                              contentStyle={{ backgroundColor: '#fff', border: 'none', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', color: '#1e293b', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase' }} 
+                              cursor={{fill: isDark ? '#1e293b' : '#f8fafc', opacity: 0.5}} 
+                              contentStyle={{ backgroundColor: isDark ? '#0f172a' : '#fff', border: 'none', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', color: isDark ? '#fff' : '#1e293b', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase' }} 
                           />
                           <Bar dataKey="ingreso" fill="#10b981" radius={[8, 8, 0, 0]} maxBarSize={40} />
                       </BarChart>
@@ -230,8 +233,8 @@ const TechnicianView = ({ tareas, clientes, updateRecord }) => {
                 <Rocket size={32} />
             </div>
             <div>
-                <h2 className="view-title italic uppercase">Tablero de Ejecución</h2>
-                <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Control Operativo de Campo</p>
+                <h2 className="view-title">Tablero de Ejecución</h2>
+                <p className="view-subtitle">Control Operativo de Campo</p>
             </div>
         </div>
       </div>
@@ -247,24 +250,24 @@ const TechnicianView = ({ tareas, clientes, updateRecord }) => {
 
               return (
                   <div key={t.id} className={`premium-card p-6 flex flex-col relative overflow-hidden group border-2 transition-all duration-300
-                      ${enProceso ? 'border-emerald-400 ring-4 ring-emerald-50' : pausada ? 'border-amber-400 ring-4 ring-amber-50' : 'border-slate-50'}`}>
+                      ${enProceso ? 'border-emerald-400 dark:border-emerald-500/50 ring-4 ring-emerald-50 dark:ring-emerald-500/10' : pausada ? 'border-amber-400 dark:border-amber-500/50 ring-4 ring-amber-50 dark:ring-amber-500/10' : 'border-slate-50 dark:border-slate-800'}`}>
                       
                       {enProceso && <div className="absolute top-0 left-0 w-full h-1.5 bg-emerald-500 animate-pulse"></div>}
 
                       <div className="flex justify-between items-start mb-5">
                           <div className="flex flex-col gap-3">
                               <div className="flex items-center gap-2">
-                                  <span className="text-[9px] bg-slate-900 text-white font-black px-2.5 py-1 rounded shadow-lg tracking-widest uppercase italic">
+                                  <span className="text-[9px] bg-slate-900 dark:bg-slate-800 text-white font-black px-2.5 py-1 rounded shadow-lg tracking-widest uppercase italic">
                                       {t.ticket_id || `TSK-${t.id}`}
                                   </span>
                                   {enProceso && <span className="bg-emerald-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full animate-bounce">ACTIVO</span>}
                               </div>
-                              <h3 className="text-xl font-black tracking-tighter leading-tight text-slate-900 italic uppercase">{t.titulo}</h3>
+                              <h3 className="text-xl font-black tracking-tighter leading-tight text-slate-900 dark:text-white italic uppercase">{t.titulo}</h3>
                           </div>
                       </div>
                       
-                      <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100 mb-6 group-hover:bg-white group-hover:border-orange-100 transition-colors">
-                        <p className="text-slate-500 text-[11px] font-bold leading-relaxed italic line-clamp-3">"{t.descripcion}"</p>
+                      <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 mb-6 group-hover:bg-white dark:group-hover:bg-slate-800 group-hover:border-orange-100 dark:group-hover:border-fuchsia-500/30 transition-colors">
+                        <p className="text-slate-500 dark:text-slate-400 text-[11px] font-bold leading-relaxed italic line-clamp-3">"{t.descripcion}"</p>
                       </div>
 
                       <div className="mt-auto space-y-3">
@@ -278,14 +281,14 @@ const TechnicianView = ({ tareas, clientes, updateRecord }) => {
                           {/* Botonera Activa */}
                           {enProceso && (
                               <div className="grid grid-cols-2 gap-3">
-                                  <a href={`https://wa.me/${phone.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center py-4 rounded-2xl bg-slate-50 text-slate-400 hover:bg-emerald-50 hover:text-emerald-600 transition-all font-black text-[9px] uppercase tracking-widest border border-slate-100 border-dashed">
+                                  <a href={`https://wa.me/${phone.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center py-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all font-black text-[9px] uppercase tracking-widest border border-slate-100 dark:border-slate-700 border-dashed">
                                      <MessageCircle size={20} className="mb-2"/> WhatsApp
                                   </a>
-                                  <a href={`https://www.google.com/maps?q=${coords}`} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center py-4 rounded-2xl bg-slate-50 text-slate-400 hover:bg-blue-50 hover:text-blue-600 transition-all font-black text-[9px] uppercase tracking-widest border border-slate-100 border-dashed">
+                                  <a href={`https://www.google.com/maps?q=${coords}`} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center py-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:text-blue-600 dark:hover:text-blue-400 transition-all font-black text-[9px] uppercase tracking-widest border border-slate-100 dark:border-slate-700 border-dashed">
                                      <Navigation size={20} className="mb-2"/> GPS Ruta
                                   </a>
                                   
-                                  <button onClick={() => updateEstado(t.id, 'Pausada')} className="col-span-2 flex items-center justify-center gap-3 py-4 rounded-2xl bg-amber-50 text-amber-600 hover:bg-amber-100 transition-all font-black text-[10px] uppercase tracking-widest border border-amber-100">
+                                  <button onClick={() => updateEstado(t.id, 'Pausada')} className="col-span-2 flex items-center justify-center gap-3 py-4 rounded-2xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-500/20 transition-all font-black text-[10px] uppercase tracking-widest border border-amber-100 dark:border-amber-500/20">
                                      <Pause size={18}/> Congelar Misión
                                   </button>
 
@@ -293,7 +296,7 @@ const TechnicianView = ({ tareas, clientes, updateRecord }) => {
                                      <CheckCircle2 size={16}/> Misión Útil
                                   </button>
 
-                                  <button onClick={() => updateEstado(t.id, 'No completada')} className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-red-50 text-red-500 hover:bg-red-100 transition-all font-black text-[10px] uppercase tracking-widest border border-red-100">
+                                  <button onClick={() => updateEstado(t.id, 'No completada')} className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 transition-all font-black text-[10px] uppercase tracking-widest border border-red-100 dark:border-red-500/20">
                                      <XCircle size={16}/> Abortar
                                   </button>
                               </div>
@@ -304,12 +307,12 @@ const TechnicianView = ({ tareas, clientes, updateRecord }) => {
           })}
           
           {activas.length === 0 && (
-             <div className="col-span-full premium-card py-32 flex flex-col items-center justify-center border-dashed border-4 border-slate-100 opacity-60">
-               <div className="brand-icon w-20 h-20 mb-6 bg-slate-100 text-slate-300 shadow-none rotate-0">
+             <div className="col-span-full premium-card py-32 flex flex-col items-center justify-center border-dashed border-4 border-slate-100 dark:border-slate-800 opacity-60">
+               <div className="brand-icon w-20 h-20 mb-6 bg-slate-100 dark:bg-slate-800 text-slate-300 dark:text-slate-600 shadow-none rotate-0">
                  <FileText size={40}/>
                </div>
-               <h3 className="text-xl font-black text-slate-400 uppercase tracking-[0.3em] mb-2 italic">Cero Tareas Asignadas</h3>
-               <p className="text-[10px] text-slate-300 font-black uppercase tracking-widest">A la espera de nuevas órdenes operativas</p>
+               <h3 className="text-xl font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-2 italic">Cero Tareas Asignadas</h3>
+               <p className="text-[10px] text-slate-300 dark:text-slate-600 font-black uppercase tracking-widest">A la espera de nuevas órdenes operativas</p>
              </div>
           )}
       </div>

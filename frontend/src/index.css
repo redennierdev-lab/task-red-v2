@@ -17,18 +17,18 @@
   }
   
   body {
-    @apply font-jakarta antialiased bg-slate-50 text-slate-900 selection:bg-orange-500/20 overflow-x-hidden;
+    @apply font-jakarta antialiased bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-400 selection:bg-orange-500/20 dark:selection:bg-fuchsia-500/30 overflow-x-hidden;
     line-height: 1.5;
   }
 }
 
 @layer components {
   .glass-effect {
-    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-[0_4px_24px_rgba(0,0,0,0.04)];
+    @apply bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-slate-800 shadow-[0_4px_24px_rgba(0,0,0,0.04)];
   }
 
   .premium-card {
-    @apply bg-white rounded-3xl border border-slate-100 shadow-[0_10px_40px_rgba(249,115,22,0.03)] transition-all duration-500 hover:shadow-[0_15px_50px_rgba(249,115,22,0.06)] hover:-translate-y-0.5;
+    @apply bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-[0_10px_40px_rgba(249,115,22,0.03)] dark:shadow-none transition-all duration-500 hover:shadow-[0_15px_50px_rgba(249,115,22,0.06)] dark:hover:shadow-[0_15px_50px_rgba(217,70,239,0.1)] hover:-translate-y-1;
   }
 
   .btn-gradient {
@@ -36,30 +36,30 @@
   }
 
   .view-header {
-    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-white p-8 lg:p-10 rounded-[3rem] shadow-[0_25px_60px_rgba(249,115,22,0.05)] relative overflow-hidden text-slate-900 border-2 border-orange-50;
+    @apply flex flex-col md:flex-row justify-between items-center gap-8 bg-white dark:bg-slate-900 p-8 lg:p-10 rounded-[3rem] shadow-[0_25px_60px_rgba(249,115,22,0.05)] dark:shadow-none relative overflow-hidden text-slate-900 dark:text-white border-2 border-orange-50 dark:border-slate-800 transition-colors duration-500;
   }
 
   .view-title {
-    @apply text-2xl lg:text-4xl font-black tracking-tighter uppercase italic text-slate-900 flex items-center gap-4;
+    @apply text-3xl md:text-5xl font-black tracking-tighter uppercase italic text-slate-900 dark:text-white flex items-center gap-4 transition-colors;
   }
 
   .view-subtitle {
-    @apply text-orange-500/50 text-[10px] font-black uppercase tracking-[0.4em] mt-2 italic;
+    @apply text-orange-500/50 dark:text-fuchsia-400 text-[10px] md:text-xs font-black uppercase tracking-[0.4em] mt-2 italic transition-colors;
   }
 
   .brand-icon {
-    @apply flex items-center justify-center w-14 h-14 bg-logo-gradient text-white rounded-2xl shadow-xl shadow-orange-500/20 transform -rotate-3 group-hover:rotate-0 transition-transform;
+    @apply flex items-center justify-center w-16 h-16 bg-logo-gradient text-white rounded-2xl shadow-xl shadow-orange-500/20 transform rotate-3 hover:rotate-0 transition-transform;
   }
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+  @apply bg-slate-200 dark:bg-slate-800 rounded-full hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors;
 }
 
 .page-transition {

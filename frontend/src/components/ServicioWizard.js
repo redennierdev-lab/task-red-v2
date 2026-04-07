@@ -69,7 +69,7 @@ const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-md" onClick={handleClose}></div>
-            <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh] border border-white/20">
+            <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh] border border-white/20 transition-colors">
                 
                 {/* Header Area */}
                 <div className="bg-logo-gradient p-8 text-white relative shrink-0">
@@ -81,10 +81,10 @@ const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                             <Sparkles size={24} />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-black uppercase tracking-tight">
+                            <h2 className="text-2xl font-black uppercase tracking-tight italic">
                                 {editingId ? 'Editar Servicio' : 'Nuevo Servicio'}
                             </h2>
-                            <p className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em]">Configuración de Catálogo</p>
+                            <p className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em] italic">Configuración de Catálogo</p>
                         </div>
                     </div>
                     
@@ -101,29 +101,29 @@ const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                     {/* Step 1: Info General */}
                     {step === 1 && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                            <h3 className="text-lg font-black text-slate-800 text-center mb-8 uppercase tracking-widest">Generalidades</h3>
+                            <h3 className="text-lg font-black text-slate-800 dark:text-white text-center mb-8 uppercase tracking-widest italic">Generalidades</h3>
                             
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase text-slate-400 pl-4 flex items-center gap-2">
+                                <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 flex items-center gap-2 italic">
                                     <FileText size={10}/> Nombre del Servicio
                                 </label>
                                 <input 
                                     required 
                                     placeholder="Ej: Instalación Antena 5G"
-                                    className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-full focus:bg-white focus:border-orange-500 transition-all font-bold text-slate-700 outline-none shadow-inner"
+                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner"
                                     value={form.nombre}
                                     onChange={e => setForm({...form, nombre: e.target.value})}
                                 />
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase text-slate-400 pl-4 flex items-center gap-2">
+                                <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 flex items-center gap-2 italic">
                                     <Info size={10}/> Descripción / Detalles
                                 </label>
                                 <textarea 
                                     rows="4"
                                     placeholder="Describe en qué consiste este servicio..."
-                                    className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-[1.5rem] focus:bg-white focus:border-orange-500 transition-all font-bold text-slate-700 outline-none resize-none shadow-inner"
+                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-[1.5rem] focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none resize-none shadow-inner italic"
                                     value={form.descripcion}
                                     onChange={e => setForm({...form, descripcion: e.target.value})}
                                 />
@@ -134,32 +134,32 @@ const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                     {/* Step 2: Tarifas */}
                     {step === 2 && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <h3 className="text-lg font-black text-slate-800 text-center mb-8 uppercase tracking-widest">Valorización</h3>
+                            <h3 className="text-lg font-black text-slate-800 dark:text-white text-center mb-8 uppercase tracking-widest italic">Valorización</h3>
                             
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase text-slate-400 pl-4 flex items-center gap-2">
+                                <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 flex items-center gap-2 italic">
                                     <DollarSign size={10}/> Precio Base ($ USD)
                                 </label>
                                 <div className="relative group">
-                                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-slate-300 group-focus-within:text-emerald-500 transition-colors">$</span>
+                                    <span className="absolute left-6 top-1/2 -translate-y-1/2 font-black text-slate-300 dark:text-slate-600 group-focus-within:text-emerald-500 transition-colors">$</span>
                                     <input 
                                         required 
                                         type="number"
                                         step="0.01"
                                         placeholder="0.00"
-                                        className="w-full pl-10 pr-6 py-5 bg-slate-50 border-2 border-slate-100 rounded-full focus:bg-white focus:border-emerald-500 transition-all font-black text-2xl text-slate-800 outline-none shadow-inner"
+                                        className="w-full pl-10 pr-6 py-5 bg-slate-50 dark:bg-slate-800/80 border-2 border-slate-100 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-900 focus:border-emerald-500 transition-all font-black text-2xl text-slate-800 dark:text-white outline-none shadow-inner"
                                         value={form.precio}
                                         onChange={e => setForm({...form, precio: e.target.value})}
                                     />
                                 </div>
-                                <p className="text-[9px] text-slate-400 font-bold uppercase text-center mt-2 px-4 italic">
+                                <p className="text-[9px] text-slate-400 dark:text-slate-600 font-bold uppercase text-center mt-2 px-4 italic">
                                     Este precio se utilizará como referencia en la facturación y reportes de rentabilidad.
                                 </p>
                             </div>
 
-                            <div className="bg-emerald-50 p-4 rounded-[1.5rem] border border-emerald-100 flex items-center gap-3 mt-10">
-                                <ShieldCheck className="text-emerald-500 shrink-0" size={24} />
-                                <p className="text-[9px] font-bold text-emerald-800 uppercase leading-relaxed">
+                            <div className="bg-emerald-50 dark:bg-emerald-500/10 p-4 rounded-[1.5rem] border border-emerald-100 dark:border-emerald-500/20 flex items-center gap-3 mt-10 transition-colors">
+                                <ShieldCheck className="text-emerald-500 dark:text-emerald-400 shrink-0" size={24} />
+                                <p className="text-[9px] font-bold text-emerald-800 dark:text-emerald-400 uppercase leading-relaxed italic">
                                     Los servicios en el catálogo local ayudan a estandarizar los cobros en campo.
                                 </p>
                             </div>
@@ -168,11 +168,11 @@ const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                 </div>
 
                 {/* Footer Actions */}
-                <div className="p-6 bg-slate-50 flex justify-between items-center shrink-0 border-t border-slate-200 rounded-b-[2.5rem]">
+                <div className="p-6 bg-slate-50 dark:bg-slate-950/40 flex justify-between items-center shrink-0 border-t border-slate-200 dark:border-slate-800 rounded-b-[2.5rem] transition-colors">
                     <button 
                         type="button"
                         onClick={() => step > 1 ? setStep(step - 1) : handleClose()}
-                        className="px-6 py-3 font-bold text-slate-400 hover:text-slate-600 uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-full hover:bg-slate-200/50 transition-all"
+                        className="px-6 py-3 font-bold text-slate-400 dark:text-slate-600 hover:text-slate-600 dark:hover:text-slate-400 uppercase tracking-widest text-[10px] flex items-center gap-2 rounded-full hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-all italic"
                     >
                         {step === 1 ? 'Cancelar' : <><ArrowLeft size={14}/> Atrás</>}
                     </button>
@@ -182,7 +182,7 @@ const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                             type="button" 
                             disabled={!form.nombre}
                             onClick={() => setStep(step + 1)} 
-                            className="bg-slate-900 text-white rounded-full px-8 py-3.5 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-xl hover:bg-slate-800 disabled:opacity-50 disabled:grayscale transition-all active:scale-95"
+                            className="bg-slate-900 dark:bg-fuchsia-600 text-white rounded-full px-8 py-3.5 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-xl hover:bg-slate-800 dark:hover:bg-fuchsia-700 disabled:opacity-50 disabled:grayscale transition-all active:scale-95 italic"
                         >
                             Siguiente <ArrowRight size={14}/>
                         </button>

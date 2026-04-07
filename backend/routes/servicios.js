@@ -11,7 +11,8 @@ const db = new sqlite3.Database(dbPath);
 db.run(`CREATE TABLE IF NOT EXISTS services (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     nombre TEXT NOT NULL,
-    precio REAL
+    descripcion TEXT,
+    precio REAL DEFAULT 0
 )`);
 
 router.get('/', (req, res) => {

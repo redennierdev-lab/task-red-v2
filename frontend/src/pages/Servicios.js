@@ -42,13 +42,11 @@ const Servicios = () => {
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     console.log(`🗑️ FRONTEND: Iniciando eliminación de servicio ID: ${id}`);
-    if (window.confirm('¿Eliminar servicio del catálogo?')) {
-      const success = await deleteRecord('services', id);
-      if (success) {
-        alert('Servicio eliminado con éxito');
-      } else {
-        alert('Error al eliminar');
-      }
+    const success = await deleteRecord('services', id);
+    if (success) {
+      alert('Servicio eliminado con éxito');
+    } else {
+      alert('Error al eliminar');
     }
   };
 

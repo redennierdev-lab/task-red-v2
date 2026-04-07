@@ -44,13 +44,11 @@ const Tareas = () => {
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     console.log(`🗑️ FRONTEND: Iniciando eliminación de tarea ID: ${id}`);
-    if (window.confirm('¿Deseas eliminar este ticket permanentemente?')) {
-      const success = await deleteRecord('tasks', id);
-      if (success) {
-        alert('Ticket eliminado con éxito');
-      } else {
-        alert('Error al eliminar el ticket');
-      }
+    const success = await deleteRecord('tasks', id);
+    if (success) {
+      alert('Ticket eliminado con éxito');
+    } else {
+      alert('Error al eliminar el ticket');
     }
   };
 
@@ -79,7 +77,7 @@ const Tareas = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {tareas.map((tarea) => (
           <div key={tarea.id} className="premium-card p-6 group flex flex-col relative overflow-hidden">
-            <div className="absolute top-4 right-6 flex items-center gap-3 z-10">
+            <div className="absolute top-4 right-6 flex items-center gap-3 z-50">
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
                 <button onClick={(e) => handleEdit(e, tarea)} className="p-2 bg-slate-50 text-slate-400 hover:text-secondary hover:bg-white hover:shadow-md rounded-xl transition-all border border-transparent hover:border-slate-100">
                   <Edit3 size={14} />

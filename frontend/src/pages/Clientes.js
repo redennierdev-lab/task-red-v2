@@ -50,13 +50,11 @@ const Clientes = () => {
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     console.log(`🗑️ FRONTEND: Iniciando eliminación de cliente ID: ${id}`);
-    if (window.confirm('¿Estás seguro de que deseas eliminar este cliente permanentemente?')) {
-      const success = await deleteRecord('customers', id);
-      if (success) {
-        alert('Cliente eliminado con éxito');
-      } else {
-        alert('Error al eliminar el cliente');
-      }
+    const success = await deleteRecord('customers', id);
+    if (success) {
+      alert('Cliente eliminado con éxito');
+    } else {
+      alert('Error al eliminar el cliente');
     }
   };
 

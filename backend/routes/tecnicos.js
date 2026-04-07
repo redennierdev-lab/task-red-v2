@@ -6,8 +6,10 @@ const db = new sqlite3.Database(path.resolve(__dirname, '../../data/red_ennier.s
 
 db.run(`CREATE TABLE IF NOT EXISTS technicians (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre TEXT,
-    status TEXT
+    nombre TEXT NOT NULL,
+    especialidad TEXT,
+    telefono TEXT,
+    status TEXT DEFAULT 'Activo'
 )`);
 
 router.get('/', (req, res) => {

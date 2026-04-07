@@ -9,10 +9,11 @@ const db = new sqlite3.Database(dbPath);
 
 db.run(`CREATE TABLE IF NOT EXISTS customers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nombre TEXT,
+    nombre TEXT NOT NULL,
     cedula TEXT,
     telefono TEXT,
-    direccion TEXT
+    direccion TEXT,
+    status TEXT DEFAULT 'Activo'
 )`);
 
 // Esta es la ruta que el frontend busca

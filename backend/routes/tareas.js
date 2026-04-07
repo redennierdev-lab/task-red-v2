@@ -9,11 +9,13 @@ const db = new sqlite3.Database(dbPath);
 
 db.run(`CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    titulo TEXT,
+    titulo TEXT NOT NULL,
     descripcion TEXT,
     cliente_id INTEGER,
     tecnico_id INTEGER,
-    estado TEXT
+    estado TEXT DEFAULT 'Pendiente',
+    FOREIGN KEY(cliente_id) REFERENCES customers(id),
+    FOREIGN KEY(tecnico_id) REFERENCES technicians(id)
 )`);
 
 router.get('/', (req, res) => {

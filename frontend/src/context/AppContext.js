@@ -52,7 +52,7 @@ export const AppProvider = ({ children }) => {
     setLoading(true);
     await Promise.all([fetchClientes(), fetchTecnicos(), fetchTareas(), fetchServicios()]);
     setLoading(false);
-  }, [fetchClientes(), fetchTecnicos(), fetchTareas(), fetchServicios()]);
+  }, [fetchClientes, fetchTecnicos, fetchTareas, fetchServicios]);
 
   const deleteRecord = async (endpoint, id) => {
     console.log(`🔷 FRONTEND: Intentando eliminar ${endpoint} con ID: ${id}`);

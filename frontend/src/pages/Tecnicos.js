@@ -42,13 +42,11 @@ const Tecnicos = () => {
   const handleDelete = async (e, id) => {
     e.stopPropagation();
     console.log(`🗑️ FRONTEND: Iniciando eliminación de técnico ID: ${id}`);
-    if (window.confirm('¿Eliminar técnico?')) {
-      const success = await deleteRecord('technicians', id);
-      if (success) {
-        alert('Especialista eliminado con éxito');
-      } else {
-        alert('Error al eliminar');
-      }
+    const success = await deleteRecord('technicians', id);
+    if (success) {
+      alert('Especialista eliminado con éxito');
+    } else {
+      alert('Error al eliminar');
     }
   };
 

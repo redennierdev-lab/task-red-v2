@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import Modal from '../components/Modal';
-import { Search, Edit3, Trash2, Phone, Rocket, UserPlus, Users, MapPin } from 'lucide-react';
+import ClientWizard from '../components/ClientWizard';
+import { Search, Edit3, Trash2, Phone, Rocket, Users, MapPin } from 'lucide-react';
 import axios from 'axios';
 
 const Clientes = () => {
@@ -72,17 +73,6 @@ const Clientes = () => {
           <h2 className="view-title text-white">Directorio de Clientes</h2>
           <p className="view-subtitle tracking-[0.3em] text-slate-400">Gestión de Base de Datos</p>
         </div>
-        <button 
-          onClick={() => {
-            setEditingId(null);
-            setFormData({ nombre: '', identificacion: '', telefono: '', direccion: '' });
-            setIsModalOpen(true);
-          }}
-          className="btn-gradient relative z-10 w-full sm:w-auto"
-        >
-          <UserPlus size={18} />
-          <span className="uppercase tracking-widest text-[10px]">Añadir Cliente</span>
-        </button>
       </div>
 
       {/* Modern Search */}
@@ -151,14 +141,14 @@ const Clientes = () => {
         </div>
       )}
 
-      {/* Create/Edit Modal */}
+      {/* Create/Edit Modal for EDITING ONLY */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => {
           setIsModalOpen(false);
           setEditingId(null);
         }}
-        title={editingId ? "Actualizar Cliente" : "Registro de Cliente"}
+        title="Actualizar Cliente"
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
@@ -212,6 +202,8 @@ const Clientes = () => {
           </button>
         </form>
       </Modal>
+
+      <ClientWizard />
     </div>
   );
 };

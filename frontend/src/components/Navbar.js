@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket } from 'lucide-react';
+import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight } from 'lucide-react';
+import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { userRole, setUserRole } = useContext(AppContext);
 
   const menuItems = [
-    { path: '/', name: 'Panel Inicio', icon: <LayoutList size={22} /> },
-    { path: '/tasks', name: 'Gestión Tareas', icon: <FileText size={22} /> },
-    { path: '/users', name: 'Directorio Clientes', icon: <Users size={22} /> },
-    { path: '/technicians', name: 'Equipo Técnico', icon: <Wrench size={22} /> },
-    { path: '/services', name: 'Catálogo Servicios', icon: <Rocket size={22} /> },
-  ];
+    { path: '/', name: 'Panel Inicio', icon: <LayoutList size={22} />, roles: ['Admin', 'Técnico'] },
+    { path: '/tasks', name: 'Gestión Tareas', icon: <FileText size={22} />, roles: ['Admin'] },
+    { path: '/historial', name: 'Historial', icon: <History size={22} />, roles: ['Técnico'] },
+    { path: '/users', name: 'Directorio Clientes', icon: <Users size={22} />, roles: ['Admin'] },
+    { path: '/technicians', name: 'Equipo Técnico', icon: <Wrench size={22} />, roles: ['Admin'] },
+    { path: '/services', name: 'Catálogo Servicios', icon: <Rocket size={22} />, roles: ['Admin'] },
+  ].filter(i => i.roles.includes(userRole));
+
+  const toggleRole = () => {
+      setUserRole(userRole === 'Admin' ? 'Técnico' : 'Admin');
+  };
 
   return (
     <>
@@ -54,7 +61,7 @@ const Navbar = () => {
               <img src="/logo.png" alt="RED ENNIER Logo" className="w-full h-full object-contain" />
             </div>
             <h2 className="text-sm font-black uppercase tracking-[0.3em] text-white/90">RED ENNIER</h2>
-            <p className="text-[10px] text-white/40 font-bold tracking-widest mt-1 uppercase">Task Manager v2</p>
+            <p className="text-[10px] text-white/40 font-bold tracking-widest mt-1 uppercase">Task Manager v3</p>
           </div>
         </div>
         
@@ -81,11 +88,17 @@ const Navbar = () => {
         </nav>
 
         {/* User Profile Info Footer */}
-        <div className="p-4 mt-auto">
+        <div className="p-4 mt-auto space-y-3">
+          <button onClick={toggleRole} className={`w-full flex items-center justify-center gap-2 p-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${userRole === 'Admin' ? 'bg-orange-500/20 text-orange-400' : 'bg-fuchsia-500/20 text-fuchsia-400'}`}>
+            {userRole === 'Admin' ? <ToggleRight size={16}/> : <ToggleLeft size={16}/>}
+            Cambiar Rol: {userRole}
+          </button>
           <div className="bg-white/5 rounded-2xl p-3 border border-white/5 flex items-center gap-3">
-             <div className="w-8 h-8 rounded-lg bg-logo-gradient flex items-center justify-center text-[10px] font-black shadow-lg">RE</div>
+             <div className="w-8 h-8 rounded-lg bg-logo-gradient flex items-center justify-center text-[10px] font-black shadow-lg">
+                {userRole === 'Admin' ? 'AD' : 'TE'}
+             </div>
              <div>
-                <p className="text-[10px] font-black uppercase tracking-widest">Ennier Admin</p>
+                <p className="text-[10px] font-black uppercase tracking-widest line-clamp-1">{userRole === 'Admin' ? 'Ennier' : 'Instalador'}</p>
                 <p className="text-[9px] text-gray-500 font-bold">Modo Operativo</p>
              </div>
           </div>

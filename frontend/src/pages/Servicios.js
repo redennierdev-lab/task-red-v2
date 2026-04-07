@@ -144,33 +144,33 @@ const Servicios = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-1">Nombre del Servicio</label>
+            <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-4">Nombre del Servicio</label>
             <input 
               required
               type="text" 
-              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-secondary transition-all font-bold text-slate-700"
+              className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-full outline-none focus:bg-white focus:border-secondary transition-all font-bold text-slate-700 shadow-inner"
               value={formData.nombre}
               onChange={e => setFormData({...formData, nombre: e.target.value})}
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black text-accent uppercase tracking-widest ml-1">Descripción de Alcance</label>
+            <label className="block text-[10px] font-black text-accent uppercase tracking-widest ml-4">Descripción de Alcance</label>
             <textarea 
               required
               rows="3"
-              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-accent transition-all font-medium text-slate-600 resize-none shadow-inner"
+              className="w-full px-6 py-4 bg-slate-50 border border-transparent rounded-[2rem] outline-none focus:bg-white focus:border-accent transition-all font-medium text-slate-600 resize-none shadow-inner"
               value={formData.descripcion}
               onChange={e => setFormData({...formData, descripcion: e.target.value})}
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Precio Unitario / Base</label>
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Precio Unitario / Base</label>
             <div className="relative">
-              <DollarSign size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-emerald-500" />
+              <DollarSign size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-emerald-500" />
               <input 
                 required
                 type="text" 
-                className="w-full pl-12 pr-5 py-4 bg-slate-50 border border-transparent rounded-[1.5rem] outline-none focus:bg-white focus:border-slate-300 transition-all font-black text-slate-800"
+                className="w-full pl-14 pr-6 py-4 bg-slate-50 border border-transparent rounded-full outline-none focus:bg-white focus:border-slate-300 transition-all font-black text-slate-800 shadow-inner"
                 value={formData.precio}
                 onChange={e => setFormData({...formData, precio: e.target.value})}
               />
@@ -178,7 +178,7 @@ const Servicios = () => {
           </div>
           <button 
             type="submit"
-            className="btn-gradient w-full py-5 text-sm uppercase tracking-[0.2em] shadow-2xl"
+            className="btn-gradient w-full py-5 text-sm uppercase tracking-[0.2em] shadow-2xl rounded-full"
           >
             <span>{editingId ? 'Confirmar Cambios' : 'Registrar en Catálogo'}</span>
             <Rocket size={20} />

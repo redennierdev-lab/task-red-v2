@@ -11,6 +11,7 @@ export const AppProvider = ({ children }) => {
   const [tareas, setTareas] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState('Admin'); // 'Admin' | 'Técnico'
 
   const fetchClientes = useCallback(async () => {
     try {
@@ -89,6 +90,7 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider value={{
       clientes, tecnicos, tareas, servicios, loading,
+      userRole, setUserRole,
       refreshAll, deleteRecord, updateRecord,
       fetchClientes, fetchTecnicos, fetchTareas, fetchServicios
     }}>

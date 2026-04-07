@@ -12,14 +12,14 @@
 
 @layer base {
   html {
-    font-size: 13px;
+    font-size: 15px; /* Aumentado desde 13px para mejor lectura en 1080p */
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
   }
   
   body {
-    @apply font-jakarta antialiased bg-[#FDFDFD] text-slate-900 selection:bg-orange-500/20 overflow-x-hidden;
-    line-height: 1.4;
+    @apply font-jakarta antialiased bg-slate-50 text-slate-900 selection:bg-orange-500/20 overflow-x-hidden;
+    line-height: 1.5;
   }
 }
 
@@ -29,7 +29,7 @@
   }
 
   .premium-card {
-    @apply bg-white rounded-3xl border border-gray-100 shadow-[0_10px_40px_rgba(0,0,0,0.03)] transition-all duration-500 hover:shadow-[0_15px_50px_rgba(0,0,0,0.06)] hover:-translate-y-0.5;
+    @apply bg-white rounded-3xl border border-slate-100 shadow-[0_10px_40px_rgba(249,115,22,0.03)] transition-all duration-500 hover:shadow-[0_15px_50px_rgba(249,115,22,0.06)] hover:-translate-y-0.5;
   }
 
   .btn-gradient {
@@ -37,7 +37,7 @@
   }
 
   .view-header {
-    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-900 p-6 rounded-[2rem] shadow-xl relative overflow-hidden text-white;
+    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-900 p-7 rounded-[2rem] shadow-xl relative overflow-hidden text-slate-50;
   }
 
   .view-title {

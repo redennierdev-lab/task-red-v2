@@ -156,39 +156,39 @@ const Tecnicos = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-0.5">Nombre Completo</label>
+            <label className="block text-[10px] font-black text-secondary uppercase tracking-widest ml-4">Nombre Completo</label>
             <input 
               required
               type="text" 
-              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-secondary transition-all font-bold text-slate-700"
+              className="w-full px-6 py-4 bg-slate-50 border border-slate-200 rounded-full outline-none focus:bg-white focus:border-secondary transition-all font-bold text-slate-700 shadow-inner"
               value={formData.nombre}
               onChange={e => setFormData({...formData, nombre: e.target.value})}
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black text-accent uppercase tracking-widest ml-0.5">Especialidad Operativa</label>
+            <label className="block text-[10px] font-black text-accent uppercase tracking-widest ml-4">Especialidad Operativa</label>
             <input 
               required
               placeholder="Ej: Redes / Software / Cámaras"
               type="text" 
-              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-accent transition-all font-bold text-slate-700"
+              className="w-full px-6 py-4 bg-slate-50 border border-transparent rounded-full outline-none focus:bg-white focus:border-accent transition-all font-bold text-slate-700 shadow-inner"
               value={formData.especialidad}
               onChange={e => setFormData({...formData, especialidad: e.target.value})}
             />
           </div>
           <div className="space-y-1.5">
-            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-0.5">Contacto Celular</label>
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest ml-4">Contacto Celular</label>
             <input 
               required
               type="text" 
-              className="w-full px-5 py-4 bg-slate-50 border border-transparent rounded-2xl outline-none focus:bg-white focus:border-slate-300 transition-all font-mono font-bold text-slate-700"
+              className="w-full px-6 py-4 bg-slate-50 border border-transparent rounded-full outline-none focus:bg-white focus:border-slate-300 transition-all font-mono font-bold text-slate-700 shadow-inner"
               value={formData.telefono}
               onChange={e => setFormData({...formData, telefono: e.target.value})}
             />
           </div>
           <button 
             type="submit"
-            className="btn-gradient w-full py-4 mt-6"
+            className="btn-gradient w-full py-4 mt-6 rounded-full"
           >
             <span>{editingId ? 'Actualizar Perfil' : 'Dar de Alta'}</span>
             <Rocket size={18} />

@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutList, FileText, Users, Wrench, Rocket } from 'lucide-react';
+import { LayoutList, FileText, Users, Wrench, Rocket, History } from 'lucide-react';
+import { AppContext } from '../context/AppContext';
 
 const BottomNav = () => {
+  const { userRole } = useContext(AppContext);
+
   const navItems = [
-    { icon: <LayoutList size={18} />, label: 'Inicio', path: '/' },
-    { icon: <FileText size={18} />, label: 'Tareas', path: '/tasks' },
-    { icon: <Users size={18} />, label: 'Clientes', path: '/users' },
-    { icon: <Wrench size={18} />, label: 'Staff', path: '/technicians' },
-    { icon: <Rocket size={18} />, label: 'Catálogo', path: '/services' },
-  ];
+    { icon: <LayoutList size={18} />, label: 'Inicio', path: '/', roles: ['Admin', 'Técnico'] },
+    { icon: <FileText size={18} />, label: 'Tareas', path: '/tasks', roles: ['Admin'] },
+    { icon: <History size={18} />, label: 'History', path: '/historial', roles: ['Técnico'] },
+    { icon: <Users size={18} />, label: 'Clientes', path: '/users', roles: ['Admin'] },
+    { icon: <Wrench size={18} />, label: 'Staff', path: '/technicians', roles: ['Admin'] },
+    { icon: <Rocket size={18} />, label: 'Catálogo', path: '/services', roles: ['Admin'] },
+  ].filter(i => i.roles.includes(userRole));
 
   return (
     <nav className="lg:hidden fixed bottom-6 left-6 right-6 z-50">

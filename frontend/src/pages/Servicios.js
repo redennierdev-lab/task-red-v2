@@ -74,16 +74,16 @@ const Servicios = () => {
       </div>
 
       {/* Grid of Premium Catalog Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredServicios.map((servicio) => (
           <div key={servicio.id} className="premium-card p-0 group flex flex-col relative overflow-hidden">
             {/* Top Banner with Gradient */}
             <div className="h-1.5 bg-logo-gradient w-full opacity-80 group-hover:h-2 transition-all duration-500"></div>
             
-            <div className="p-7 pt-6">
-              <div className="flex justify-between items-start mb-6">
-                <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-700 shadow-sm border border-slate-100">
-                  <Rocket size={18} />
+            <div className="p-5 pt-4">
+              <div className="flex justify-between items-start mb-4">
+                <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-700 shadow-sm border border-slate-100">
+                  <Rocket size={16} />
                 </div>
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
                   <button onClick={(e) => { e.stopPropagation(); handleEdit(servicio); }} className="p-2 bg-white text-slate-400 hover:text-secondary hover:shadow-md rounded-lg transition-all border border-slate-50">
@@ -100,15 +100,15 @@ const Servicios = () => {
                    <Zap size={12} className="text-orange-500 fill-orange-500/20" />
                    <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 italic">Solución Activa</span>
                 </div>
-                <h3 className="text-xl font-black text-slate-900 mb-2 uppercase tracking-tight group-hover:text-secondary transition-colors line-clamp-1 italic">{servicio.nombre}</h3>
-                <p className="text-slate-400 text-[10px] mb-8 font-bold leading-relaxed line-clamp-2 italic">{servicio.descripcion}</p>
+                <h3 className="text-lg font-black text-slate-900 mb-1 uppercase tracking-tight group-hover:text-secondary transition-colors line-clamp-1 italic">{servicio.nombre}</h3>
+                <p className="text-slate-400 text-[9px] mb-6 font-bold leading-relaxed line-clamp-2 italic">{servicio.descripcion}</p>
                 
-                <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+                <div className="mt-auto pt-4 border-t border-slate-50 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-[8px] font-black uppercase tracking-widest text-slate-300 italic">Inversión</span>
+                    <span className="text-[7px] font-black uppercase tracking-widest text-slate-300 italic">Inversión</span>
                     <div className="flex items-center gap-1 text-slate-900 mt-0.5">
-                      <DollarSign size={14} className="text-emerald-500" />
-                      <span className="text-xl font-black tracking-tighter">{servicio.precio}</span>
+                      <DollarSign size={12} className="text-emerald-500" />
+                      <span className="text-lg font-black tracking-tighter">{servicio.precio}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">

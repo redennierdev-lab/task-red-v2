@@ -102,36 +102,36 @@ const Tareas = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 px-1">
         {tareas.map((tarea) => (
-          <div key={tarea.id} className="premium-card p-6 group flex flex-col relative overflow-hidden">
+          <div key={tarea.id} className="premium-card p-4 group flex flex-col relative overflow-hidden">
             <div className="absolute top-4 left-6 z-10">
-                <span className="bg-slate-900 text-white font-mono text-[10px] font-black px-3 py-1 rounded-bl-xl rounded-tr-xl shadow-md uppercase tracking-wider">
+                <span className="bg-slate-900 text-white font-mono text-[8px] font-black px-2 py-0.5 rounded-bl-lg rounded-tr-lg shadow-md uppercase tracking-wider">
                     {tarea.ticket_id || `TSK-${tarea.id}`}
                 </span>
             </div>
             
             <div className="absolute top-4 right-6 flex items-center gap-3 z-50">
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
-                <button onClick={(e) => handleEdit(e, tarea)} className="p-2 bg-slate-50 text-slate-400 hover:text-secondary hover:bg-white hover:shadow-md rounded-xl transition-all border border-transparent hover:border-slate-100">
-                  <Edit3 size={14} />
+                <button onClick={(e) => handleEdit(e, tarea)} className="p-1.5 bg-slate-50 text-slate-400 hover:text-secondary hover:bg-white hover:shadow-md rounded-xl transition-all border border-transparent hover:border-slate-100">
+                  <Edit3 size={12} />
                 </button>
-                <button onClick={(e) => handleDelete(e, tarea.id)} className="p-2 bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-white hover:shadow-md rounded-xl transition-all border border-transparent hover:border-slate-100">
-                  <Trash2 size={14} />
+                <button onClick={(e) => handleDelete(e, tarea.id)} className="p-1.5 bg-slate-50 text-slate-400 hover:text-red-500 hover:bg-white hover:shadow-md rounded-xl transition-all border border-transparent hover:border-slate-100">
+                  <Trash2 size={12} />
                 </button>
               </div>
-              <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-1.5 shadow-sm border
+              <div className={`px-2 py-1 rounded-full text-[8px] font-black uppercase tracking-[0.1em] flex items-center gap-1 shadow-sm border
                 ${tarea.estado === 'Pendiente' ? 'bg-amber-50 text-amber-600 border-amber-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100'}`}>
-                {tarea.estado === 'Pendiente' ? <CircleDashed size={12} className="animate-spin-slow"/> : <CheckCircle2 size={12}/>}
+                {tarea.estado === 'Pendiente' ? <CircleDashed size={10} className="animate-spin-slow"/> : <CheckCircle2 size={10}/>}
                 <span>{tarea.estado}</span>
               </div>
             </div>
             
-            <div className="relative z-10 mt-8">
-               <h3 className="text-xl font-black text-slate-800 mb-1 pr-24 group-hover:text-secondary transition-colors uppercase tracking-tight line-clamp-1 italic">{tarea.titulo}</h3>
-               <p className="text-slate-400 text-[11px] mb-6 leading-relaxed font-medium line-clamp-3 whitespace-pre-wrap">{tarea.descripcion}</p>
+            <div className="relative z-10 mt-6">
+               <h3 className="text-base font-black text-slate-800 mb-0.5 pr-24 group-hover:text-secondary transition-colors uppercase tracking-tight line-clamp-1 italic">{tarea.titulo}</h3>
+               <p className="text-slate-400 text-[10px] mb-4 leading-relaxed font-medium line-clamp-2 whitespace-pre-wrap italic">{tarea.descripcion}</p>
                
-               <div className="mt-auto space-y-4 pt-6 border-t border-slate-50/50">
+               <div className="mt-auto space-y-2 pt-3 border-t border-slate-50/50">
                  <div className="flex items-center justify-between">
                    <div className="flex flex-col">
                      <span className="text-[8px] font-black uppercase tracking-widest text-slate-300 mb-1">Equipo Operativo</span>

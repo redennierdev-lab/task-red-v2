@@ -88,14 +88,14 @@ const Tecnicos = () => {
       </div>
 
       {/* Grid of Premium Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 px-1">
         {filteredTecnicos.map((tecnico) => (
-          <div key={tecnico.id} className="premium-card p-6 group flex flex-col relative overflow-hidden">
+          <div key={tecnico.id} className="premium-card p-4 group flex flex-col relative overflow-hidden">
             <div className="absolute -right-3 -top-3 w-16 h-16 bg-slate-50 rounded-full transition-all group-hover:bg-logo-gradient group-hover:opacity-5"></div>
             
-            <div className="flex justify-between items-start mb-6 relative z-10">
-              <div className="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-6">
-                 <Wrench size={18} />
+            <div className="flex justify-between items-start mb-4 relative z-10">
+              <div className="w-10 h-10 bg-slate-900 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110 group-hover:rotate-6">
+                 <Wrench size={16} />
               </div>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
                 <button onClick={(e) => { e.stopPropagation(); handleEdit(tecnico); }} className="p-2 bg-white text-slate-400 hover:text-secondary hover:shadow-md rounded-lg transition-all border border-slate-50">
@@ -108,7 +108,7 @@ const Tecnicos = () => {
             </div>
 
             <div className="relative z-10">
-              <h3 className="text-lg font-black text-slate-800 mb-1 uppercase tracking-tight group-hover:text-secondary transition-colors italic">{tecnico.nombre}</h3>
+              <h3 className="text-base font-black text-slate-800 mb-1 uppercase tracking-tight group-hover:text-secondary transition-colors italic">{tecnico.nombre}</h3>
               
               <div className="flex items-center gap-2 mb-4">
                 <div className="px-2.5 py-0.5 bg-secondary/10 rounded-full text-[8.5px] font-black text-secondary uppercase tracking-widest border border-secondary/10 italic">
@@ -116,18 +116,18 @@ const Tecnicos = () => {
                 </div>
               </div>
 
-              <div className="space-y-3 pt-4 border-t border-slate-50">
+              <div className="space-y-2 pt-3 border-t border-slate-50">
                 <div className="flex items-center gap-3 text-slate-500">
-                  <div className="w-7 h-7 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                    <Phone size={12} />
+                  <div className="w-6 h-6 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                    <Phone size={10} />
                   </div>
-                  <span className="text-xs font-bold font-mono">{tecnico.telefono}</span>
+                  <span className="text-[10px] font-bold font-mono">{tecnico.telefono}</span>
                 </div>
                 <div className="flex items-center gap-3 text-slate-500">
-                  <div className="w-7 h-7 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                    <Award size={12} />
+                  <div className="w-6 h-6 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                    <Award size={10} />
                   </div>
-                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-300 italic">Staff Verificado</span>
+                  <span className="text-[8px] font-black uppercase tracking-widest text-slate-300 italic">Staff Verificado</span>
                 </div>
               </div>
             </div>

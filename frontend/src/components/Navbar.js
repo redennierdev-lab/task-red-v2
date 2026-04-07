@@ -10,7 +10,8 @@ const Navbar = () => {
   const menuItems = [
     { path: '/', name: 'Panel Inicio', icon: <LayoutList size={22} />, roles: ['Admin', 'Técnico'] },
     { path: '/tasks', name: 'Gestión Tareas', icon: <FileText size={22} />, roles: ['Admin'] },
-    { path: '/historial', name: 'Historial', icon: <History size={22} />, roles: ['Técnico'] },
+    { path: '/historial', name: 'Historial', icon: <History size={22} />, roles: ['Admin'] },
+    { path: '/mis-tareas', name: 'Mis Tareas', icon: <History size={22} />, roles: ['Técnico'] },
     { path: '/users', name: 'Directorio Clientes', icon: <Users size={22} />, roles: ['Admin'] },
     { path: '/technicians', name: 'Equipo Técnico', icon: <Wrench size={22} />, roles: ['Admin'] },
     { path: '/services', name: 'Catálogo Servicios', icon: <Rocket size={22} />, roles: ['Admin'] },

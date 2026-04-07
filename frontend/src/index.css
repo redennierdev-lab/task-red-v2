@@ -12,7 +12,7 @@
 
 @layer base {
   html {
-    font-size: 15px; /* Aumentado desde 13px para mejor lectura en 1080p */
+    font-size: 14px; /* Un poco más pequeño para mayor densidad */
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
   }
@@ -37,15 +37,15 @@
   }
 
   .view-header {
-    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-900 p-7 rounded-[2rem] shadow-xl relative overflow-hidden text-slate-50;
+    @apply flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-slate-900 p-5 rounded-[1.5rem] shadow-xl relative overflow-hidden text-slate-50;
   }
 
   .view-title {
-    @apply text-xl lg:text-2xl font-black tracking-tight uppercase;
+    @apply text-lg lg:text-xl font-black tracking-tight uppercase;
   }
 
   .view-subtitle {
-    @apply text-slate-400 text-[9px] font-bold uppercase tracking-[0.2em] mt-0.5;
+    @apply text-slate-400 text-[8px] font-bold uppercase tracking-[0.2em] mt-0.5;
   }
 }
 

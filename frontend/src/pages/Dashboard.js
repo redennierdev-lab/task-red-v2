@@ -28,34 +28,34 @@ const AdminView = ({ stats, tareas }) => (
     {/* Stats Grid */}
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat, idx) => (
-        <div key={idx} className="premium-card p-6 flex flex-col justify-between group">
-          <div className={`w-11 h-11 rounded-2xl ${stat.color} flex items-center justify-center mb-4 transition-all duration-500 group-hover:rotate-12 inset-0 shadow-sm border border-black/5`}>
-            {stat.icon && React.cloneElement(stat.icon, { size: 18 })}
+        <div key={idx} className="premium-card p-4 flex flex-col justify-between group">
+          <div className={`w-9 h-9 rounded-xl ${stat.color} flex items-center justify-center mb-3 transition-all duration-500 group-hover:rotate-12 inset-0 shadow-sm border border-black/5`}>
+            {stat.icon && React.cloneElement(stat.icon, { size: 16 })}
           </div>
           <div>
-            <div className="flex items-end justify-between mb-1">
-              <span className="text-3xl font-black tracking-tighter text-slate-900">{stat.value}</span>
-              <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500 mb-1.5">{stat.trend}</span>
+            <div className="flex items-end justify-between mb-0.5">
+              <span className="text-2xl font-black tracking-tighter text-slate-900">{stat.value}</span>
+              <span className="text-[7px] font-black uppercase tracking-widest text-emerald-500 mb-1">{stat.trend}</span>
             </div>
-            <p className="text-slate-400 font-bold uppercase tracking-widest text-[9px]">{stat.label}</p>
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-[8px]">{stat.label}</p>
           </div>
         </div>
       ))}
     </div>
 
     {/* Recent Activity Mini-Widget */}
-    <div className="premium-card p-8">
-       <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-black uppercase tracking-widest text-slate-800 italic">Actividad Reciente</h3>
-          <div className="h-1 w-16 bg-logo-gradient rounded-full"></div>
+    <div className="premium-card p-5">
+       <div className="flex items-center justify-between mb-4">
+          <h3 className="text-base font-black uppercase tracking-widest text-slate-800 italic">Actividad Reciente</h3>
+          <div className="h-1 w-12 bg-logo-gradient rounded-full"></div>
        </div>
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {tareas.slice(0, 4).map((tarea, i) => (
-             <div key={i} className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-transparent hover:border-slate-200 transition-all cursor-pointer group">
-                <div className={`w-2 h-10 rounded-full ${tarea.estado === 'Pendiente' ? 'bg-orange-500' : 'bg-emerald-500'}`} />
+       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {tareas.slice(0, 6).map((tarea, i) => (
+             <div key={i} className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-transparent hover:border-slate-200 transition-all cursor-pointer group">
+                <div className={`w-1.5 h-8 rounded-full ${tarea.estado === 'Pendiente' ? 'bg-orange-500' : 'bg-emerald-500'}`} />
                 <div>
-                  <h4 className="font-black text-xs text-slate-700 uppercase tracking-tight group-hover:text-secondary transition-colors">{tarea.titulo}</h4>
-                  <p className="text-[9px] text-slate-400 font-bold mt-0.5">Ticket #{tarea.id} • {tarea.estado}</p>
+                  <h4 className="font-black text-[11px] text-slate-700 uppercase tracking-tight group-hover:text-secondary transition-colors line-clamp-1">{tarea.titulo}</h4>
+                  <p className="text-[8px] text-slate-400 font-bold mt-0.5 whitespace-nowrap">Ticket #{tarea.ticket_id || tarea.id} • {tarea.estado}</p>
                 </div>
              </div>
           ))}
@@ -96,7 +96,7 @@ const TechnicianView = ({ tareas, clientes, refreshAll }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           {activas.map(t => {
               const cliente = clientes.find(c => c.id === Number(t.cliente_id));
               const enProceso = t.estado === 'En proceso';
@@ -106,21 +106,21 @@ const TechnicianView = ({ tareas, clientes, refreshAll }) => {
               const coords = cliente?.coordenadas || '';
 
               return (
-                  <div key={t.id} className={`p-6 rounded-[2rem] border-2 shadow-sm transition-all duration-300 flex flex-col relative overflow-hidden bg-white
+                  <div key={t.id} className={`p-4 rounded-[1.5rem] border-2 shadow-sm transition-all duration-300 flex flex-col relative overflow-hidden bg-white
                       ${enProceso ? 'border-emerald-400 shadow-emerald-500/10' : pausada ? 'border-amber-300' : 'border-slate-100 hover:border-slate-300'}`}>
                       
                       {enProceso && <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500 animate-pulse"></div>}
 
-                      <div className="flex justify-between items-start mb-4">
+                      <div className="flex justify-between items-start mb-3">
                           <div>
-                              <span className="text-[10px] bg-slate-900 text-white font-black px-2 py-1 rounded shadow-sm">
+                              <span className="text-[7px] bg-slate-900 text-white font-black px-1.5 py-0.5 rounded shadow-sm">
                                   {t.ticket_id || `TSK-${t.id}`}
                               </span>
-                              <h3 className="text-lg font-black text-slate-800 tracking-tight leading-tight mt-2 italic">{t.titulo}</h3>
+                              <h3 className="text-base font-black text-slate-800 tracking-tight leading-tight mt-1 italic">{t.titulo}</h3>
                           </div>
                       </div>
                       
-                      <p className="text-slate-500 text-xs font-medium line-clamp-3 mb-6 bg-slate-50 p-3 rounded-xl border border-slate-100">{t.descripcion}</p>
+                      <p className="text-slate-500 text-[10px] font-medium line-clamp-2 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100 italic">{t.descripcion}</p>
 
                       <div className="mt-auto space-y-3">
                           {/* Botonera Inicial */}

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const { logAction } = require('./logs');
 
 const dbPath = path.resolve(__dirname, '../../data/red_ennier.sqlite');
 const db = new sqlite3.Database(dbPath);
@@ -52,7 +53,6 @@ router.get('/', (req, res) => {
     });
 });
 
-// GUARDAR CLIENTE (Con Ficha Técnica Opcional)
 router.post('/', (req, res) => {
     const { 
         nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, whatsapp, direccion, coordenadas,
@@ -64,12 +64,11 @@ router.post('/', (req, res) => {
         [nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, whatsapp, direccion, coordenadas], 
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
-            
             const clientId = this.lastID;
+            logAction('Admin', 'CREACIÓN', 'Customers', clientId, `Cliente: ${nombre} ${apellidos || ''}`);
             
             if (equipments && Object.keys(equipments).length > 0) {
                 const { servicio_requerido, tipo_instalacion, antena_tipo, antena_modelo, antena_marca, antena_serial, antena_usuario, antena_password, antena_ip, puerto_forward, router_modelo, router_tipo, router_version } = equipments;
-                
                 db.run(`INSERT INTO client_equipments (cliente_id, servicio_requerido, tipo_instalacion, antena_tipo, antena_modelo, antena_marca, antena_serial, antena_usuario, antena_password, antena_ip, puerto_forward, router_modelo, router_tipo, router_version) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                     [clientId, servicio_requerido, tipo_instalacion, antena_tipo, antena_modelo, antena_marca, antena_serial, antena_usuario, antena_password, antena_ip, puerto_forward, router_modelo, router_tipo, router_version],
@@ -83,18 +82,20 @@ router.post('/', (req, res) => {
     });
 });
 
-// ELIMINAR CLIENTE
 router.delete('/:id', (req, res) => {
     const { id } = req.params;
-    db.run(`DELETE FROM client_equipments WHERE cliente_id = ?`, [id], () => {
-        db.run(`DELETE FROM customers WHERE id = ?`, [id], function(err) {
-            if (err) return res.status(500).json({ error: err.message });
-            res.json({ success: true });
+    db.get("SELECT nombre FROM customers WHERE id = ?", [id], (err, row) => {
+        const cname = row ? row.nombre : id;
+        db.run(`DELETE FROM client_equipments WHERE cliente_id = ?`, [id], () => {
+            db.run(`DELETE FROM customers WHERE id = ?`, [id], function(errDel) {
+                if (errDel) return res.status(500).json({ error: errDel.message });
+                logAction('Admin', 'ELIMINACIÓN', 'Customers', id, `Eliminado cliente: ${cname}`);
+                res.json({ success: true });
+            });
         });
     });
 });
 
-// Get ficha tecnica
 router.get('/:id/equipment', (req, res) => {
     const { id } = req.params;
     db.get('SELECT * FROM client_equipments WHERE cliente_id = ?', [id], (err, row) => {

@@ -90,14 +90,14 @@ const Clientes = () => {
       </div>
 
       {/* Grid of Premium Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 px-1">
         {filteredClientes.map((cliente) => (
-          <div key={cliente.id} className="premium-card p-6 group flex flex-col relative overflow-hidden bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all">
+          <div key={cliente.id} className="premium-card p-4 group flex flex-col relative overflow-hidden bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg transition-all">
             <div className="absolute -right-3 -top-3 w-20 h-20 bg-slate-50 rounded-full transition-all group-hover:bg-orange-500 group-hover:opacity-5"></div>
             
-            <div className="flex justify-between items-start mb-4 relative z-10">
-              <div className="w-11 h-11 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-orange-500 group-hover:text-white transition-all duration-500 shadow-sm">
-                <Users size={20} />
+            <div className="flex justify-between items-start mb-3 relative z-10">
+              <div className="w-9 h-9 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-orange-500 group-hover:text-white transition-all duration-500 shadow-sm">
+                <Users size={16} />
               </div>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
                 <button onClick={(e) => handleEdit(e, cliente)} className="p-2 bg-white text-slate-400 hover:text-orange-500 hover:shadow-md rounded-lg transition-all border border-slate-50">
@@ -109,21 +109,21 @@ const Clientes = () => {
               </div>
             </div>
             <div className="relative z-10">
-              <h3 className="text-lg font-black text-slate-800 mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
-              <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 italic">ID: {cliente.cedula || cliente.identificacion}</p>
+              <h3 className="text-base font-black text-slate-800 mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
+              <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest mb-3 italic">ID: {cliente.cedula || cliente.identificacion}</p>
               
-              <div className="space-y-3 pt-4 border-t border-slate-50">
+              <div className="space-y-2 pt-3 border-t border-slate-50">
                 <div className="flex items-center gap-2.5 text-slate-500">
                   <div className="w-7 h-7 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
                     <Phone size={12} />
                   </div>
                   <span className="text-xs font-bold">{cliente.telefono}</span>
                 </div>
-                <div className="flex items-center gap-2.5 text-slate-500">
-                  <div className="w-7 h-7 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
-                    <MapPin size={12} />
+                <div className="flex items-center gap-2 text-slate-500">
+                  <div className="w-6 h-6 rounded-lg bg-slate-50 flex items-center justify-center text-slate-400">
+                    <MapPin size={10} />
                   </div>
-                  <span className="text-xs font-bold line-clamp-1">{cliente.direccion}</span>
+                  <span className="text-[10px] font-bold line-clamp-1">{cliente.direccion}</span>
                 </div>
               </div>
             </div>

@@ -5,6 +5,7 @@ import Clientes from './pages/Clientes';
 import Tecnicos from './pages/Tecnicos';
 import Tareas from './pages/Tareas';
 import Historial from './pages/Historial';
+import HistorialAdmin from './pages/HistorialAdmin';
 import Servicios from './pages/Servicios';
 import { AppProvider } from './context/AppContext';
 
@@ -25,7 +26,8 @@ function App() {
                 <Route path="/users" element={<Clientes />} />
                 <Route path="/technicians" element={<Tecnicos />} />
                 <Route path="/tasks" element={<Tareas />} />
-                <Route path="/historial" element={<Historial />} />
+                <Route path="/historial" element={<HistorialAdmin />} />
+                <Route path="/mis-tareas" element={<Historial />} />
                 <Route path="/services" element={<Servicios />} />
               </Routes>
             </div>

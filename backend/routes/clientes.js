@@ -16,6 +16,8 @@ db.run(`CREATE TABLE IF NOT EXISTS customers (
     clasificacion TEXT,
     correo TEXT,
     telefono TEXT,
+    telefono_secundario TEXT,
+    persona_recibe TEXT,
     whatsapp TEXT,
     direccion TEXT,
     coordenadas TEXT,
@@ -55,13 +57,13 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
     const { 
-        nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, whatsapp, direccion, coordenadas,
+        nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, telefono_secundario, persona_recibe, whatsapp, direccion, coordenadas,
         equipments 
     } = req.body;
 
-    db.run(`INSERT INTO customers (nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, whatsapp, direccion, coordenadas) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
-        [nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, whatsapp, direccion, coordenadas], 
+    db.run(`INSERT INTO customers (nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, telefono_secundario, persona_recibe, whatsapp, direccion, coordenadas) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+        [nombre, apellidos, cedula, tipo, clasificacion, correo, telefono, telefono_secundario, persona_recibe, whatsapp, direccion, coordenadas], 
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
             const clientId = this.lastID;

@@ -11,6 +11,7 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState('Admin'); // 'Admin' | 'Técnico'
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+  const [rates, setRates] = useState({ bcv: 0, usdt: 0, lastUpdate: null });
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -59,16 +60,42 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
+  const fetchRates = useCallback(async () => {
+    if (!navigator.onLine) {
+        setRates(prev => ({ ...prev, offline: true }));
+        return;
+    }
+    try {
+        const response = await fetch('https://pydolarvenezuela-api.vercel.app/api/v1/dollar');
+        if (!response.ok) throw new Error('API response not ok');
+        const data = await response.json();
+        const bcv = data?.monitors?.bcv?.price || 0;
+        const usdt = data?.monitors?.binance?.price || data?.monitors?.enparalelovzla?.price || 0;
+
+        if (bcv > 0 || usdt > 0) {
+            setRates({ bcv, usdt, lastUpdate: new Date(), offline: false });
+        }
+    } catch (error) {
+        console.error('Error obteniendo tasas:', error);
+        // Fallback robusto
+        setRates(prev => ({ ...prev, offline: true }));
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRates();
+    const interval = setInterval(fetchRates, 600000); // 10 minutos
+    return () => clearInterval(interval);
+  }, [fetchRates]);
+
   const refreshAll = useCallback(async () => {
     setLoading(true);
-    await Promise.all([fetchClientes(), fetchTecnicos(), fetchTareas(), fetchServicios()]);
+    await Promise.all([fetchClientes(), fetchTecnicos(), fetchTareas(), fetchServicios(), fetchRates()]);
     setLoading(false);
-  }, [fetchClientes, fetchTecnicos, fetchTareas, fetchServicios]);
+  }, [fetchClientes, fetchTecnicos, fetchTareas, fetchServicios, fetchRates]);
 
   const deleteRecord = async (endpoint, id) => {
     if (!id) return false;
-    
-    // Map endpoints to table names
     const tableMap = {
         'customers': 'customers',
         'technicians': 'technicians',
@@ -76,13 +103,11 @@ export const AppProvider = ({ children }) => {
         'services': 'services'
     };
     const table = tableMap[endpoint];
-
     try {
       if (endpoint === 'customers') {
           await db.client_equipments.where('cliente_id').equals(id).delete();
       }
       await db[table].delete(id);
-      
       logAction('Admin', 'ELIMINACIÓN', endpoint, id, `Registro eliminado de LocalDB`);
       await refreshAll();
       return true;
@@ -111,17 +136,42 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
   useEffect(() => {
-    // Inicializar DB con datos de ejemplo si esta vacia (Opcional)
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  useEffect(() => {
     const init = async () => {
-        const count = await db.services.count();
-        if (count === 0) {
-            await db.services.bulkAdd([
-                { nombre: 'Instalación Premium', descripcion: 'Configuración 5G', precio: 150 },
-                { nombre: 'Mantenimiento Preventivo', descripcion: 'Limpieza de antena', precio: 45 }
-            ]);
+        try {
+            const serviceCount = await db.services.count();
+            if (serviceCount === 0) {
+                await db.services.bulkAdd([
+                    { nombre: 'Soporte Internet Residencial', descripcion: 'Configuración de router y cableado', precio: 25 },
+                    { nombre: 'Instalación Antena 5G', descripcion: 'Montaje y alineación', precio: 120 },
+                    { nombre: 'Mantenimiento Cámaras', descripcion: 'Limpieza y ajuste de visión', precio: 40 },
+                    { nombre: 'Reparación Hardware PC', descripcion: 'Diagnóstico y cambio piezas', precio: 30 }
+                ]);
+            }
+            const techCount = await db.technicians.count();
+            if (techCount === 0) {
+                await db.technicians.bulkAdd([
+                    { nombre: 'Red Ennier Admin', especialidad: 'Administración Global', telefono: '000-RED-ENNIER', status: 'Activo' },
+                    { nombre: 'Técnico Campo 01', especialidad: 'Fibra & Antenas', telefono: 'N/A', status: 'Activo' }
+                ]);
+            }
+            await refreshAll();
+        } catch (error) {
+            console.error("Error en inicialización:", error);
         }
-        refreshAll();
     };
     init();
   }, [refreshAll]);
@@ -131,6 +181,8 @@ export const AppProvider = ({ children }) => {
       clientes, tecnicos, tareas, servicios, loading,
       userRole, setUserRole,
       theme, toggleTheme,
+      rates, fetchRates,
+      isOnline,
       refreshAll, deleteRecord, updateRecord,
       fetchClientes, fetchTecnicos, fetchTareas, fetchServicios
     }}>

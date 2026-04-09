@@ -14,7 +14,8 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
         estado: 'Pendiente',
         cliente_id: '',
         tecnico_admin_id: '',
-        instalador_id: ''
+        instalador_id: '',
+        monto: ''
     });
 
     useEffect(() => {
@@ -36,7 +37,8 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
             estado: 'Pendiente',
             cliente_id: '',
             tecnico_admin_id: '',
-            instalador_id: ''
+            instalador_id: '',
+            monto: ''
         });
     };
 
@@ -48,12 +50,17 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     const handleSubmit = async (e) => {
         e?.preventDefault();
         try {
+            const finalData = {
+                ...form,
+                monto: parseFloat(form.monto) || 0
+            };
+
             if (editingId) {
-                await db.tasks.update(editingId, form);
+                await db.tasks.update(editingId, finalData);
                 await logAction('Admin', 'EDICIÓN', 'Tasks', editingId, `Ticket actualizado: ${form.titulo}`);
             } else {
                 const id = await db.tasks.add({
-                    ...form,
+                    ...finalData,
                     ticket_id: `TSK-${Date.now().toString().slice(-6)}`,
                     fecha_creacion: new Date().toISOString()
                 });
@@ -74,34 +81,34 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-md" onClick={handleClose}></div>
-            <div className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col max-h-[95vh] border border-white/20 transition-colors">
+            <div className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-3xl shadow-2xl relative overflow-hidden flex flex-col max-h-[95vh] border border-white/20 transition-colors">
                 
                 {/* Header Area */}
-                <div className="bg-logo-gradient p-8 text-white relative shrink-0">
-                    <button onClick={handleClose} className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all">
-                        <X size={20} />
+                <div className="bg-logo-gradient p-5 text-white relative shrink-0">
+                    <button onClick={handleClose} className="absolute top-4 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all text-white">
+                        <X size={16} />
                     </button>
                     <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                            <Layers size={24} />
+                        <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
+                            <Layers size={18} />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-black uppercase tracking-tight italic">
+                            <h2 className="text-lg font-black uppercase tracking-tight italic leading-tight">
                                 {editingId ? 'Ajustar Ticket' : 'Despliegue Operativo'}
                             </h2>
-                            <p className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em] italic">Secuencia de Trabajo RED</p>
+                            <p className="text-white/70 text-[9px] font-bold uppercase tracking-[0.2em] italic">Secuencia de Trabajo RED</p>
                         </div>
                     </div>
                     
-                    <div className="flex gap-2 mt-6">
+                    <div className="flex gap-1.5 mt-4">
                         {[1, 2, 3].map(s => (
-                            <div key={s} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${s <= step ? 'bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'bg-white/20'}`} />
+                            <div key={s} className={`h-1 flex-1 rounded-full transition-all duration-500 ${s <= step ? 'bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'bg-white/20'}`} />
                         ))}
                     </div>
                 </div>
 
                 {/* Content Area */}
-                <div className="p-8 overflow-y-auto custom-scrollbar flex-1">
+                <div className="p-4 overflow-y-auto custom-scrollbar flex-1">
                     
                     {/* Step 1: Objetivo */}
                     {step === 1 && (
@@ -114,7 +121,7 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                                 </label>
                                 <select 
                                     required 
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none appearance-none shadow-inner"
+                                    className="w-full px-6 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none appearance-none shadow-inner text-sm italic"
                                     value={form.cliente_id}
                                     onChange={e => setForm({...form, cliente_id: e.target.value})}
                                 >
@@ -132,7 +139,7 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                                 <input 
                                     required 
                                     placeholder="Ej: Instalación Antena sector Norte"
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner"
+                                    className="w-full px-6 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm"
                                     value={form.titulo}
                                     onChange={e => setForm({...form, titulo: e.target.value})}
                                 />
@@ -143,33 +150,41 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                     {/* Step 2: Hoja de Trabajo */}
                     {step === 2 && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                            <h3 className="text-lg font-black text-slate-800 dark:text-white text-center mb-8 uppercase tracking-widest italic">Información Técnica</h3>
+                            <h3 className="text-lg font-black text-slate-800 dark:text-white text-center mb-8 uppercase tracking-widest italic">Información Técnica & Comercial</h3>
                             
                             <div className="space-y-1.5">
                                 <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 italic">Descripción de Alcance</label>
                                 <textarea 
-                                    rows="6"
+                                    rows="4"
                                     placeholder="Detalles sobre materiales, equipos a usar, configuración IP..."
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-[1.5rem] focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none resize-none shadow-inner italic"
+                                    className="w-full px-6 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-[1.2rem] focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none resize-none shadow-inner text-sm italic"
                                     value={form.descripcion}
                                     onChange={e => setForm({...form, descripcion: e.target.value})}
                                 />
                             </div>
 
-                            <div className="space-y-1.5 pt-4">
-                                <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 italic">Estado del Ticket</label>
-                                <div className="grid grid-cols-2 gap-2">
-                                    {['Pendiente', 'En proceso', 'Completada'].map(est => (
-                                        <button
-                                            key={est}
-                                            type="button"
-                                            onClick={() => setForm({...form, estado: est})}
-                                            className={`py-3 rounded-full border-2 font-black text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${form.estado === est ? 'bg-slate-900 dark:bg-fuchsia-600 border-slate-900 dark:border-fuchsia-600 text-white shadow-lg shadow-fuchsia-500/20' : 'bg-white dark:bg-slate-800/50 border-slate-100 dark:border-slate-800 text-slate-400 dark:text-slate-600'}`}
-                                        >
-                                            {est === 'Pendiente' ? <CircleDashed size={10} /> : <CheckCircle2 size={10} />}
-                                            {est}
-                                        </button>
-                                    ))}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 italic">Remuneración ($)</label>
+                                    <input 
+                                        type="number"
+                                        placeholder="0.00"
+                                        className="w-full px-6 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-emerald-500 transition-all font-black text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm italic"
+                                        value={form.monto}
+                                        onChange={e => setForm({...form, monto: e.target.value})}
+                                    />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 italic">Estado Inicial</label>
+                                    <select 
+                                        className="w-full px-6 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none appearance-none shadow-inner text-sm italic"
+                                        value={form.estado}
+                                        onChange={e => setForm({...form, estado: e.target.value})}
+                                    >
+                                        <option value="Pendiente">Pendiente</option>
+                                        <option value="En proceso">En proceso</option>
+                                        <option value="Completada">Completada</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -186,7 +201,7 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                                         <ShieldCheck size={10} className="text-fuchsia-500"/> Supervisor Administrativo
                                     </label>
                                     <select 
-                                        className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full font-bold text-slate-700 dark:text-slate-200 outline-none appearance-none shadow-inner"
+                                        className="w-full px-6 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full font-bold text-slate-700 dark:text-slate-200 outline-none appearance-none shadow-inner text-sm italic"
                                         value={form.tecnico_admin_id}
                                         onChange={e => setForm({...form, tecnico_admin_id: e.target.value})}
                                     >
@@ -200,7 +215,7 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                                         <Wrench size={10} className="text-orange-500"/> Instalador en Campo
                                     </label>
                                     <select 
-                                        className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full font-bold text-slate-700 dark:text-slate-200 outline-none appearance-none shadow-inner"
+                                        className="w-full px-6 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full font-bold text-slate-700 dark:text-slate-200 outline-none appearance-none shadow-inner text-sm italic"
                                         value={form.instalador_id}
                                         onChange={e => setForm({...form, instalador_id: e.target.value})}
                                     >
@@ -224,7 +239,7 @@ const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                 </div>
 
                 {/* Footer Actions */}
-                <div className="p-6 bg-slate-50 dark:bg-slate-950/40 flex justify-between items-center shrink-0 border-t border-slate-200 dark:border-slate-800 rounded-b-[2.5rem] transition-colors">
+                <div className="p-5 bg-slate-50 dark:bg-slate-950/40 flex justify-between items-center shrink-0 border-t border-slate-200 dark:border-slate-800 rounded-b-3xl transition-colors">
                     <button 
                         type="button"
                         onClick={() => step > 1 ? setStep(step - 1) : handleClose()}

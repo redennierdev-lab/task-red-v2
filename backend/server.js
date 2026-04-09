@@ -14,6 +14,8 @@ const tareasRoutes = require('./routes/tareas');
 const serviciosRoutes = require('./routes/servicios');
 const logsRoutes = require('./routes/logs').router;
 const statusRoutes = require('./routes/status');
+const ratesRoutes = require('./routes/rates');
+const rateService = require('./services/rateService');
 
 // CONEXIÓN DE RUTAS
 app.use('/api/customers', clientesRoutes);
@@ -22,6 +24,7 @@ app.use('/api/tasks', tareasRoutes);
 app.use('/api/services', serviciosRoutes);
 app.use('/api/audit', logsRoutes);
 app.use('/api/status', statusRoutes);
+app.use('/api/rates', ratesRoutes);
 
 app.get('/', (req, res) => {
     res.send('Servidor RED ENNIER Operativo');
@@ -34,5 +37,12 @@ app.listen(PORT, () => {
     console.log('✅ RUTA CLIENTES: /api/customers');
     console.log('✅ RUTA TÉCNICOS: /api/technicians');
     console.log('✅ RUTA TAREAS: /api/tasks');
+    console.log('✅ RUTA TASAS: /api/rates (Auto-update 20min)');
     console.log('====================================');
+
+    // Inicializar y programar actualización de tasas cada 20 minutos
+    rateService.updateRates();
+    setInterval(() => {
+        rateService.updateRates();
+    }, 20 * 60 * 1000); 
 });

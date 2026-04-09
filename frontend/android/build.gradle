@@ -22,6 +22,15 @@ allprojects {
         google()
         mavenCentral()
     }
+    // Force Java 17 compatibility (system has Microsoft JDK 17)
+    plugins.withId('com.android.application') {
+        android.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+        android.compileOptions.targetCompatibility = JavaVersion.VERSION_17
+    }
+    plugins.withId('com.android.library') {
+        android.compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+        android.compileOptions.targetCompatibility = JavaVersion.VERSION_17
+    }
 }
 
 task clean(type: Delete) {

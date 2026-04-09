@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { X, ArrowRight, ArrowLeft, Send, UserPlus, Wrench, Phone, Award, ShieldCheck } from 'lucide-react';
+import { X, ArrowRight, ArrowLeft, Send, UserPlus, Wrench, Phone, Award, ShieldCheck, ChevronDown } from 'lucide-react';
 import { db, logAction } from '../db/db';
 import { AppContext } from '../context/AppContext';
 
@@ -11,15 +11,57 @@ const TecnicoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     const [form, setForm] = useState({
         nombre: '',
         especialidad: '',
-        telefono: '',
         status: 'Activo'
     });
+
+    const [phoneCode, setPhoneCode] = useState('+58');
+    const [phoneOperator, setPhoneOperator] = useState('414');
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+    const countries = [
+        { code: '+58', flag: '🇻🇪', name: 'Venezuela' },
+        { code: '+1', flag: '🇺🇸', name: 'USA' },
+        { code: '+57', flag: '🇨🇴', name: 'Colombia' },
+        { code: '+34', flag: '🇪🇸', name: 'España' },
+        { code: '+507', flag: '🇵🇦', name: 'Panamá' },
+    ];
+
+    const vzlaOperators = [
+        { value: '414', label: '0414' },
+        { value: '424', label: '0424' },
+        { value: '412', label: '0412' },
+        { value: '416', label: '0416' },
+        { value: '426', label: '0426' },
+        { value: '286', label: '0286' },
+        { value: '212', label: '0212' },
+    ];
 
     useEffect(() => {
         if (editingId) {
             const load = async () => {
                 const data = await db.technicians.get(editingId);
-                if (data) setForm(data);
+                if (data) {
+                    setForm({ nombre: data.nombre, especialidad: data.especialidad, status: data.status });
+                    // Basic parsing for phone to populate back
+                    if (data.telefono) {
+                        if (data.telefono.startsWith('+58')) {
+                            setPhoneCode('+58');
+                            const rest = data.telefono.replace('+58', '');
+                            setPhoneOperator(rest.substring(0,3));
+                            setPhoneNumber(rest.substring(3));
+                        } else {
+                            // find if it matches another code, otherwise just throw it all in phoneNumber
+                            const match = countries.find(c => c.code !== '+58' && data.telefono.startsWith(c.code));
+                            if (match) {
+                                setPhoneCode(match.code);
+                                setPhoneNumber(data.telefono.replace(match.code, ''));
+                            } else {
+                                setPhoneCode('+58');
+                                setPhoneNumber(data.telefono);
+                            }
+                        }
+                    }
+                }
             };
             load();
         }
@@ -31,9 +73,11 @@ const TecnicoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
         setForm({
             nombre: '',
             especialidad: '',
-            telefono: '',
             status: 'Activo'
         });
+        setPhoneCode('+58');
+        setPhoneOperator('414');
+        setPhoneNumber('');
     };
 
     const handleClose = () => {
@@ -41,14 +85,40 @@ const TecnicoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
         setTimeout(resetFlow, 500);
     };
 
+    const isValidPhone = () => {
+        if (phoneCode !== '+58') return phoneNumber.length >= 7; 
+        return phoneNumber.length === 7;
+    };
+
+    const handlePhoneChange = (e) => {
+        let val = e.target.value.replace(/\D/g, '');
+        if (val.length > 7) val = val.substring(0, 7);
+        setPhoneNumber(val);
+    };
+
+    const formatPhoneLocal = (num) => {
+        if (num.length > 3) {
+            return num.slice(0, 3) + "-" + num.slice(3);
+        }
+        return num;
+    };
+
     const handleSubmit = async (e) => {
         e?.preventDefault();
+        if (!isValidPhone()) {
+            alert("⚠️ El número telefónico debe tener el formato válido.");
+            return;
+        }
+
+        const fullPhone = `${phoneCode}${phoneCode === '+58' ? phoneOperator : ''}${phoneNumber}`;
+        const finalData = { ...form, telefono: fullPhone };
+
         try {
             if (editingId) {
-                await db.technicians.update(editingId, form);
+                await db.technicians.update(editingId, finalData);
                 await logAction('Admin', 'EDICIÓN', 'Technicians', editingId, `Técnico actualizado: ${form.nombre}`);
             } else {
-                const id = await db.technicians.add(form);
+                const id = await db.technicians.add(finalData);
                 await logAction('Admin', 'CREACIÓN', 'Technicians', id, `Técnico registrado: ${form.nombre}`);
             }
             
@@ -114,16 +184,48 @@ const TecnicoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                             </div>
 
                             <div className="space-y-1.5">
-                                <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 flex items-center gap-2 italic">
-                                    <Phone size={10}/> Contacto Celular
+                                <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 flex items-center gap-2 italic justify-between">
+                                    <div className="flex gap-2 items-center"><Phone size={10}/> Contacto Celular</div>
+                                    {!isValidPhone() && phoneNumber.length > 0 && <span className="text-red-500">Incompleto</span>}
                                 </label>
-                                <input 
-                                    required 
-                                    placeholder="4141234567"
-                                    className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner tracking-widest"
-                                    value={form.telefono}
-                                    onChange={e => setForm({...form, telefono: e.target.value.replace(/\D/g, '')})}
-                                />
+                                <div className={`flex items-center bg-slate-50 dark:bg-slate-800/50 border rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 transition-all shadow-inner overflow-hidden ${!isValidPhone() && phoneNumber.length > 0 ? 'border-red-400' : 'border-slate-200 dark:border-slate-700 focus-within:border-orange-500'}`}>
+                                    <div className="relative border-r border-slate-200 dark:border-slate-700">
+                                        <select 
+                                            className="appearance-none bg-transparent pl-4 pr-8 py-4 font-black text-slate-600 dark:text-slate-400 outline-none" 
+                                            value={phoneCode} 
+                                            onChange={e => { setPhoneCode(e.target.value); setPhoneNumber(''); }}
+                                        >
+                                            {countries.map(c => (
+                                                <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+                                    </div>
+
+                                    {phoneCode === '+58' && (
+                                        <div className="relative border-r border-slate-200 dark:border-slate-700 bg-orange-500/5">
+                                            <select 
+                                                className="appearance-none bg-transparent pl-4 pr-8 py-4 font-black text-orange-600 dark:text-orange-400 outline-none" 
+                                                value={phoneOperator} 
+                                                onChange={e => setPhoneOperator(e.target.value)}
+                                            >
+                                                {vzlaOperators.map(o => (
+                                                    <option key={o.value} value={o.value}>{o.label}</option>
+                                                ))}
+                                            </select>
+                                            <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-orange-400" />
+                                        </div>
+                                    )}
+
+                                    <input 
+                                        required 
+                                        type="text" 
+                                        placeholder={phoneCode === '+58' ? "123-4567" : "1234567890"} 
+                                        className="flex-1 bg-transparent px-4 py-4 outline-none font-black text-slate-700 dark:text-slate-200 tracking-widest" 
+                                        value={phoneCode === '+58' ? formatPhoneLocal(phoneNumber) : phoneNumber} 
+                                        onChange={handlePhoneChange} 
+                                    />
+                                </div>
                             </div>
                         </div>
                     )}
@@ -188,7 +290,7 @@ const TecnicoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                     {step < 2 ? (
                         <button 
                             type="button" 
-                            disabled={!form.nombre || !form.telefono}
+                            disabled={!form.nombre || !isValidPhone()}
                             onClick={() => setStep(step + 1)} 
                             className="bg-slate-900 dark:bg-fuchsia-600 text-white rounded-full px-8 py-3.5 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 shadow-xl hover:bg-slate-800 dark:hover:bg-fuchsia-700 disabled:opacity-50 disabled:grayscale transition-all active:scale-95 italic"
                         >

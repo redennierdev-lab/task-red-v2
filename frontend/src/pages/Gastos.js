@@ -1,6 +1,6 @@
 import React, { useState, useContext, useMemo } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { ArrowDownRight, TrendingUp, Plus, LayoutList, History, DollarSign, Wallet, X } from 'lucide-react';
+import { ArrowDownRight, TrendingUp, Plus, LayoutList, History, DollarSign, Wallet, X, Edit3 } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db/db';
 import GastoWizard from '../components/GastoWizard';
@@ -8,8 +8,14 @@ import { AppContext } from '../context/AppContext';
 
 const Gastos = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const { theme, deleteRecord } = useContext(AppContext);
   const isDark = theme === 'dark';
+
+  const handleEdit = (id) => {
+      setEditingId(id);
+      setIsWizardOpen(true);
+  };
 
   // Consultar gastos de la DB local en tiempo real
   const rawGastos = useLiveQuery(() => db.expenses.reverse().toArray(), []);
@@ -41,7 +47,7 @@ const Gastos = () => {
   if (!rawGastos) return <div className="p-20 text-center font-black animate-pulse text-slate-300 dark:text-slate-700 tracking-[0.5em] uppercase">Sincronizando Bóveda...</div>;
 
   return (
-    <div className="space-y-8 page-transition pb-20">
+    <div className="space-y-6 page-transition pb-20">
       <div className="view-header">
         <div className="relative z-10 flex items-center gap-6">
             <div className="brand-icon">
@@ -83,7 +89,7 @@ const Gastos = () => {
         <div className="premium-card p-8 col-span-2 border-2 border-orange-50 dark:border-slate-800">
             <div className="w-full">
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-8 flex items-center gap-2 italic"><TrendingUp size={16} className="text-fuchsia-500" /> Flujo de Egreso Anual (Proyectado)</p>
-                <div className="h-[180px] w-full">
+                <div className="h-[180px] min-h-[180px] w-full">
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
                             <defs>
@@ -122,35 +128,46 @@ const Gastos = () => {
                 </div>
             ) : (
                 rawGastos.map(g => (
-                    <div key={g.id} className="premium-card p-5 group hover:border-slate-300 dark:hover:border-slate-700 transition-all">
-                        <div className="flex justify-between items-start mb-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${g.categoria === 'Producto' ? 'bg-orange-50 dark:bg-orange-500/10 text-orange-500' : 'bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-500'}`}>
-                                {g.categoria === 'Producto' ? <Plus size={20} /> : <DollarSign size={20} />}
-                            </div>
-                            <div className="text-right">
-                                <span className={`text-[10px] font-black uppercase px-3 py-1 rounded-full ${g.metodo_pago === 'Divisa' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
-                                    {g.metodo_pago}
-                                </span>
-                                <p className="text-[9px] text-slate-400 dark:text-slate-600 font-bold mt-1 uppercase italic">{g.fecha}</p>
-                            </div>
-                        </div>
+                    <div key={g.id} className="premium-card p-0 group flex flex-col relative overflow-hidden transform hover:-translate-y-0.5 transition-all duration-300">
+                        <div className="h-1 bg-logo-gradient w-full opacity-80 group-hover:h-1.5 transition-all duration-500"></div>
                         
-                        <h4 className="font-black text-slate-800 dark:text-white text-sm uppercase truncate mb-1 italic">
-                            {g.producto_nombre || g.descripcion || 'Sin nombre'}
-                        </h4>
-                        <div className="flex gap-2 mb-4">
-                            {g.marca && <span className="text-[8px] font-bold bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700 uppercase italic">{g.marca}</span>}
-                            <span className="text-[8px] font-bold bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-2 py-0.5 rounded border border-slate-100 dark:border-slate-700 uppercase italic">{g.categoria}</span>
-                        </div>
+                        <div className="p-3 bg-white dark:bg-slate-900 relative">
+                            <div className="flex justify-between items-start mb-2">
+                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${g.categoria === 'Producto' ? 'bg-orange-50 dark:bg-orange-500/10 text-orange-500' : 'bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-500'}`}>
+                                    {g.categoria === 'Producto' ? <Plus size={14} /> : <DollarSign size={14} />}
+                                </div>
+                                <div className="text-right">
+                                    <span className={`text-[7px] font-black uppercase px-2 py-0.5 rounded-full ${g.metodo_pago === 'Divisa' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
+                                        {g.metodo_pago}
+                                    </span>
+                                    <p className="text-[7px] text-slate-300 dark:text-slate-700 font-black mt-0.5 uppercase italic">{g.fecha}</p>
+                                </div>
+                            </div>
+                            
+                            <h4 className="font-black text-slate-800 dark:text-white text-[10px] uppercase truncate mb-1 italic">
+                                {g.producto_nombre || g.descripcion || 'Sin nombre'}
+                            </h4>
+                            <div className="flex gap-1 mb-2">
+                                {g.marca && <span className="text-[6px] font-black bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded border border-slate-100 dark:border-slate-700 uppercase italic">{g.marca}</span>}
+                            </div>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800">
-                            <span className="text-lg font-black text-slate-900 dark:text-emerald-400 italic">${parseFloat(g.monto).toLocaleString()}</span>
-                            <button 
-                                onClick={() => db.expenses.delete(g.id)}
-                                className="p-2 text-slate-300 dark:text-slate-700 hover:text-red-500 dark:hover:text-red-400 transition-colors"
-                            >
-                                <X size={16} />
-                            </button>
+                            <div className="flex items-center justify-between pt-2 border-t border-slate-50 dark:border-slate-800">
+                                <span className="text-sm font-black text-slate-900 dark:text-emerald-400 italic">${parseFloat(g.monto).toLocaleString()}</span>
+                                <div className="flex gap-1">
+                                    <button 
+                                        onClick={() => handleEdit(g.id)}
+                                        className="p-1 text-slate-300 dark:text-slate-700 hover:text-orange-500 transition-colors"
+                                    >
+                                        <Edit3 size={14} />
+                                    </button>
+                                    <button 
+                                        onClick={() => db.expenses.delete(g.id)}
+                                        className="p-1 text-slate-300 dark:text-slate-700 hover:text-red-500 transition-colors"
+                                    >
+                                        <X size={14} />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))
@@ -158,7 +175,12 @@ const Gastos = () => {
         </div>
       </div>
 
-      <GastoWizard isOpen={isWizardOpen} setIsOpen={setIsWizardOpen} />
+      <GastoWizard 
+        isOpen={isWizardOpen} 
+        setIsOpen={setIsWizardOpen} 
+        editingId={editingId}
+        setEditingId={setEditingId}
+      />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock, DollarSign, Sun, Moon } from 'lucide-react';
+import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock, DollarSign, Sun, Moon, TrendingUp } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
@@ -8,11 +8,12 @@ const Navbar = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const { userRole, setUserRole, theme, toggleTheme } = useContext(AppContext);
+  const { userRole, setUserRole, theme, toggleTheme, rates } = useContext(AppContext);
 
   const menuItems = [
     { path: '/', name: 'Panel Inicio', icon: <LayoutList size={22} />, roles: ['Admin', 'Técnico'] },
     { path: '/tasks', name: 'Gestión Tareas', icon: <FileText size={22} />, roles: ['Admin'] },
+    { path: '/ingresos', name: 'Gestión Ingresos', icon: <TrendingUp size={22} />, roles: ['Admin'] },
     { path: '/gastos', name: 'Gestión Gastos', icon: <DollarSign size={22} />, roles: ['Admin'] },
     { path: '/historial', name: 'Historial', icon: <History size={22} />, roles: ['Admin'] },
     { path: '/mis-tareas', name: 'Mis Tareas', icon: <History size={22} />, roles: ['Técnico'] },
@@ -44,14 +45,22 @@ const Navbar = () => {
   return (
     <>
       {/* Top Bar for Mobile */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl z-40 flex items-center justify-between px-8 border-b-2 border-orange-50 dark:border-slate-800 shadow-sm transition-colors duration-500">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl z-40 flex items-center justify-end px-6 border-b-2 border-orange-50 dark:border-slate-800 shadow-sm transition-colors duration-500">
+         {/* Logo Removed as per user request */}
          <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-logo-gradient rounded-xl p-1.5 shadow-lg">
-                <img src="/logo.png" alt="Logo" className="w-full h-full object-contain brightness-0 invert" />
-            </div>
-            <span className="text-base font-black tracking-tighter text-slate-800 dark:text-white uppercase italic">RED ENNIER</span>
-         </div>
-         <div className="flex items-center gap-4">
+             {rates.usdt > 0 && (
+                <div className="flex items-center gap-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500"></div>
+                    <span className="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest italic">USDT:</span>
+                    <span className="text-[10px] font-black text-fuchsia-600 dark:text-fuchsia-400 italic">{rates.usdt.toFixed(2)} Bs</span>
+                </div>
+             )}
+             {rates.bcv > 0 && (
+                <div className="hidden sm:flex flex-col items-end gap-0.5 px-3 py-1 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+                    <span className="text-[7px] font-black uppercase text-emerald-600 dark:text-emerald-400 leading-none">BCV</span>
+                    <span className="text-[10px] font-black text-slate-700 dark:text-emerald-300 leading-none">{rates.bcv.toFixed(2)} Bs</span>
+                </div>
+             )}
             <button onClick={toggleTheme} className="p-3 bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400 rounded-2xl active:scale-90 transition-all">
                 {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
             </button>
@@ -74,7 +83,7 @@ const Navbar = () => {
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
         
         {/* Logo Area Refined */}
-        <div className="p-6 flex flex-col items-center justify-center relative overflow-hidden bg-orange-50/50 dark:bg-slate-950/20">
+        <div className="p-4 flex flex-col items-center justify-center relative overflow-hidden bg-orange-50/50 dark:bg-slate-950/20">
           <div className="absolute top-0 left-0 w-full h-1 bg-logo-gradient"></div>
           <button 
             onClick={() => setIsOpen(false)}
@@ -88,7 +97,34 @@ const Navbar = () => {
               <img src="/logo.png" alt="RED ENNIER Logo" className="w-full h-full object-contain" />
             </div>
             <h2 className="text-base font-black uppercase tracking-tighter text-slate-900 dark:text-white italic">RED ENNIER</h2>
-            <div className="flex items-center gap-3 mt-1">
+            
+            <div className="flex flex-col gap-2 w-full mt-4 px-2">
+                {rates.bcv > 0 && (
+                    <div className="flex items-center justify-between p-3 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl shadow-sm group hover:bg-emerald-500/10 transition-all">
+                        <div className="flex items-center gap-2">
+                            <TrendingUp size={14} className="text-emerald-500" />
+                            <span className="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 italic">Tasa BCV</span>
+                        </div>
+                        <span className="text-xs font-black text-emerald-600 dark:text-emerald-400">{rates.bcv.toFixed(2)} <span className="text-[8px]">Bs</span></span>
+                    </div>
+                )}
+                {rates.usdt > 0 && (
+                    <div className="flex items-center justify-between p-3 bg-blue-500/5 border border-blue-500/10 rounded-2xl shadow-sm group hover:bg-blue-500/10 transition-all">
+                        <div className="flex items-center gap-2">
+                            <DollarSign size={14} className="text-blue-500" />
+                            <span className="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 italic">USDT Ref</span>
+                        </div>
+                        <span className="text-xs font-black text-blue-600 dark:text-blue-400">{rates.usdt.toFixed(2)} <span className="text-[8px]">Bs</span></span>
+                    </div>
+                )}
+                <div className="flex items-center justify-center gap-2 mt-2 opacity-30">
+                    <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
+                    <span className="text-[7px] font-black uppercase tracking-[0.3em] text-slate-400">Auto-Update 20m</span>
+                    <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
+                </div>
+            </div>
+
+            <div className="flex items-center gap-3 mt-4">
                 <p className="text-[9px] text-orange-500/70 dark:text-fuchsia-400/70 font-black tracking-[0.2em] uppercase">Task Manager v3</p>
                 <button onClick={toggleTheme} className="p-1.5 bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400 rounded-lg hover:scale-110 transition-all">
                     {theme === 'light' ? <Moon size={12} /> : <Sun size={12} />}
@@ -98,14 +134,14 @@ const Navbar = () => {
         </div>
         
         {/* Navigation */}
-        <nav className="flex-1 px-5 py-6 space-y-2 overflow-y-auto custom-scrollbar">
+        <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto custom-scrollbar">
           {menuItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               onClick={() => setIsOpen(false)}
               className={({ isActive }) => 
-                `flex items-center space-x-4 px-5 py-4 rounded-3xl transition-all duration-300 group relative overflow-hidden
+                `flex items-center space-x-4 px-5 py-3 rounded-2xl transition-all duration-300 group relative overflow-hidden
                 ${isActive 
                   ? 'bg-logo-gradient text-white shadow-xl shadow-orange-500/20 scale-105' 
                   : 'text-slate-400 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-fuchsia-400'}`
@@ -144,8 +180,7 @@ const Navbar = () => {
       {isPasswordModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
             <div className="absolute inset-0 bg-slate-900/40 dark:bg-black/80 backdrop-blur-2xl transition-all duration-500" onClick={() => setIsPasswordModalOpen(false)}></div>
-            <div className="bg-white dark:bg-slate-900 border-2 border-orange-100 dark:border-slate-800 w-full max-w-sm rounded-[3rem] shadow-[0_40px_100px_rgba(249,115,22,0.15)] dark:shadow-none relative overflow-hidden flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-500">
-                <div className="absolute top-0 right-0 w-80 h-80 bg-logo-gradient opacity-5 blur-[100px] rounded-full -mr-20 -mt-20 pointer-events-none"></div>
+            <div className="bg-white dark:bg-slate-900 border-2 border-orange-100 dark:border-slate-800 w-full max-w-sm rounded-[3rem] shadow-2xl relative overflow-hidden flex flex-col transform transition-all animate-in fade-in zoom-in-95 duration-500">
                 <div className="p-10 relative z-10">
                     <button onClick={() => setIsPasswordModalOpen(false)} className="absolute top-8 right-8 p-2.5 text-slate-300 dark:text-slate-600 hover:text-orange-500 bg-orange-50 dark:bg-slate-800 hover:bg-orange-100 dark:hover:bg-slate-700 rounded-full transition-all">
                         <X size={20} />

@@ -3,7 +3,7 @@ import { X, ArrowRight, ArrowLeft, Send, DollarSign, Package, Utensils, CreditCa
 import { db, logAction } from '../db/db';
 import { AppContext } from '../context/AppContext';
 
-const GastoWizard = ({ isOpen, setIsOpen }) => {
+const GastoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     const { refreshAll } = useContext(AppContext);
     const [step, setStep] = useState(1);
     
@@ -23,9 +23,24 @@ const GastoWizard = ({ isOpen, setIsOpen }) => {
         descripcion: ''
     });
 
+    React.useEffect(() => {
+        if (editingId && isOpen) {
+            const load = async () => {
+                const data = await db.expenses.get(editingId);
+                if (data) {
+                    setForm(data);
+                    setCategoria(data.categoria);
+                    setStep(2);
+                }
+            };
+            load();
+        }
+    }, [editingId, isOpen]);
+
     const resetFlow = () => {
         setStep(1);
         setCategoria('');
+        setEditingId?.(null);
         setForm({
             producto_nombre: '',
             marca: '',
@@ -53,8 +68,13 @@ const GastoWizard = ({ isOpen, setIsOpen }) => {
                 monto: parseFloat(form.monto) || 0
             };
             
-            const id = await db.expenses.add(finalData);
-            await logAction('Admin', 'CREACIÓN', 'Expenses', id, `Gasto registrado: ${categoria} - ${form.producto_nombre || form.descripcion}`);
+            if (editingId) {
+                await db.expenses.update(editingId, finalData);
+                await logAction('Admin', 'EDICIÓN', 'Expenses', editingId, `Gasto actualizado: ${categoria} - ${form.producto_nombre || form.descripcion}`);
+            } else {
+                const id = await db.expenses.add(finalData);
+                await logAction('Admin', 'CREACIÓN', 'Expenses', id, `Gasto registrado: ${categoria} - ${form.producto_nombre || form.descripcion}`);
+            }
             
             refreshAll();
             alert('¡Gasto registrado en el teléfono con éxito!');
@@ -73,29 +93,31 @@ const GastoWizard = ({ isOpen, setIsOpen }) => {
             <div className="bg-white dark:bg-slate-900 w-full max-w-xl rounded-[2.5rem] shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh] border border-white/20 transition-colors">
                 
                 {/* Header Area */}
-                <div className="bg-logo-gradient p-8 text-white relative shrink-0">
-                    <button onClick={handleClose} className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all">
-                        <X size={20} />
+                <div className="bg-logo-gradient p-5 text-white relative shrink-0">
+                    <button onClick={handleClose} className="absolute top-5 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all text-white">
+                        <X size={16} />
                     </button>
-                    <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                            <DollarSign size={24} />
+                    <div className="flex items-center gap-3 mb-1">
+                        <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
+                            <DollarSign size={20} />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-black uppercase tracking-tight italic">Registro de Gasto</h2>
-                            <p className="text-white/70 text-[10px] font-bold uppercase tracking-[0.2em] italic">Flujo de Caja Operativo</p>
+                            <h2 className="text-xl font-black uppercase tracking-tight italic text-white leading-tight">
+                                {editingId ? 'Editar Gasto' : 'Registro de Gasto'}
+                            </h2>
+                            <p className="text-white/70 text-[8px] font-bold uppercase tracking-[0.2em] italic">Flujo de Caja Operativo</p>
                         </div>
                     </div>
                     
-                    <div className="flex gap-2 mt-6">
+                    <div className="flex gap-1.5 mt-4">
                         {[1, 2, 3].map(s => (
-                            <div key={s} className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${s <= step ? 'bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'bg-white/20'}`} />
+                            <div key={s} className={`h-1 flex-1 rounded-full transition-all duration-500 ${s <= step ? 'bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]' : 'bg-white/20'}`} />
                         ))}
                     </div>
                 </div>
 
                 {/* Content Area */}
-                <div className="p-8 overflow-y-auto custom-scrollbar flex-1">
+                <div className="p-4 overflow-y-auto custom-scrollbar flex-1">
                     
                     {/* Step 1: Category Selection */}
                     {step === 1 && (

@@ -1,0 +1,225 @@
+                                                             Password   Local      Plan                           Fecha
+Nombre             Ip          Servicio           Estado     Hotspot/   Address    Internet Zona            Saldo Instalación Acción
+                                                             PPPoE      PPPoE
+PEPSI              10.10.14.4  OSMIRYS            Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D15     0 18/03/2026
+                                                                                   BASICO                         17:51
+YENIFER_GILLEN     10.10.19.14 YENIFER_GILLEN     Activo     @a12345678 10.10.19.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/03/2026
+                                                                                   BASICO                         10:44
+CRUZ YANEZ         10.10.13.12 CRUZ_YANEZ         Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/03/2026
+                                                                                   BASICO                         07:59
+YEANMERY URBINA    10.10.17.12 YEANMERY_URBINA    Activo     @a12345678 10.10.17.1 PLB-RS-  SS_RDE_SFSQ_D15     0 10/03/2026
+                                                                                   BASICO                         12:19
+ABNER RODRIGUEZ    10.10.17.8  ABNER_RODRIGUEZ    Activo     @a12345678 10.10.17.1 PLB-RS-  SS_RDE_SFSQ_D15     0 21/02/2026
+                                                                                   BASICO                         17:30
+ROSA JARAMILLO     10.10.17.7  ROSA_JARAMILLO     Activo     @a12345678 10.10.17.1 PLB-RS-  SS_RDE_SFSQ_D15     0 15/02/2026
+                                                                                   BASICO                         16:32
+REINALDO_SARMIENTO 10.10.17.13 REINALDO_SARMIENTO Gratis     @a12345678 10.10.17.1 GRATIS   SS_RDE_SFSQ_D30     0 08/02/2026
+                                                                                                                  15:54
+YUSLEIVIS_VARGAS   10.10.17.4  YUSLEIVIS_VARGAS   Activo     @a12345678 10.10.17.1 PLB-RS-  SS_RDE_SFSQ_D30     0 03/02/2026
+                                                                                   BASICO                         16:13
+NORELBYS_RODRIGUEZ 10.10.17.3  NORELBYS_RODRIGUEZ Activo     @a12345678 10.10.17.1 PLB-RS-  SS_RDE_SFSQ_D15     0 18/01/2026
+                                                                                   BASICO                         14:38
+ANA_JARAMILLO      10.10.17.2  ANA_JARAMILLO      Activo     @a12345678 10.10.17.1 PLB-RS-  SS_RDE_SFSQ_D15     0 15/01/2026
+                                                                                   BASICO                         10:48
+YANITZA_DIAMONT    10.10.16.6  YANITZA_DIAMONT    Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 06/01/2026
+                                                                                   BASICO                         15:48
+GRUPO_INDEX        10.10.16.2  GRUPO_INDEX        Suspendido @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 26/12/2025
+                                                                                   BASICO                         17:16
+FRANKLIN_SUAREZ    10.10.16.4  FRANKLIN_SUAREZ    Suspendido @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 26/12/2025
+                                                                                   BASICO                         15:01
+BERNARDO_MALAVE    10.10.16.3  BERNARDO_MALAVE    Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 23/12/2025
+                                                                                   BASICO                         11:26
+EVELIN_CRECENZI    10.10.16.8  EVELIN_CRECENZI    Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 01/12/2025
+                                                                                   BASICO                         16:26
+MARCOS_YANEZ       10.10.16.12 MARCOS_YANEZ       Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 22/11/2025
+                                                                                   BASICO                         10:26
+YENNIFER_ASTUDILLO 10.10.16.9  YENNIFER_ASTUDILLO Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D15     0 20/11/2025
+                                                                                   BASICO                         08:20
+                                                                                   PZO-                           14/11/2025
+SUGEY_BRITO        10.10.16.7  SUGEY_BRITO        Activo     @a12345678 10.10.16.1 PLAN-    SS_RDE_SFSQ_D30     0 17:38
+                                                                                   BASICO
+LUIS_MENDOZA       10.10.16.11 LUIS_MENDOZA       Suspendido @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 10/11/2025
+                                                                                   BASICO                         13:43
+MIGUELYS_GONZALEZ  10.10.16.10 MIGUELYS_GONZALEZ  Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/11/2025
+                                                                                   BASICO                         17:51
+DANIEL_MONTANEZ    10.10.14.10 DANIEL_MONTANEZ    Suspendido @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 03/11/2025
+                                                                                   BASICO                         23:04
+LIC.VALLE          10.10.16.13 LIC.VALLE          Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 01/11/2025
+                                                                                   BASICO                         14:52
+ROMULO SILVA       10.10.16.14 ROMULO_SILVA       Activo     @a12345678 10.10.16.1 PLB-RS-  SS_RDE_SFSQ_D30     0 31/10/2025
+                                                                                   BASICO                         17:04
+ROSELI RUIZ        10.10.14.6  ROSELI_RUIZ        Suspendido @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 31/10/2025
+                                                                                   BASICO                         14:06
+CESAR_YASSONA      10.10.18.3  CESAR_YASSONA      Suspendido @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/09/2025
+                                                                                   BASICO                         12:55
+SARA_MUJICA        10.10.30.3  SARA_MUJICA        Gratis     @a12345678 10.10.30.1 GRATIS   SS_RDE_SFSQ_D30     0 08/09/2025
+                                                                                                                  00:17
+NICOLAS_MUJICA     10.10.18.14 NICOLAS_MUJICA     Activo     @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/09/2025
+                                                                                   BASICO                         12:12
+INDRELIS_PEREZ     10.10.13.3  INDRELIS_PEREZ     Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 04/09/2025
+                                                                                   BASICO                         18:34
+SILINEG_MATA       10.10.30.6  SILINEG_MATA       Gratis     @a12345678 10.10.30.1 GRATIS   SS_RDE_SFSQ_D30     0 29/08/2025
+                                                                                                                  18:35
+LEUDIS MANRIQUE    10.10.12.8  LEUDIS_MANRIQUE    Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D15     0 21/08/2025
+                                                                                   BASICO                         17:11
+JENIFER CAMPOS     10.10.11.3  JENIFER_CAMPOS     Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 20/07/2025
+                                                                                   BASICO                         14:20
+DARI MANEIRO       10.10.11.6  DARI_MANEIRO       Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D15     0 13/07/2025
+                                                                                   BASICO                         13:20
+GILBERTO GONZALEZ  10.10.13.4  GILBERTO_GONZALEZ  Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D15     0 13/07/2025
+                                                                                   BASICO                         13:13
+ADOLFO SUAREZ      10.10.30.8  ADOLFO_SUAREZ      Gratis     @a12345678 10.10.30.1 GRATIS   SS_RDE_SFSQ_D30     0 29/06/2025
+                                                                                                                  14:43
+IRYS SSID2         10.10.30.4  IRYS_SSID2         Gratis     @a12345678 10.10.30.1 GRATIS   SS_RDE_SFSQ_D30     0 29/06/2025
+                                                                                                                  14:41
+RICHARD PEREZ      10.10.30.9  RICHARD_PEREZ      Gratis     @a12345678 10.10.30.1 GRATIS   SS_RDE_SFSQ_D30     0 29/06/2025
+                                                                                                                  14:40
+KARINA             10.10.11.8  KARINA             Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 29/06/2025
+                                                                                   BASICO                         12:08
+GAITRE LATCHMAN    10.10.18.8  GAITRE_LATCHMAN    Activo     @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/06/2025
+                                                                                   BASICO                         09:01
+DANIELA_VALOR      10.10.12.3  DANIELA_VALOR      Suspendido @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 26/05/2025
+                                                                                   BASICO                         15:36
+JOSE_PENALOZA      10.10.15.13 JOSE_PENALOZA      Suspendido @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 22/04/2025
+                                                                                   BASICO                         09:58
+ASELMO             10.10.11.9  ASELMO             Suspendido @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 10/04/2025
+                                                                                   BASICO                         19:59
+ANDY DIAZ          10.10.30.5  ANDY_DIAZ          Gratis     @a12345678 10.10.30.1 GRATIS   SS_RDE_SFSQ_D30     0 13/03/2025
+                                                                                                                  16:14
+ANDREINA RODRÍGUEZ 10.10.18.9  ANDREINA_RODRIGUEZ Activo     @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 30/01/2025
+                                                                                   BASICO                         19:08
+                                                                                   PZO-                           25/09/2024
+JORMAURI BASTARDO  172.11.0.7  JORMAURI_BASTARDO  Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 14:06
+                                                                                   BASICO
+CESAR BELLO        10.10.18.6  CESAR_BELLO        Activo     @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/09/2024
+                                                                                   BASICO                         20:40
+ZULAY YANEZ        10.10.18.4  ZULAY_YANEZ        Activo     @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/09/2024
+                                                                                   ULTRA                          20:39
+YANET ZAPATA       10.10.18.12 YANET_ZAPATA       Suspendido @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/09/2024
+                                                                                   BASICO                         20:35
+SHEILA ASTUDILLO   10.10.11.5  SHEILA_ASTUDILLO   Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/09/2024
+                                                                                   BASICO                         20:31
+BILLY DIAZ         10.10.18.11 BILLY_DIAZ         Suspendido @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/09/2024
+                                                                                   BASICO                         20:16
+DANI SALAZAR       10.10.18.2  DANI_SALAZAR       Activo     @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D15     0 05/09/2024
+                                                                                   BASICO                         20:11
+ALEJANDRO ROJAS    10.10.18.10 ALEJANDRO_ROJAS    Activo     @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 05/09/2024
+                                                                                   BASICO                         19:48
+NORVELIA VIDAL     10.10.13.11 NORVELIA_VIDAL     Suspendido @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 19/08/2024
+                                                                                   BASICO                         16:48
+EDUARDO LEPAGUE    10.10.11.7  EDUARDO LEPAGUE    Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 10/08/2024
+                                                                                   BASICO                         19:27
+JESUS LAFFONT      10.10.12.4  JESUS_LAFFONT      Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 21/07/2024
+                                                                                   BASICO                         12:13
+                                                                                   PZO-                           13/07/2024
+NANCY_CASTILLO     172.11.0.3  NANCY_CASTILLO     Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 18:08
+                                                                                   BASICO
+GENESIS BLANCO     10.10.12.6  GENESIS BLANCO     Suspendido @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 07/07/2024
+                                                                                   BASICO                         00:33
+SAMUEL BERMUDEZ    10.10.12.11 SAMUEL BERMUDEZ    Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 07/07/2024
+                                                                                   BASICO                         00:31
+RAFAEL BOLIVAR     10.10.14.11 RAFAEL_BOLIVAR     Suspendido @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 31/05/2024
+                                                                                   BASICO                         21:25
+YUSMARIS VELASQUEZ 10.10.15.11 YUSMARIS_VELASQUEZ Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D15     0 30/05/2024
+                                                                                   BASICO                         20:13
+ROSIBEL VASQUEZ    10.10.14.7  ROSIBEL_VASQUEZ    Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 30/05/2024
+                                                                                   BASICO                         20:06
+NOVIS VARGAS       10.10.15.5  NORVIS_VARGAS      Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 30/05/2024
+                                                                                   BASICO                         19:53
+MANUEL GONZALEZ    10.10.13.5  MANUEL_GONZALEZ    Suspendido @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 30/05/2024
+                                                                                   BASICO                         19:35
+ALIS VEGA          10.10.13.9  ALIS_VEGA          Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 30/05/2024
+                                                                                   BASICO                         19:03
+KEILA BELMONTE     10.10.13.7  KEILA BELMONTE     Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D15     0 13/05/2024
+                                                                                   BASICO                         17:31
+                                                                                   PZO-                           02/04/2024
+GERARDO ZOTO       172.11.0.10 GERARDO_ZOTO       Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 14:51
+                                                                                   BASICO
+STHEPANY MARTINEZ  172.12.0.11 STHEPANY_MARTINEZ  Activo     @a12345678 172.12.0.1 PLB-RS-  ZONA CAMBALACHE     0 02/04/2024
+                                                                                   BASICO                         14:51
+ARGENIS GONZALEZ   10.10.12.13 ARGENIS GONZALEZ   Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/02/2024
+                                                                                   BASICO                         15:59
+                                                                                   PZO-                           13/02/2024
+LUISA MARQUEZ      172.11.0.14 LUISA_MARQUEZ      Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 21:08
+                                                                                   BASICO
+                                                                                   PZO-                           13/02/2024
+GABRIEL FLORES     172.11.0.11 GABRIEL_FLORES     Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 21:08
+                                                                                   BASICO
+                                                                                   PZO-                           02/02/2024
+LUIS CODRINGTON    172.11.0.5  LUIS_CODRINGTON    Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 14:09
+                                                                                   BASICO
+                                                                                   PZO-                           02/02/2024
+IRIS GRAFFE        172.11.0.9  IRIS_GRAFFE        Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 14:09
+                                                                                   BASICO
+                                                                                   PZO-                           02/02/2024
+NAVARRO MARKELYS   172.11.0.2  NAVARRO_MARKELLIS  Activo     @a12345678 172.11.0.1 PLAN-    ZONA CAMBALACHE     0 14:09
+                                                                                   BASICO
+                                                                                   PZO-                           02/02/2024
+SAMIL ALVAREZ      172.12.0.13 SALMIL_ALVAREZ     Activo     @a12345678 172.12.0.1 PLAN-    ZONA CAMBALACHE     0 14:09
+                                                                                   BASICO
+WILMER JIMENEZ     10.10.11.11 WUILMER_JIMENEZ    Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         13:59
+LUIS ARTEAGA       10.10.14.12 LUIS_ARTEAGA       Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/01/2024
+                                                                                   BASICO                         13:58
+AURA HERNANDEZ     10.10.15.6  AURA_HERNANDEZ     Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+AURA PINUELA       10.10.12.10 AURA PINUELA       Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+DANIEL URBANO      10.10.12.12 DANIEL_URBANO      Suspendido @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+DANIUSKA TOLEDO    10.10.11.4  DANIUSKA_TOLEDO    Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+DANNY DIAZ         10.10.15.4  DANNY_DIAZ         Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+DAYANA PERAZA      10.10.12.14 DAYANA_PERAZA      Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+ELEONOR DIAZ       10.10.14.2  ELEONOR_DIAZ       Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+FELIX BRAZON       10.10.11.10 FELIX BRAZON       Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+GILBERTO QUIROZ    10.10.13.14 GILBERTO QUIROZ    Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/01/2024
+                                                                                   BASICO                         11:53
+GLEDIS FARIAS      10.10.15.8  GLEIDIS_FARIAS     Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+JARIANNY SIGNH     10.10.14.3  JARIANNYS_SIGNH    Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+JOSE BETANCOURD    10.10.14.5  JOSE_BETANCOURD    Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+KUMAR ARRIAN       10.10.12.5  ARRIAN_KUMAR       Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+JHOVANNY LAFONTT   10.10.11.12 JHOVANNY_LAFONT    Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+LAURA SALANDY      10.10.15.12 LAURA SALANDY      Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+MARILY SUAREZ      10.10.13.8  MARILY SUAREZ      Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+MARYURIS FARIAS    10.10.11.2  MARYURIS_FARIAS    Activo     @a12345678 10.10.11.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/01/2024
+                                                                                   BASICO                         11:53
+MIJAIL ABBA        10.10.15.7  MIJAIL_ABBAD       Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+MISLADY HERNANDEZ  10.10.18.13 MISLADYS HERNANDEZ Suspendido @a12345678 10.10.18.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+ORTENCIA NAVARRO   10.10.13.6  ORTENCIA NAVARRO   Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+PALOMO LORENZO     10.10.14.8  PALOMO LORENZO     Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+JHONNY PAUCARD     10.10.15.10 YONNY PAUCARD      Activo     @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+RAIZA SANCHEZ      10.10.14.9  RAIZA_SANCHEZ      Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/01/2024
+                                                                                   BASICO                         11:53
+RICARDO TOVAR      10.10.12.7  RICCARDO TOVAR     Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+ROGELIO CENTENO    10.10.13.10 ROGELIO_CENTENO    Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/01/2024
+                                                                                   BASICO                         11:53
+VANESSA RIVAS      10.10.13.2  VANESSA_RIVAS      Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+WILSON ROJAS       10.10.14.13 PEDRO_GRILLET      Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+WINDER MANUEL      10.10.15.9  WUINDER MANUEL     Suspendido @a12345678 10.10.15.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+YASENIS ABACHE     10.10.14.14 YASENIS ABACHE     Activo     @a12345678 10.10.14.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53
+YASMIN MUNOZ       10.10.12.9  YASMIN_MUNOZ       Activo     @a12345678 10.10.12.1 PLB-RS-  SS_RDE_SFSQ_D15     0 16/01/2024
+                                                                                   BASICO                         11:53
+ZURIMAR CORDERO    10.10.13.13 ZURIMAR CORDERO    Activo     @a12345678 10.10.13.1 PLB-RS-  SS_RDE_SFSQ_D30     0 16/01/2024
+                                                                                   BASICO                         11:53

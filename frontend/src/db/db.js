@@ -7,9 +7,10 @@ db.version(1).stores({
     client_equipments: '++id, cliente_id, servicio_requerido, tipo_instalacion, antena_ip',
     technicians: '++id, nombre, especialidad, telefono, status',
     services: '++id, nombre, descripcion, precio',
-    tasks: '++id, ticket_id, titulo, descripcion, cliente_id, tecnico_admin_id, instalador_id, estado, started_at',
+    tasks: '++id, ticket_id, titulo, descripcion, cliente_id, tecnico_admin_id, instalador_id, estado, started_at, monto',
     audit_logs: '++id, usuario, accion, tabla, registro_id, detalle, timestamp',
-    expenses: '++id, categoria, subcategoria, producto_nombre, marca, modelo, tipo, monto, metodo_pago, fecha, hora, descripcion'
+    expenses: '++id, categoria, subcategoria, producto_nombre, marca, modelo, tipo, monto, metodo_pago, fecha, hora, descripcion',
+    incomes: '++id, categoria, monto, metodo_pago, fecha, hora, descripcion, origen_id, tipo_origen'
 });
 
 export const logAction = async (usuario, accion, tabla, registro_id, detalle) => {
@@ -33,7 +34,7 @@ export const exportData = async () => {
         payload: {}
     };
 
-    const tables = ['customers', 'client_equipments', 'technicians', 'services', 'tasks', 'audit_logs', 'expenses'];
+    const tables = ['customers', 'client_equipments', 'technicians', 'services', 'tasks', 'audit_logs', 'expenses', 'incomes'];
     for (const table of tables) {
         data.payload[table] = await db[table].toArray();
     }

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Sparkles, DollarSign, Search, Plus, Edit3, Trash2, LayoutGrid, FileText, Zap, ShieldCheck, Rocket } from 'lucide-react';
+import { Sparkles, DollarSign, Search, Plus, Edit3, Trash2, FileText, Zap, ShieldCheck, Rocket } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import ServicioWizard from '../components/ServicioWizard';
 
@@ -27,7 +27,7 @@ const Servicios = () => {
   );
 
   return (
-    <div className="space-y-8 page-transition pb-20">
+    <div className="space-y-6 page-transition pb-20">
       {/* Premium Header */}
       <div className="view-header">
         <div className="relative z-10 flex items-center gap-6">
@@ -51,26 +51,26 @@ const Servicios = () => {
       {/* Premium Search & Grouped Filter List */}
       <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
         <div className="relative group text-slate-900 dark:text-white">
-          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none transition-all duration-500 text-emerald-400 group-focus-within:text-emerald-500 group-focus-within:scale-110">
-            <Search size={22} />
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-emerald-400 group-focus-within:text-emerald-500">
+            <Search size={18} />
           </div>
           <input
             type="text"
-            placeholder="Filtrar servicios por alcance..."
-            className="w-full pl-16 pr-8 py-5 bg-white dark:bg-slate-900 rounded-[2rem] border-2 border-emerald-100 dark:border-emerald-500/20 shadow-xl focus:ring-8 focus:ring-emerald-500/5 focus:border-emerald-400 dark:focus:border-emerald-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-lg"
+            placeholder="Filtrar servicios..."
+            className="w-full pl-12 pr-6 py-2.5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-emerald-100 dark:border-emerald-500/20 shadow-lg focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-400 dark:focus:border-emerald-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-        <div className="flex flex-col gap-2">
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-slate-500 ml-4 mb-1 italic">Categoría de Servicio:</span>
-            <div className="inline-flex flex-wrap p-1 gap-1 bg-white dark:bg-slate-900 border-2 border-emerald-50 dark:border-emerald-500/10 rounded-[2rem] shadow-lg w-fit">
+        <div className="flex flex-col gap-1.5">
+            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 ml-3 italic">Categoría:</span>
+            <div className="inline-flex flex-wrap p-1 gap-1 bg-white dark:bg-slate-900 border-2 border-emerald-50 dark:border-emerald-500/10 rounded-2xl shadow-lg w-fit">
                 {['Todos', 'Internet', 'Instalación', 'Cámaras', 'Hardware', 'Software'].map(tag => (
                     <button 
                       key={tag}
                       onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)} 
-                      className={`px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30' : 'text-slate-400 dark:text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:text-emerald-600'}`}
+                      className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30' : 'text-slate-400 dark:text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:text-emerald-600'}`}
                     >
                         {tag}
                     </button>
@@ -79,47 +79,45 @@ const Servicios = () => {
         </div>
       </div>
 
-      {/* Grid of Premium Catalog Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-1">
+      {/* Grid of Premium Catalog Cards - Compact */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 px-1">
         {filteredServicios.map((servicio) => (
-          <div key={servicio.id} className="premium-card p-0 group flex flex-col relative overflow-hidden transform hover:-translate-y-2">
-            {/* Top Banner with Gradient */}
-            <div className="h-1.5 bg-logo-gradient w-full opacity-80 group-hover:h-2 transition-all duration-500"></div>
+          <div key={servicio.id} className="premium-card p-0 group flex flex-col relative overflow-hidden transform hover:-translate-y-1">
+            <div className="h-1 bg-logo-gradient w-full opacity-80 group-hover:h-1.5 transition-all duration-500"></div>
             
-            <div className="p-5 pt-4">
-              <div className="flex justify-between items-start mb-4">
-                <div className="w-10 h-10 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-700 shadow-sm border border-slate-100 dark:border-slate-700">
-                  <Sparkles size={16} />
+            <div className="p-3">
+              <div className="flex justify-between items-start mb-2">
+                <div className="w-8 h-8 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-700 shadow-sm border border-slate-100 dark:border-slate-700">
+                  <Sparkles size={14} />
                 </div>
-                <div className="flex gap-1.5 opacity-0 group-hover:opacity-100 transition-all transform translate-y-1 group-hover:translate-y-0">
-                  <button onClick={() => handleEdit(servicio)} className="p-2.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-xl hover:shadow-lg transition-all">
-                    <Edit3 size={16} />
+                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                  <button onClick={() => handleEdit(servicio)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-emerald-600 rounded-md transition-all shadow-sm">
+                    <Edit3 size={11} />
                   </button>
-                  <button onClick={(e) => handleDelete(e, servicio.id)} className="p-2.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-xl hover:shadow-lg transition-all">
-                    <Trash2 size={16} />
+                  <button onClick={(e) => handleDelete(e, servicio.id)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-md transition-all shadow-sm">
+                    <Trash2 size={11} />
                   </button>
                 </div>
               </div>
 
               <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-2">
-                   <Zap size={12} className="text-emerald-500 fill-emerald-500/20" />
-                   <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 italic">Solución Activa</span>
+                <div className="flex items-center gap-1 mb-1">
+                   <Zap size={9} className="text-emerald-500 fill-emerald-500/20" />
+                   <span className="text-[7px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 italic">Red Item</span>
                 </div>
-                <h3 className="text-base font-black text-slate-900 dark:text-white mb-1 uppercase tracking-tight group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1 italic">{servicio.nombre}</h3>
-                <p className="text-slate-400 dark:text-slate-500 text-[9px] font-bold leading-relaxed line-clamp-2 italic">{servicio.descripcion || 'Sin descripción'}</p>
+                <h3 className="text-[11px] font-black text-slate-900 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-1 italic">{servicio.nombre}</h3>
+                <p className="text-slate-400 dark:text-slate-500 text-[8px] font-bold leading-tight line-clamp-1 italic">{servicio.descripcion || 'Sin descripción'}</p>
                 
-                <div className="mt-auto pt-4 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
+                <div className="mt-auto pt-2 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-[7px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600 italic">Inversión</span>
-                    <div className="flex items-center gap-1 text-slate-900 dark:text-white mt-0.5">
-                      <DollarSign size={12} className="text-emerald-500" />
-                      <span className="text-lg font-black tracking-tighter italic">{parseFloat(servicio.precio).toLocaleString()}</span>
+                    <div className="flex items-center gap-0.5 text-slate-900 dark:text-white mt-0.5">
+                      <DollarSign size={10} className="text-emerald-500" />
+                      <span className="text-sm font-black tracking-tighter italic">{parseFloat(servicio.precio).toLocaleString()}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                     <ShieldCheck size={14} className="text-slate-200 dark:text-slate-700" />
-                     <span className="text-[8px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest italic">RED</span>
+                  <div className="flex items-center gap-1">
+                     <ShieldCheck size={10} className="text-slate-200 dark:text-slate-700" />
+                     <span className="text-[7px] font-black text-slate-300 dark:text-slate-600 uppercase italic">RED</span>
                   </div>
                 </div>
               </div>
@@ -127,15 +125,15 @@ const Servicios = () => {
           </div>
         ))}
 
-        {/* Action Card: Add New */}
+        {/* Action Card: Add New - Compact */}
         <div 
           onClick={() => { setEditingId(null); setIsWizardOpen(true); }}
-          className="rounded-3xl border-3 border-dashed border-slate-100 dark:border-slate-800 p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:border-emerald-500/20 hover:bg-emerald-500/5 dark:hover:bg-emerald-500/10 transition-all group min-h-[180px]"
+          className="rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800 p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:border-emerald-500/20 hover:bg-emerald-500/5 dark:hover:bg-emerald-500/10 transition-all group min-h-[100px]"
         >
-           <div className="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600 group-hover:scale-110 group-hover:text-emerald-500 transition-all mb-3">
-              <Plus size={24} />
+           <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600 group-hover:scale-110 group-hover:text-emerald-500 transition-all mb-1.5 shadow-sm">
+              <Plus size={16} />
            </div>
-           <span className="text-[9px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600 group-hover:text-emerald-500 italic">Agregar item</span>
+           <span className="text-[8px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600 group-hover:text-emerald-500 italic">Añadir</span>
         </div>
       </div>
 

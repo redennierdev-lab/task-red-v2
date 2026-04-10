@@ -128,29 +128,38 @@ const Historial = () => {
         {historialTareas.map(tarea => {
             const cliente = getCliente(tarea.cliente_id);
             return (
-              <div key={tarea.id} className="premium-card p-3 flex flex-col relative overflow-hidden group">
-                <div className="absolute top-2 right-2 flex items-center gap-1 z-20">
-                    <button 
-                        onClick={() => handlePrint(tarea, cliente)}
-                        className="p-1.5 bg-slate-900 text-white rounded-lg hover:bg-black transition-colors shadow-lg"
-                    >
-                        <Printer size={10}/>
-                    </button>
-                    <div className={`px-1.5 py-0.5 rounded-full text-[7px] font-black uppercase tracking-tighter flex items-center gap-0.5 border
+              <div key={tarea.id} className="compact-task-card group relative p-0 transition-all duration-300">
+                <div className="compact-card-accent opacity-100 bg-slate-200 dark:bg-slate-800"></div>
+                
+                <div className="p-3 bg-white dark:bg-slate-900 relative z-10">
+                  <div className="flex justify-between items-start mb-1.5">
+                    <div className="flex items-center gap-1">
+                      <span className="mini-tag">
+                        {tarea.ticket_id || `TSK-${tarea.id}`}
+                      </span>
+                      <div className={`mini-badge
                         ${tarea.estado === 'Completada' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20' : 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border-red-100 dark:border-red-500/20'}`}>
                         {tarea.estado === 'Completada' ? <CheckCircle2 size={8}/> : <XCircle size={8}/>}
                         <span>{tarea.estado}</span>
+                      </div>
                     </div>
-                </div>
-                
-                <div className="flex-1 pt-1 pr-12">
-                   <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 dark:group-hover:text-fuchsia-400 transition-colors line-clamp-1 italic">{tarea.titulo}</h3>
-                   <p className="text-slate-400 dark:text-slate-500 text-[8px] mb-2 leading-tight font-medium line-clamp-1 italic">{tarea.descripcion}</p>
-                </div>
+                    <button 
+                        onClick={() => handlePrint(tarea, cliente)}
+                        className="p-1 bg-slate-900 text-white rounded shadow-sm hover:bg-black transition-all"
+                    >
+                        <Printer size={10}/>
+                    </button>
+                  </div>
+                  
+                  <div className="flex-1 pt-0.5">
+                    <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">{tarea.titulo}</h3>
+                    <p className="text-slate-400 dark:text-slate-500 text-[8px] mb-2 leading-tight font-medium line-clamp-1 italic">{tarea.descripcion}</p>
+                  </div>
 
-                <div className="mt-auto border-t border-slate-50 dark:border-slate-800 pt-2 flex items-center justify-between gap-1">
-                    <span className="text-[7px] font-black text-slate-800 dark:text-slate-300 uppercase italic tracking-tighter line-clamp-1 max-w-[60px]">{cliente.nombre || 'SF'}</span>
-                    <span className="text-[6px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest line-clamp-1 italic">{cliente.direccion?.substring(0, 15) || 'S/D'}</span>
+                  <div className="mt-auto border-t border-slate-50 dark:border-slate-800 pt-2 flex items-center justify-between gap-1">
+                      <span className="text-[7px] font-black text-slate-800 dark:text-slate-300 uppercase italic tracking-tighter line-clamp-1 max-w-[60px]">{cliente.nombre || 'SF'}</span>
+                      <span className="text-[6px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest line-clamp-1 italic">{cliente.direccion?.substring(0, 15) || 'S/D'}</span>
+                  </div>
                 </div>
               </div>
             );

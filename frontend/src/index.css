@@ -50,6 +50,22 @@
   .brand-icon {
     @apply flex items-center justify-center w-12 h-12 bg-logo-gradient text-white rounded-xl shadow-xl shadow-orange-500/20 transform rotate-3 hover:rotate-0 transition-transform;
   }
+
+  .compact-task-card {
+    @apply bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-lg dark:hover:shadow-fuchsia-500/10 relative overflow-hidden flex flex-col;
+  }
+
+  .compact-card-accent {
+    @apply absolute top-0 left-0 w-0.5 h-full bg-logo-gradient opacity-0 group-hover:opacity-100 transition-opacity;
+  }
+
+  .mini-badge {
+    @apply px-1.5 py-0.5 rounded-full text-[7px] font-black uppercase tracking-tighter flex items-center gap-0.5 border transition-colors;
+  }
+
+  .mini-tag {
+    @apply bg-slate-900 dark:bg-slate-800 text-white font-mono text-[7px] font-black px-1.5 py-0.5 rounded shadow-sm uppercase;
+  }
 }
 
 .custom-scrollbar::-webkit-scrollbar {

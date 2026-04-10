@@ -30,10 +30,13 @@ const AppContent = () => {
       }
     };
 
-    const listener = CapApp.addListener('appStateChange', handleAppStateChange);
+    let handler;
+    CapApp.addListener('appStateChange', handleAppStateChange).then(h => {
+      handler = h;
+    });
     
     return () => {
-      listener.remove();
+      if (handler) handler.remove();
     };
   }, []);
 
@@ -76,7 +79,7 @@ const AppContent = () => {
             <div className="h-24 lg:hidden"></div>
           </main>
 
-          <BottomNav />
+          {!showSplash && <BottomNav />}
         </div>
       </Router>
     </div>

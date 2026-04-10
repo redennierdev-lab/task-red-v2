@@ -11,7 +11,22 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [userRole, setUserRole] = useState('Admin'); // 'Admin' | 'Técnico'
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [rates, setRates] = useState({ bcv: 0, usdt: 0, lastUpdate: null });
+  const [rates, setRates] = useState(() => {
+    const saved = localStorage.getItem('ennier_rates');
+    const defaultRates = { bcv: 0, usdt: 0, lastUpdate: null, manualBcv: 0, manualUsdt: 0, useManual: false };
+    return saved ? { ...defaultRates, ...JSON.parse(saved) } : defaultRates;
+  });
+
+  const saveRates = useCallback((newRates) => {
+    setRates(prev => {
+        const updated = { ...prev, ...newRates };
+        localStorage.setItem('ennier_rates', JSON.stringify(updated));
+        return updated;
+    });
+  }, []);
+
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
@@ -61,6 +76,12 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   const fetchRates = useCallback(async () => {
+    // Si el usuario prefiere manual, no intentamos fetch
+    if (rates.useManual && rates.manualBcv > 0) {
+        setRates(prev => ({ ...prev, bcv: prev.manualBcv, usdt: prev.manualUsdt, offline: false }));
+        return;
+    }
+
     if (!navigator.onLine) {
         setRates(prev => ({ ...prev, offline: true }));
         return;
@@ -69,18 +90,18 @@ export const AppProvider = ({ children }) => {
         const response = await fetch('https://pydolarvenezuela-api.vercel.app/api/v1/dollar');
         if (!response.ok) throw new Error('API response not ok');
         const data = await response.json();
-        const bcv = data?.monitors?.bcv?.price || 0;
-        const usdt = data?.monitors?.binance?.price || data?.monitors?.enparalelovzla?.price || 0;
+        const bcv = data?.monitors?.bcv?.price || rates.manualBcv || 0;
+        const usdt = data?.monitors?.binance?.price || data?.monitors?.enparalelovzla?.price || rates.manualUsdt || 0;
 
         if (bcv > 0 || usdt > 0) {
-            setRates({ bcv, usdt, lastUpdate: new Date(), offline: false });
+            saveRates({ bcv, usdt, lastUpdate: new Date(), offline: false });
         }
     } catch (error) {
-        console.error('Error obteniendo tasas:', error);
-        // Fallback robusto
-        setRates(prev => ({ ...prev, offline: true }));
+        // Silencio el error ruidoso en consola para no asustar al usuario
+        console.warn('API de tasas no disponible (CORS/Network). Usando valores locales.');
+        setRates(prev => ({ ...prev, bcv: prev.manualBcv || prev.bcv, usdt: prev.manualUsdt || prev.usdt, offline: true }));
     }
-  }, []);
+  }, [rates.useManual, rates.manualBcv, rates.manualUsdt, saveRates]);
 
   useEffect(() => {
     fetchRates();
@@ -104,10 +125,25 @@ export const AppProvider = ({ children }) => {
     };
     const table = tableMap[endpoint];
     try {
+      // CAPTURE FOR HISTORY
+      const recordToDelete = await db[table].get(id);
+      
       if (endpoint === 'customers') {
           await db.client_equipments.where('cliente_id').equals(id).delete();
       }
       await db[table].delete(id);
+      
+      // RECORD TO HISTORY
+      if (recordToDelete) {
+          pushHistory({
+              type: 'DELETE',
+              table: table,
+              id: id,
+              prev: recordToDelete,
+              endpoint: endpoint
+          });
+      }
+
       logAction('Admin', 'ELIMINACIÓN', endpoint, id, `Registro eliminado de LocalDB`);
       await refreshAll();
       return true;
@@ -126,13 +162,105 @@ export const AppProvider = ({ children }) => {
     };
     const table = tableMap[endpoint];
     try {
+      // CAPTURE FOR HISTORY
+      const recordBefore = await db[table].get(id);
+      
       await db[table].update(id, data);
+      
+      // RECORD TO HISTORY
+      pushHistory({
+          type: 'UPDATE',
+          table: table,
+          id: id,
+          prev: recordBefore,
+          payload: data,
+          endpoint: endpoint
+      });
+
       logAction('Admin', 'EDICIÓN', endpoint, id, `Actualizado en LocalDB`);
       await refreshAll();
       return true;
     } catch (error) {
       console.error(`Error updating LocalDB:`, error);
       return false;
+    }
+  };
+
+  const pushHistory = (action) => {
+    setHistory(prev => {
+        const newHistory = prev.slice(0, historyIndex + 1);
+        newHistory.push(action);
+        // Limit to 5
+        if (newHistory.length > 5) {
+            newHistory.shift();
+        }
+        return newHistory;
+    });
+    setHistoryIndex(prev => Math.min(prev + 1, 4));
+  };
+
+  const addRecord = async (endpoint, data) => {
+    const tableMap = {
+        'customers': 'customers',
+        'technicians': 'technicians',
+        'tasks': 'tasks',
+        'services': 'services'
+    };
+    const table = tableMap[endpoint];
+    try {
+      const id = await db[table].add(data);
+      
+      // RECORD TO HISTORY
+      pushHistory({
+          type: 'CREATE',
+          table: table,
+          id: id,
+          payload: data,
+          endpoint: endpoint
+      });
+
+      logAction('Admin', 'CREACIÓN', endpoint, id, `Nuevo registro en LocalDB`);
+      await refreshAll();
+      return id;
+    } catch (error) {
+      console.error(`Error adding to LocalDB:`, error);
+      return false;
+    }
+  };
+
+  const undo = async () => {
+    if (historyIndex < 0) return;
+    const action = history[historyIndex];
+    try {
+        if (action.type === 'UPDATE') {
+            await db[action.table].put(action.prev);
+        } else if (action.type === 'DELETE') {
+            await db[action.table].add(action.prev);
+        } else if (action.type === 'CREATE') {
+            await db[action.table].delete(action.id);
+        }
+        setHistoryIndex(prev => prev - 1);
+        await refreshAll();
+    } catch (err) {
+        console.error("Undo failed:", err);
+    }
+  };
+
+  const redo = async () => {
+    if (historyIndex >= history.length - 1) return;
+    const action = history[historyIndex + 1];
+    try {
+        if (action.type === 'UPDATE') {
+            await db[action.table].update(action.id, action.payload);
+        } else if (action.type === 'DELETE') {
+            await db[action.table].delete(action.id);
+        } else if (action.type === 'CREATE') {
+            await db[action.table].add(action.payload);
+        }
+        setHistoryIndex(prev => prev + 1);
+        await refreshAll();
+    } catch (err) {
+        console.error("Redo failed:", err);
     }
   };
 
@@ -181,9 +309,10 @@ export const AppProvider = ({ children }) => {
       clientes, tecnicos, tareas, servicios, loading,
       userRole, setUserRole,
       theme, toggleTheme,
-      rates, fetchRates,
+      rates, setRates, fetchRates,
       isOnline,
-      refreshAll, deleteRecord, updateRecord,
+      refreshAll, deleteRecord, updateRecord, addRecord,
+      undo, redo, canUndo: historyIndex >= 0, canRedo: historyIndex < history.length - 1,
       fetchClientes, fetchTecnicos, fetchTareas, fetchServicios
     }}>
       {children}

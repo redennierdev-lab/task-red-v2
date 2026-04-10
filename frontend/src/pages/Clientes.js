@@ -2,14 +2,22 @@ import React, { useContext, useState, useMemo } from 'react';
 import { AppContext } from '../context/AppContext';
 import Modal from '../components/Modal';
 import ClientWizard from '../components/ClientWizard';
-import { Search, Edit3, Trash2, Phone, Rocket, Users, MapPin, ChevronDown } from 'lucide-react';
+import ComprehensiveDetailModal from '../components/ComprehensiveDetailModal';
+import { Search, Edit3, Trash2, Phone, Rocket, Users, MapPin, ChevronDown, Printer, Download } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Clientes = () => {
-  const { clientes, fetchClientes, deleteRecord, updateRecord } = useContext(AppContext);
+  const { clientes, fetchClientes, deleteRecord, updateRecord, refreshAll } = useContext(AppContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingId, setEditingId] = useState(null);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState({ open: false, id: null });
   
   const [formData, setFormData] = useState({
     nombre: '',
@@ -79,7 +87,6 @@ const Clientes = () => {
       setIsModalOpen(false);
       setEditingId(null);
       setFormData({ nombre: '', identificacion: '', telefono: '', direccion: '' });
-      // Clientes refresh is handled by updateRecord -> refreshAll
     } catch (error) {
       console.error('Error updating client locally:', error);
       alert('Hubo un error al procesar la actualización en la base de datos local');
@@ -99,7 +106,6 @@ const Clientes = () => {
     let telFull = cliente.telefono || '';
     if (telFull.startsWith('+58')) {
         setEditPhoneCode('+58');
-        // Extraer operadora (3 dígitos después del +58)
         const possibleOp = telFull.substring(3, 6);
         if (vzlaOperators.some(o => o.value === possibleOp)) {
             setEditPhoneOperator(possibleOp);
@@ -128,13 +134,16 @@ const Clientes = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDeleteTrigger = (e, id) => {
     e.stopPropagation();
-    const success = await deleteRecord('customers', id);
-    if (success) {
-      alert('Cliente eliminado con éxito');
-    } else {
-      alert('Error al eliminar el cliente');
+    setConfirmDelete({ open: true, id });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (confirmDelete.id) {
+        await deleteRecord('customers', confirmDelete.id);
+        if (refreshAll) await refreshAll();
+        setConfirmDelete({ open: false, id: null });
     }
   };
 
@@ -142,6 +151,50 @@ const Clientes = () => {
     c.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) || 
     (c.cedula || c.identificacion)?.includes(searchTerm)
   );
+
+  const handlePrint = (cliente) => {
+      alert('Iniciando impresión de Ficha de Cliente: ' + cliente.nombre);
+  };
+
+  const handleSaveAsFile = async (cliente) => {
+      try {
+          const content = [
+              '================================',
+              '       FICHA DE CLIENTE         ',
+              '================================',
+              `NOMBRE  : ${cliente.nombre}`,
+              `ID/RIF  : ${cliente.cedula || cliente.identificacion}`,
+              `TEL     : ${cliente.telefono}`,
+              `DIR     : ${cliente.direccion}`,
+              '--------------------------------',
+              'HISTORIAL: Activo',
+              '================================',
+              '      redennierdev.com          ',
+              '================================',
+          ].join('\n');
+
+          const fileName = `CV_${cliente.cedula || cliente.id}.txt`;
+
+          if (Capacitor.isNativePlatform()) {
+              const savedFile = await Filesystem.writeFile({
+                  path: fileName,
+                  data: content,
+                  directory: Directory.Documents,
+                  encoding: 'utf8'
+              });
+              await Share.share({ title: 'Ficha de Cliente', url: savedFile.uri });
+          } else {
+              const blob = new Blob([content], { type: 'text/plain' });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = fileName;
+              link.click();
+          }
+      } catch (e) {
+          console.error(e);
+      }
+  };
 
   return (
     <div className="space-y-6 page-transition">
@@ -162,7 +215,7 @@ const Clientes = () => {
         </button>
       </div>
 
-      {/* Premium Search & Grouped Filter List */}
+      {/* Premium Search & Filters */}
       <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
         <div className="relative group text-slate-900 dark:text-white">
           <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500">
@@ -193,44 +246,43 @@ const Clientes = () => {
         </div>
       </div>
 
-      {/* Grid of Premium Cards - Compact */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 px-1">
         {filteredClientes.map((cliente) => (
-          <div key={cliente.id} className="premium-card p-0 group flex flex-col relative overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
-            <div className="h-1 bg-logo-gradient w-full opacity-80 group-hover:h-1.5 transition-all duration-500"></div>
-            <div className="p-3 bg-white dark:bg-slate-900 flex-1 relative flex flex-col">
-            <div className="absolute -right-2 -top-2 w-16 h-16 bg-slate-50 dark:bg-fuchsia-500/5 rounded-full transition-all group-hover:bg-orange-500 dark:group-hover:bg-fuchsia-500 group-hover:opacity-5"></div>
+          <div key={cliente.id} className="compact-task-card group relative p-0 transition-all duration-300 cursor-pointer" onClick={() => { setSelectedClient(cliente); setDetailModalOpen(true); }}>
+            <div className="compact-card-accent"></div>
             
-            <div className="flex justify-between items-start mb-2 relative z-10">
-              <div className="w-7 h-7 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 group-hover:bg-orange-500 dark:group-hover:bg-fuchsia-500 group-hover:text-white transition-all duration-500 shadow-sm border border-slate-100 dark:border-slate-700">
-                <Users size={12} />
-              </div>
-              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                <button onClick={(e) => handleEdit(e, cliente)} className="p-1.5 bg-white dark:bg-slate-800 text-slate-400 hover:text-orange-500 dark:hover:text-fuchsia-400 rounded-md transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
-                  <Edit3 size={11} />
-                </button>
-                <button onClick={(e) => handleDelete(e, cliente.id)} className="p-1.5 bg-white dark:bg-slate-800 text-slate-400 hover:text-red-500 dark:hover:text-red-400 rounded-md transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
-                  <Trash2 size={11} />
-                </button>
-              </div>
-            </div>
-            <div className="relative z-10">
-              <h3 className="text-[11px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 dark:group-hover:text-fuchsia-400 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
-              <p className="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 italic">ID: {cliente.cedula || cliente.identificacion}</p>
-              
-              <div className="space-y-1.5 pt-2 border-t border-slate-50 dark:border-slate-800 text-slate-500 dark:text-slate-400">
-                <div className="flex items-center gap-2">
-                  <Phone size={9} className="text-orange-500/50" />
-                  <span className="text-[9px] font-bold font-mono">{cliente.telefono}</span>
+            <div className="p-3 bg-white dark:bg-slate-900 flex-1 relative flex flex-col">
+              <div className="flex justify-between items-start mb-1.5 relative z-10">
+                <div className="w-7 h-7 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-500 shadow-sm border border-slate-100 dark:border-slate-700">
+                  <Users size={12} />
                 </div>
-                <div className="flex items-center gap-2">
-                  <MapPin size={9} className="text-orange-500/50" />
-                  <span className="text-[8px] font-black uppercase tracking-wider line-clamp-1 italic">{cliente.direccion}</span>
+                <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                  <button onClick={(e) => handleEdit(e, cliente)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-orange-500 dark:hover:text-fuchsia-400 rounded-md transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
+                    <Edit3 size={11} />
+                  </button>
+                  <button onClick={(e) => handleDeleteTrigger(e, cliente.id)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-red-500 dark:hover:text-red-400 rounded-md transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
+                    <Trash2 size={11} />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="relative z-10">
+                <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
+                <p className="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 italic truncate">ID: {cliente.cedula || cliente.identificacion}</p>
+                
+                <div className="space-y-1.5 pt-2 border-t border-slate-50 dark:border-slate-800 text-slate-500 dark:text-slate-400">
+                  <div className="flex items-center gap-1.5">
+                    <Phone size={8} className="text-orange-500/50" />
+                    <span className="text-[8px] font-bold font-mono">{cliente.telefono}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <MapPin size={8} className="text-orange-500/50" />
+                    <span className="text-[8px] font-black uppercase tracking-wider line-clamp-1 italic">{cliente.direccion}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         ))}
       </div>
 
@@ -244,7 +296,7 @@ const Clientes = () => {
         </div>
       )}
 
-      {/* Create/Edit Modal for EDITING ONLY */}
+      {/* Create/Edit Modal */}
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => {
@@ -356,6 +408,23 @@ const Clientes = () => {
       </Modal>
 
       <ClientWizard isOpen={isWizardOpen} setIsOpen={setIsWizardOpen} />
+
+      <ComprehensiveDetailModal 
+        isOpen={detailModalOpen}
+        onClose={() => setDetailModalOpen(false)}
+        data={selectedClient}
+        type="client"
+        onPrint={handlePrint}
+        onSave={handleSaveAsFile}
+      />
+
+      <ConfirmModal 
+        isOpen={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, id: null })}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar Cliente"
+        message="¿Estás seguro de que deseas eliminar definitivamente a este cliente de la boveda local? Esta acción no se puede deshacer."
+      />
     </div>
   );
 };

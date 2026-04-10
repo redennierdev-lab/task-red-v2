@@ -5,20 +5,34 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db/db';
 import IngresoWizard from '../components/IngresoWizard';
 import { AppContext } from '../context/AppContext';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Ingresos = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const { theme } = useContext(AppContext);
+  const { theme, deleteRecord, refreshAll } = useContext(AppContext);
   const isDark = theme === 'dark';
-
-  // Consultar ingresos de la DB local en tiempo real
-  const rawIngresos = useLiveQuery(() => db.incomes.reverse().toArray(), []);
+  const [confirmDelete, setConfirmDelete] = useState({ open: false, id: null });
 
   const handleEdit = (id) => {
       setEditingId(id);
       setIsWizardOpen(true);
   };
+
+  const handleDeleteTrigger = (id) => {
+    setConfirmDelete({ open: true, id });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (confirmDelete.id) {
+        await deleteRecord('incomes', confirmDelete.id);
+        if (refreshAll) await refreshAll();
+        setConfirmDelete({ open: false, id: null });
+    }
+  };
+
+  // Consultar ingresos de la DB local en tiempo real
+  const rawIngresos = useLiveQuery(() => db.incomes.reverse().toArray(), []);
 
   // Agrupar por mes para la gráfica
   const chartData = useMemo(() => {
@@ -134,7 +148,7 @@ const Ingresos = () => {
             <h3 className="text-xs font-black text-slate-500 dark:text-slate-600 uppercase tracking-widest italic">Historial de Cobros Reales</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
             {rawIngresos.length === 0 ? (
                 <div className="col-span-full py-20 text-center border-2 border-dashed border-slate-100 dark:border-slate-800 rounded-[2.5rem] transition-colors">
                     <Wallet size={40} className="mx-auto text-slate-100 dark:text-slate-800 mb-4" />
@@ -143,44 +157,44 @@ const Ingresos = () => {
             ) : (
                 rawIngresos.map(i => (
                     <div key={i.id} className="premium-card p-0 group flex flex-col relative overflow-hidden transform hover:-translate-y-0.5 transition-all duration-300">
-                        <div className="h-1 bg-logo-gradient w-full opacity-80 group-hover:h-1.5 transition-all duration-500"></div>
+                        <div className="h-0.5 bg-logo-gradient w-full opacity-60 group-hover:h-1 transition-all duration-500"></div>
                         
-                        <div className="p-3 bg-white dark:bg-slate-900 relative">
-                            <div className="flex justify-between items-start mb-2">
-                                <div className={`w-7 h-7 rounded-lg flex items-center justify-center ${i.tipo_origen === 'Automático' ? 'bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-500' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'}`}>
-                                    {i.tipo_origen === 'Automático' ? <Zap size={14} /> : <Briefcase size={14} />}
+                        <div className="p-2.5 bg-white dark:bg-slate-900 relative">
+                            <div className="flex justify-between items-start mb-1.5">
+                                <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${i.tipo_origen === 'Automático' ? 'bg-fuchsia-50 dark:bg-fuchsia-500/10 text-fuchsia-500' : 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'}`}>
+                                    {i.tipo_origen === 'Automático' ? <Zap size={12} /> : <Briefcase size={12} />}
                                 </div>
                                 <div className="text-right">
-                                    <span className={`text-[7px] font-black uppercase px-2 py-0.5 rounded-full ${i.metodo_pago === 'Zelle' ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600' : i.metodo_pago === 'Binance' ? 'bg-yellow-50 dark:bg-yellow-500/10 text-yellow-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
+                                    <span className={`text-[6px] font-black uppercase px-1.5 py-0.5 rounded-full ${i.metodo_pago === 'Zelle' ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600' : i.metodo_pago === 'Binance' ? 'bg-yellow-50 dark:bg-yellow-500/10 text-yellow-600' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
                                         {i.metodo_pago}
                                     </span>
-                                    <p className="text-[7px] text-slate-300 dark:text-slate-700 font-black mt-0.5 uppercase italic">{i.fecha}</p>
+                                    <p className="text-[6px] text-slate-300 dark:text-slate-700 font-black mt-0.5 uppercase italic">{i.fecha}</p>
                                 </div>
                             </div>
                             
-                            <h4 className="font-black text-slate-800 dark:text-white text-[10px] uppercase truncate mb-1 italic">
+                            <h4 className="font-black text-slate-800 dark:text-white text-[9px] uppercase truncate mb-1 italic">
                                 {i.descripcion || 'Sin descripción'}
                             </h4>
-                            <div className="flex gap-1 mb-2">
-                                <span className="text-[6px] font-black bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1.5 py-0.5 rounded border border-slate-100 dark:border-slate-700 uppercase italic">{i.categoria}</span>
+                            <div className="flex gap-1 mb-1.5">
+                                <span className="text-[6px] font-black bg-slate-50 dark:bg-slate-800 text-slate-400 dark:text-slate-500 px-1 py-0.5 rounded border border-slate-100 dark:border-slate-700 uppercase italic">{i.categoria}</span>
                             </div>
 
-                            <div className="flex items-center justify-between pt-2 border-t border-slate-50 dark:border-slate-800">
+                            <div className="flex items-center justify-between pt-1.5 border-t border-slate-50 dark:border-slate-800">
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-black text-emerald-600 dark:text-emerald-400 italic">${parseFloat(i.monto).toLocaleString()}</span>
+                                    <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 italic">${parseFloat(i.monto).toLocaleString()}</span>
                                 </div>
                                 <div className="flex gap-1">
                                     <button 
                                         onClick={() => handleEdit(i.id)}
                                         className="p-1 text-slate-300 dark:text-slate-700 hover:text-orange-500 transition-colors"
                                     >
-                                        <Edit3 size={14} />
+                                        <Edit3 size={12} />
                                     </button>
                                     <button 
-                                        onClick={() => db.incomes.delete(i.id)}
+                                        onClick={() => handleDeleteTrigger(i.id)}
                                         className="p-1 text-slate-300 dark:text-slate-700 hover:text-red-500 transition-colors"
                                     >
-                                        <X size={14} />
+                                        <X size={12} />
                                     </button>
                                 </div>
                             </div>
@@ -197,8 +211,17 @@ const Ingresos = () => {
         editingId={editingId}
         setEditingId={setEditingId}
       />
+
+      <ConfirmModal 
+        isOpen={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, id: null })}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar Ingreso"
+        message="¿Estás seguro de que deseas eliminar este registro de ingreso de la boveda local? Esta acción no se puede deshacer."
+      />
     </div>
   );
 };
 
 export default Ingresos;
+

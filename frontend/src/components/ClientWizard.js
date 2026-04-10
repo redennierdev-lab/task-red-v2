@@ -4,7 +4,7 @@ import { AppContext } from '../context/AppContext';
 import { db, logAction } from '../db/db';
 
 const ClientWizard = ({ isOpen, setIsOpen }) => {
-    const { refreshAll } = useContext(AppContext);
+    const { refreshAll, addRecord } = useContext(AppContext);
     const [step, setStep] = useState(1);
     
     // States
@@ -150,7 +150,7 @@ const ClientWizard = ({ isOpen, setIsOpen }) => {
             };
             
             // Guardar cliente en LocalDB
-            const clienteId = await db.customers.add(customerData);
+            const clienteId = await addRecord('customers', customerData);
             
             // Guardar ficha técnica si existe equipo
             if (servicioRequerido) {
@@ -164,8 +164,6 @@ const ClientWizard = ({ isOpen, setIsOpen }) => {
                     ...eq
                 });
             }
-
-            await logAction('Admin', 'CREACIÓN', 'Customers', clienteId, `Cliente registrado: ${customer.nombre}`);
             
             refreshAll();
             alert('¡Cliente y Ficha Técnica guardados en el teléfono con éxito!');
@@ -219,27 +217,17 @@ const ClientWizard = ({ isOpen, setIsOpen }) => {
 
                     {step === 2 && (
                         <div className="space-y-6 page-transition">
-                            {tipo === 'Externo' ? (
-                                <>
-                                    <h3 className="text-xl font-black text-slate-800 dark:text-white text-center mb-8 uppercase tracking-widest italic">Clasificación de Empresa</h3>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <button onClick={() => { setClasificacion('Juridico'); setStep(3); }} className="p-8 rounded-[2rem] border-2 border-slate-100 dark:border-slate-800 hover:border-fuchsia-500 dark:hover:border-fuchsia-500 hover:bg-fuchsia-50 dark:hover:bg-fuchsia-500/5 flex flex-col items-center gap-4 transition-all group">
-                                            <Building2 size={48} className="text-fuchsia-500 group-hover:scale-110 transition-transform" />
-                                            <span className="font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest text-center italic">Cliente<br/>Jurídico</span>
-                                        </button>
-                                        <button onClick={() => { setClasificacion('Natural'); setStep(3); }} className="p-8 rounded-[2rem] border-2 border-slate-100 dark:border-slate-800 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/5 flex flex-col items-center gap-4 transition-all group">
-                                            <UserCircle size={48} className="text-orange-500 group-hover:scale-110 transition-transform" />
-                                            <span className="font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest text-center italic">Persona<br/>Natural</span>
-                                        </button>
-                                    </div>
-                                </>
-                            ) : (
-                                <div className="text-center py-10">
-                                    <CheckCircle2 size={64} className="mx-auto text-emerald-500 animate-bounce mb-4" />
-                                    <h3 className="text-xl font-black text-slate-800 dark:text-white uppercase tracking-widest italic">Cliente Interno Registrado</h3>
-                                    <button onClick={() => { setClasificacion('Natural'); setStep(3); }} className="mt-8 btn-gradient w-48 mx-auto rounded-full">Continuar <ArrowRight size={18}/></button>
-                                </div>
-                            )}
+                            <h3 className="text-xl font-black text-slate-800 dark:text-white text-center mb-8 uppercase tracking-widest italic">Clasificación de {tipo === 'Interno' ? 'Persona Natural' : 'Empresa'}</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                                <button onClick={() => { setClasificacion('Juridico'); setStep(3); }} className="p-8 rounded-[2rem] border-2 border-slate-100 dark:border-slate-800 hover:border-fuchsia-500 dark:hover:border-fuchsia-500 hover:bg-fuchsia-50 dark:hover:bg-fuchsia-500/5 flex flex-col items-center gap-4 transition-all group">
+                                    <Building2 size={48} className="text-fuchsia-500 group-hover:scale-110 transition-transform" />
+                                    <span className="font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest text-center italic">Cliente<br/>Jurídico</span>
+                                </button>
+                                <button onClick={() => { setClasificacion('Natural'); setStep(3); }} className="p-8 rounded-[2rem] border-2 border-slate-100 dark:border-slate-800 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-50 dark:hover:bg-orange-500/5 flex flex-col items-center gap-4 transition-all group">
+                                    <UserCircle size={48} className="text-orange-500 group-hover:scale-110 transition-transform" />
+                                    <span className="font-black text-slate-700 dark:text-slate-300 uppercase tracking-widest text-center italic">Persona<br/>Natural</span>
+                                </button>
+                            </div>
                         </div>
                     )}
 
@@ -256,21 +244,20 @@ const ClientWizard = ({ isOpen, setIsOpen }) => {
                                 Datos Base {clasificacion === 'Juridico' ? '(Persona Jurídica)' : '(Persona Natural)'}
                             </h3>
                             <div className="grid grid-cols-2 gap-4">
-                                
                                 <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">{clasificacion === 'Juridico' ? 'Nombre de la Empresa' : 'Nombres'}</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">
+                                        {clasificacion === 'Juridico' ? 'Nombre de la Empresa' : 'Nombres'}
+                                    </label>
                                     <input required type="text" className="w-full px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={customer.nombre} onChange={e=>setCustomer({...customer, nombre: e.target.value})} />
                                 </div>
-                                
-                                {clasificacion === 'Natural' && (
-                                    <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                                        <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">Apellidos</label>
-                                        <input required type="text" className="w-full px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={customer.apellidos} onChange={e=>setCustomer({...customer, apellidos: e.target.value})} />
-                                    </div>
-                                )}
-                                
                                 <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">{clasificacion === 'Juridico' ? 'RIF Fiscal' : 'Cédula de Identidad'}</label>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">
+                                        {clasificacion === 'Juridico' ? 'RIF Fiscal' : 'Apellidos'}
+                                    </label>
+                                    <input required type="text" className="w-full px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={customer.apellidos} onChange={e=>setCustomer({...customer, apellidos: e.target.value})} />
+                                </div>
+                                <div className="space-y-1.5 col-span-2 sm:col-span-1">
+                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">Cédula / RIF</label>
                                     <div className="flex bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:border-orange-500 transition-all shadow-inner overflow-hidden">
                                         <select className="bg-transparent pl-4 pr-1 font-black text-slate-600 dark:text-slate-400 outline-none border-r border-slate-200 dark:border-slate-700" value={prefijoId} onChange={e => { setPrefijoId(e.target.value); setIdNumber(''); }}>
                                             <option value="V">V</option>
@@ -280,89 +267,49 @@ const ClientWizard = ({ isOpen, setIsOpen }) => {
                                             <option value="P">P</option>
                                         </select>
                                         <div className="flex items-center text-slate-400 font-black pl-2">-</div>
-                                        <input 
-                                            required 
-                                            type="text" 
-                                            placeholder={['J','G'].includes(prefijoId) ? "12345678-9" : "12.345.678"} 
-                                            className="flex-1 bg-transparent px-3 py-2.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-wider text-sm" 
-                                            value={formatID(prefijoId, idNumber)} 
-                                            onChange={handleIdChange} 
-                                        />
+                                        <input required type="text" placeholder="12.345.678" className="flex-1 bg-transparent px-3 py-2.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-wider text-sm" value={formatID(prefijoId, idNumber)} onChange={handleIdChange} />
                                     </div>
                                 </div>
-
                                 <div className="space-y-1.5 col-span-2">
-                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 flex justify-between italic">
-                                        <span>Teléfono Configurado (WhatsApp)</span>
-                                        {!isValidPhone() && phoneNumber.length > 0 && <span className="text-red-500">Número incompleto</span>}
-                                    </label>
-                                    <div className={`flex items-center bg-slate-50 dark:bg-slate-800/50 border rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 transition-all shadow-inner overflow-hidden ${!isValidPhone() && phoneNumber.length > 0 ? 'border-red-400' : 'border-slate-200 dark:border-slate-700 focus-within:border-orange-500'}`}>
+                                    <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 flex justify-between italic"><span>Teléfono Configurado (WhatsApp)</span></label>
+                                    <div className="flex items-center bg-slate-50 dark:bg-slate-800/50 border rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 transition-all shadow-inner overflow-hidden border-slate-200 dark:border-slate-700 focus-within:border-orange-500">
                                         <div className="relative border-r border-slate-200 dark:border-slate-700">
-                                            <select 
-                                                className="appearance-none bg-transparent pl-4 pr-8 py-2.5 font-black text-slate-600 dark:text-slate-400 outline-none text-xs" 
-                                                value={phoneCode} 
-                                                onChange={e => { setPhoneCode(e.target.value); setPhoneNumber(''); }}
-                                            >
-                                                {countries.map(c => (
-                                                    <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
-                                                ))}
+                                            <select className="appearance-none bg-transparent pl-4 pr-8 py-2.5 font-black text-slate-600 dark:text-slate-400 outline-none text-xs" value={phoneCode} onChange={e => { setPhoneCode(e.target.value); setPhoneNumber(''); }}>
+                                                {(countries || []).map(c => (<option key={c.code} value={c.code}>{c.flag} {c.code}</option>))}
                                             </select>
                                             <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
                                         </div>
-
-                                        {phoneCode === '+58' && (
-                                            <div className="relative border-r border-slate-200 dark:border-slate-700 bg-orange-500/5">
-                                                <select 
-                                                    className="appearance-none bg-transparent pl-4 pr-8 py-4 font-black text-orange-600 dark:text-orange-400 outline-none" 
-                                                    value={phoneOperator} 
-                                                    onChange={e => setPhoneOperator(e.target.value)}
-                                                >
-                                                    {vzlaOperators.map(o => (
-                                                        <option key={o.value} value={o.value}>{o.label}</option>
-                                                    ))}
-                                                </select>
-                                                <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-orange-400" />
-                                            </div>
-                                        )}
-
-                                        <input 
-                                            required 
-                                            type="text" 
-                                            placeholder={phoneCode === '+58' ? "123-4567" : "1234567890"} 
-                                            className="flex-1 bg-transparent px-4 py-2.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-widest text-sm" 
-                                            value={phoneCode === '+58' ? formatPhoneLocal(phoneNumber) : phoneNumber} 
-                                            onChange={handlePhoneChange} 
-                                        />
+                                        <div className="relative border-r border-slate-200 dark:border-slate-700 bg-orange-500/5">
+                                            <select className="appearance-none bg-transparent pl-4 pr-8 py-4 font-black text-orange-600 dark:text-orange-400 outline-none" value={phoneOperator} onChange={e => setPhoneOperator(e.target.value)}>
+                                                {vzlaOperators.map(o => (<option key={o.value} value={o.value}>{o.label}</option>))}
+                                            </select>
+                                            <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-orange-400" />
+                                        </div>
+                                        <input required type="text" placeholder="123-4567" className="flex-1 bg-transparent px-4 py-2.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-widest text-sm" value={phoneCode === '+58' ? formatPhoneLocal(phoneNumber) : phoneNumber} onChange={handlePhoneChange} />
                                     </div>
                                 </div>
-                                
                                 <div className="space-y-1.5 col-span-2 sm:col-span-1">
                                     <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">{clasificacion === 'Juridico' ? 'Correo Electrónico (Obligatorio)' : 'Correo (Opcional)'}</label>
-                                    <input required={clasificacion==='Juridico'} type="email" placeholder="ejemplo@google.com" className="w-full px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={customer.correo} onChange={e=>setCustomer({...customer, correo: e.target.value})}/>
+                                    <input required={clasificacion === 'Juridico'} type="email" placeholder="ejemplo@google.com" className="w-full px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={customer.correo} onChange={e=>setCustomer({...customer, correo: e.target.value})} />
                                 </div>
-
                                 <div className="space-y-1.5 col-span-2">
                                     <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-1 italic">Dirección Exacta</label>
                                     <div className="flex items-center gap-2">
                                         <input required type="text" placeholder="Ej: Villa Alianza, Puerto Ordaz" className="flex-1 px-5 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={customer.direccion} onChange={e=>setCustomer({...customer, direccion: e.target.value})} />
-                                        <button type="button" onClick={openGoogleMaps} title="Buscar en Google Maps" className="w-14 h-14 shrink-0 bg-blue-50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center transition-all shadow-sm">
-                                            <MapIcon size={24} />
-                                        </button>
+                                        <button type="button" onClick={openGoogleMaps} title="Buscar en Google Maps" className="w-14 h-14 shrink-0 bg-blue-50 dark:bg-blue-500/10 hover:bg-blue-100 dark:hover:bg-blue-500/20 border border-blue-200 dark:border-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center transition-all shadow-sm"><MapIcon size={24} /></button>
                                     </div>
                                 </div>
-                                
                                 <div className="col-span-2 grid grid-cols-2 gap-4 bg-slate-50/50 dark:bg-slate-950/20 p-4 rounded-[2rem] border border-slate-100 dark:border-slate-800 transition-colors">
                                     <div className="space-y-1.5">
                                         <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-600 pl-1 flex items-center gap-1 italic"><MapPin size={12}/> Latitud</label>
-                                        <input required type="text" placeholder="8.293..." className="w-full px-5 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={lat} onChange={e=>setLat(e.target.value)} />
+                                        <input required type="text" placeholder="8.293..." class="w-full px-5 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={lat} onChange={e=>setLat(e.target.value)} />
                                     </div>
                                     <div className="space-y-1.5">
                                         <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-600 pl-1 flex items-center gap-1 italic"><MapPin size={12}/> Longitud</label>
-                                        <input required type="text" placeholder="-62.730..." className="w-full px-5 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={lon} onChange={e=>setLon(e.target.value)} />
+                                        <input required type="text" placeholder="-62.730..." class="w-full px-5 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-full focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none shadow-inner text-sm" value={lon} onChange={e=>setLon(e.target.value)} />
                                     </div>
                                     <p className="col-span-2 text-center text-[9px] text-slate-400 dark:text-slate-600 font-bold uppercase mt-1 italic">Busca la caja en Google Maps, haz clic derecho sobre el mapa y copia los dos valores numéricos.</p>
                                 </div>
-                                
                                 <button type="submit" className="hidden" id="submit-step3">HiddenSubmit</button>
                             </div>
                         </form>

@@ -2,22 +2,30 @@ import React, { useContext, useState } from 'react';
 import { Sparkles, DollarSign, Search, Plus, Edit3, Trash2, FileText, Zap, ShieldCheck, Rocket } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import ServicioWizard from '../components/ServicioWizard';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Servicios = () => {
-  const { servicios, deleteRecord } = useContext(AppContext);
+  const { servicios, deleteRecord, refreshAll } = useContext(AppContext);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState({ open: false, id: null });
 
   const handleEdit = (servicio) => {
     setEditingId(servicio.id);
     setIsWizardOpen(true);
   };
 
-  const handleDelete = async (e, id) => {
+  const handleDeleteTrigger = (e, id) => {
     e.stopPropagation();
-    if (window.confirm('¿Eliminar este servicio del catálogo local definitivamente?')) {
-        await deleteRecord('services', id);
+    setConfirmDelete({ open: true, id });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (confirmDelete.id) {
+        await deleteRecord('services', confirmDelete.id);
+        if (refreshAll) await refreshAll();
+        setConfirmDelete({ open: false, id: null });
     }
   };
 
@@ -48,7 +56,7 @@ const Servicios = () => {
         </button>
       </div>
 
-      {/* Premium Search & Grouped Filter List */}
+      {/* Premium Search & Filters */}
       <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
         <div className="relative group text-slate-900 dark:text-white">
           <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-emerald-400 group-focus-within:text-emerald-500">
@@ -79,7 +87,7 @@ const Servicios = () => {
         </div>
       </div>
 
-      {/* Grid of Premium Catalog Cards - Compact */}
+      {/* Grid of Catalog Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 px-1">
         {filteredServicios.map((servicio) => (
           <div key={servicio.id} className="premium-card p-0 group flex flex-col relative overflow-hidden transform hover:-translate-y-1">
@@ -94,7 +102,7 @@ const Servicios = () => {
                   <button onClick={() => handleEdit(servicio)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-emerald-600 rounded-md transition-all shadow-sm">
                     <Edit3 size={11} />
                   </button>
-                  <button onClick={(e) => handleDelete(e, servicio.id)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-md transition-all shadow-sm">
+                  <button onClick={(e) => handleDeleteTrigger(e, servicio.id)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-md transition-all shadow-sm">
                     <Trash2 size={11} />
                   </button>
                 </div>
@@ -125,7 +133,7 @@ const Servicios = () => {
           </div>
         ))}
 
-        {/* Action Card: Add New - Compact */}
+        {/* Action Card: Add New */}
         <div 
           onClick={() => { setEditingId(null); setIsWizardOpen(true); }}
           className="rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800 p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:border-emerald-500/20 hover:bg-emerald-500/5 dark:hover:bg-emerald-500/10 transition-all group min-h-[100px]"
@@ -155,6 +163,15 @@ const Servicios = () => {
         setIsOpen={setIsWizardOpen} 
         editingId={editingId} 
         setEditingId={setEditingId} 
+      />
+
+      {/* Confirmación de Eliminación */}
+      <ConfirmModal 
+        isOpen={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, id: null })}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar Servicio"
+        message="¿Estás seguro de que deseas eliminar este servicio del catálogo local definitivamente? Esta acción no se puede deshacer."
       />
     </div>
   );

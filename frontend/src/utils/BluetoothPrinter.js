@@ -56,7 +56,7 @@ const BluetoothPrinter = {
         );
       });
     }
-    return [{ name: 'DEMO PRINTER (Web)', address: '00:11:22:33:44:55' }];
+    return [{ name: 'Sistema (Web/PDF)', address: 'SYSTEM-PRINT' }];
   },
 
   // Escanear dispositivos NO VINCULADOS (Descubrimiento)
@@ -170,10 +170,10 @@ const BluetoothPrinter = {
           );
         });
         if (!enabled) {
-          // Si el usuario cancela, volvemos a preguntar si sigue interesado
-          const retry = window.confirm("La aplicación insiste: El Bluetooth es necesario para imprimir. ¿Deseas activarlo ahora?");
-          if (!retry) break;
+          console.warn("Bluetooth activation declined or failed.");
+          break;
         }
+
         attempts++;
       }
       return enabled;

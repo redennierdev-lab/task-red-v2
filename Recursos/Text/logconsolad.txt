@@ -1,0 +1,1314 @@
+:3000/#/services:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ ServicioWizard.js:58
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (ServicioWizard.js:58:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ ServicioWizard.js:58
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+:3000/#/services:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ ServicioWizard.js:58
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (ServicioWizard.js:58:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ ServicioWizard.js:58
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+:3000/#/technicians:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ TecnicoWizard.js:125
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (TecnicoWizard.js:125:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ TecnicoWizard.js:125
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+:3000/#/technicians:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ TecnicoWizard.js:125
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (TecnicoWizard.js:125:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ TecnicoWizard.js:125
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Warning: Invalid DOM property `class`. Did you mean `className`?
+    at input
+    at div
+    at div
+    at div
+    at form
+    at div
+    at div
+    at div
+    at ClientWizard (http://127.0.0.1:3000/static/js/bundle.js:685:3)
+    at div
+    at Clientes (http://127.0.0.1:3000/static/js/bundle.js:9501:56)
+    at RenderedRoute (http://127.0.0.1:3000/static/js/bundle.js:65296:5)
+    at Routes (http://127.0.0.1:3000/static/js/bundle.js:66030:5)
+    at div
+    at main
+    at div
+    at Router (http://127.0.0.1:3000/static/js/bundle.js:65964:15)
+    at HashRouter (http://127.0.0.1:3000/static/js/bundle.js:63905:5)
+    at div
+    at AppContent (http://127.0.0.1:3000/static/js/bundle.js:63:52)
+    at AppProvider (http://127.0.0.1:3000/static/js/bundle.js:8924:3)
+    at App
+console.<computed> @ VM143:63
+printWarning @ react-dom.development.js:86
+error @ react-dom.development.js:60
+(anonymous) @ react-dom.development.js:3749
+(anonymous) @ react-dom.development.js:3803
+validateProperties$2 @ react-dom.development.js:3827
+(anonymous) @ react-dom.development.js:9541
+setInitialProperties @ react-dom.development.js:9830
+finalizeInitialChildren @ react-dom.development.js:10950
+completeWork @ react-dom.development.js:22232
+completeUnitOfWork @ react-dom.development.js:26635
+performUnitOfWork @ react-dom.development.js:26607
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+performSyncWorkOnRoot @ react-dom.development.js:26124
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+:3000/#/users:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ AppContext.js:204
+await in (anonymous)
+(anonymous) @ ClientWizard.js:153
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at addRecord (AppContext.js:204:1)
+    at async handleSubmit (ClientWizard.js:153:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ AppContext.js:204
+await in (anonymous)
+(anonymous) @ ClientWizard.js:153
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+:3000/#/users:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ ClientWizard.js:168
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (ClientWizard.js:168:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ ClientWizard.js:168
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+:3000/#/gastos:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ GastoWizard.js:79
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (GastoWizard.js:79:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ GastoWizard.js:79
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+:3000/#/ingresos:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ IngresoWizard.js:73
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (IngresoWizard.js:73:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ IngresoWizard.js:73
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+TareaWizard.js:229 Uncaught TypeError: form[listKey] is not iterable
+    at onClick (TareaWizard.js:229:1)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:1)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:1)
+    at invokeGuardedCallback (react-dom.development.js:4277:1)
+    at invokeGuardedCallbackAndCatchFirstError (react-dom.development.js:4291:1)
+    at executeDispatch (react-dom.development.js:9041:1)
+    at processDispatchQueueItemsInOrder (react-dom.development.js:9073:1)
+    at processDispatchQueue (react-dom.development.js:9086:1)
+    at dispatchEventsForPlugins (react-dom.development.js:9097:1)
+    at react-dom.development.js:9288:1
+(anonymous) @ TareaWizard.js:229
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+TareaWizard.js:229 Uncaught TypeError: form[listKey] is not iterable
+    at onClick (TareaWizard.js:229:1)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:1)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:1)
+    at invokeGuardedCallback (react-dom.development.js:4277:1)
+    at invokeGuardedCallbackAndCatchFirstError (react-dom.development.js:4291:1)
+    at executeDispatch (react-dom.development.js:9041:1)
+    at processDispatchQueueItemsInOrder (react-dom.development.js:9073:1)
+    at processDispatchQueue (react-dom.development.js:9086:1)
+    at dispatchEventsForPlugins (react-dom.development.js:9097:1)
+    at react-dom.development.js:9288:1
+(anonymous) @ TareaWizard.js:229
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+TareaWizard.js:229 Uncaught TypeError: form[listKey] is not iterable
+    at onClick (TareaWizard.js:229:1)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:1)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:1)
+    at invokeGuardedCallback (react-dom.development.js:4277:1)
+    at invokeGuardedCallbackAndCatchFirstError (react-dom.development.js:4291:1)
+    at executeDispatch (react-dom.development.js:9041:1)
+    at processDispatchQueueItemsInOrder (react-dom.development.js:9073:1)
+    at processDispatchQueue (react-dom.development.js:9086:1)
+    at dispatchEventsForPlugins (react-dom.development.js:9097:1)
+    at react-dom.development.js:9288:1
+(anonymous) @ TareaWizard.js:229
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+TareaWizard.js:229 Uncaught TypeError: form[listKey] is not iterable
+    at onClick (TareaWizard.js:229:1)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:1)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:1)
+    at invokeGuardedCallback (react-dom.development.js:4277:1)
+    at invokeGuardedCallbackAndCatchFirstError (react-dom.development.js:4291:1)
+    at executeDispatch (react-dom.development.js:9041:1)
+    at processDispatchQueueItemsInOrder (react-dom.development.js:9073:1)
+    at processDispatchQueue (react-dom.development.js:9086:1)
+    at dispatchEventsForPlugins (react-dom.development.js:9097:1)
+    at react-dom.development.js:9288:1
+(anonymous) @ TareaWizard.js:229
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+:3000/#/tasks:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ AppContext.js:204
+await in (anonymous)
+(anonymous) @ TareaWizard.js:74
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at addRecord (AppContext.js:204:1)
+    at async handleSubmit (TareaWizard.js:74:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ AppContext.js:204
+await in (anonymous)
+(anonymous) @ TareaWizard.js:74
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+:3000/#/tasks:1 Access to fetch at 'https://pydolarvenezuela-api.vercel.app/api/v1/dollar' from origin 'http://127.0.0.1:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+AppContext.js:71  GET https://pydolarvenezuela-api.vercel.app/api/v1/dollar net::ERR_FAILED 404 (Not Found)
+(anonymous) @ AppContext.js:71
+(anonymous) @ AppContext.js:95
+(anonymous) @ TareaWizard.js:81
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 Error obteniendo tasas: TypeError: Failed to fetch
+    at AppContext.js:71:1
+    at AppContext.js:95:1
+    at handleSubmit (TareaWizard.js:81:1)
+console.<computed> @ VM143:63
+(anonymous) @ AppContext.js:81
+await in (anonymous)
+(anonymous) @ AppContext.js:95
+(anonymous) @ TareaWizard.js:81
+await in (anonymous)
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19245
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+VM143:63 The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+console.<computed> @ VM143:63
+warn @ LogUtils.js:16
+(anonymous) @ ResponsiveContainer.js:135
+renderWithHooks @ react-dom.development.js:15486
+updateForwardRef @ react-dom.development.js:19252
+beginWork @ react-dom.development.js:21675
+(anonymous) @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopConcurrent @ react-dom.development.js:26582
+renderRootConcurrent @ react-dom.development.js:26544
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+(anonymous) @ scheduler.development.js:533
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+(anonymous) @ scheduler.development.js:538
+postMessage
+(anonymous) @ scheduler.development.js:574
+requestHostCallback @ scheduler.development.js:588
+unstable_scheduleCallback @ scheduler.development.js:441
+scheduleCallback$1 @ react-dom.development.js:27576
+commitRootImpl @ react-dom.development.js:26807
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690

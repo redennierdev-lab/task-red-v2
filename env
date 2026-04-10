@@ -1,0 +1,15 @@
+# Configuración del Servidor (Backend)
+PORT=5000
+NODE_ENV=development
+
+# URL de la Base de Datos Local (SQLite)
+# Asegúrate de que la ruta sea correcta según donde tengas el archivo .db
+DATABASE_URL="file:./dev.db"
+
+# Configuración para el Frontend (React)
+# ESTA ES LA MÁS IMPORTANTE PARA QUE LOS FORMULARIOS GUARDEN
+REACT_APP_API_URL=http://localhost:5000
+REACT_APP_SOCKET_URL=http://localhost:5000
+
+# Secretos de Seguridad (puedes poner lo que quieras para local)
+JWT_SECRET=red_ennier_secret_2026

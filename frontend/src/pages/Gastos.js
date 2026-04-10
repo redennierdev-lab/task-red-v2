@@ -5,16 +5,30 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '../db/db';
 import GastoWizard from '../components/GastoWizard';
 import { AppContext } from '../context/AppContext';
+import ConfirmModal from '../components/ConfirmModal';
 
 const Gastos = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const { theme, deleteRecord } = useContext(AppContext);
+  const { theme, deleteRecord, refreshAll } = useContext(AppContext);
   const isDark = theme === 'dark';
+  const [confirmDelete, setConfirmDelete] = useState({ open: false, id: null });
 
   const handleEdit = (id) => {
       setEditingId(id);
       setIsWizardOpen(true);
+  };
+
+  const handleDeleteTrigger = (id) => {
+    setConfirmDelete({ open: true, id });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (confirmDelete.id) {
+        await deleteRecord('expenses', confirmDelete.id);
+        if (refreshAll) await refreshAll();
+        setConfirmDelete({ open: false, id: null });
+    }
   };
 
   // Consultar gastos de la DB local en tiempo real
@@ -161,7 +175,7 @@ const Gastos = () => {
                                         <Edit3 size={14} />
                                     </button>
                                     <button 
-                                        onClick={() => db.expenses.delete(g.id)}
+                                        onClick={() => handleDeleteTrigger(g.id)}
                                         className="p-1 text-slate-300 dark:text-slate-700 hover:text-red-500 transition-colors"
                                     >
                                         <X size={14} />
@@ -180,6 +194,14 @@ const Gastos = () => {
         setIsOpen={setIsWizardOpen} 
         editingId={editingId}
         setEditingId={setEditingId}
+      />
+
+      <ConfirmModal 
+        isOpen={confirmDelete.open}
+        onClose={() => setConfirmDelete({ open: false, id: null })}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar Gasto"
+        message="¿Estás seguro de que deseas eliminar este registro de gasto de la boveda local? Esta acción no se puede deshacer."
       />
     </div>
   );

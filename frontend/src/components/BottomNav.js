@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { LayoutList, FileText, Users, Wrench, History, DollarSign, TrendingUp, Menu, X, LayoutGrid } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
@@ -20,7 +20,7 @@ const BottomNav = () => {
   ].filter(i => i.roles.includes(userRole));
 
   return (
-    <nav className="lg:hidden fixed bottom-6 right-6 z-[1000] flex flex-col items-center gap-3">
+    <nav className={`lg:hidden fixed bottom-6 z-[1000] flex flex-col items-center gap-3 transition-all duration-500 ease-in-out ${isExpanded ? 'left-6' : '-left-10 hover:left-2'}`}>
       {/* Expanded Menu Items */}
       <div className={`flex flex-col items-center gap-3 transition-all duration-500 origin-bottom ${isExpanded ? 'scale-100 opacity-100 mb-2' : 'scale-0 opacity-0 h-0 pointer-events-none'}`}>
         {navItems.map((item) => (
@@ -45,7 +45,7 @@ const BottomNav = () => {
         onClick={() => setIsExpanded(!isExpanded)}
         className={`w-16 h-16 rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(249,115,22,0.4)] transition-all duration-500 transform active:scale-95 z-10
           ${isExpanded 
-            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 rotate-180' 
+            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 rotate-0' 
             : 'bg-gradient-to-br from-orange-500 to-orange-600 text-white'}`}
       >
         {isExpanded ? <X size={28} /> : <Menu size={28} />}

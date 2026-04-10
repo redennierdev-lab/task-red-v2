@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock, DollarSign, Sun, Moon, TrendingUp } from 'lucide-react';
+import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock, DollarSign, Sun, Moon, TrendingUp, RotateCcw, RotateCw } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const { userRole, setUserRole, theme, toggleTheme, rates } = useContext(AppContext);
+  const { userRole, setUserRole, theme, toggleTheme, rates, undo, redo, canUndo, canRedo } = useContext(AppContext);
 
   const menuItems = [
     { path: '/', name: 'Panel Inicio', icon: <LayoutList size={22} />, roles: ['Admin', 'Técnico'] },
@@ -45,29 +45,44 @@ const Navbar = () => {
   return (
     <>
       {/* Top Bar for Mobile */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl z-40 flex items-center justify-end px-6 border-b-2 border-orange-50 dark:border-slate-800 shadow-sm transition-colors duration-500">
-         {/* Logo Removed as per user request */}
-         <div className="flex items-center gap-4">
-             {rates.usdt > 0 && (
-                <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500"></div>
-                    <span className="text-[9px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-widest italic">USDT:</span>
-                    <span className="text-[10px] font-black text-fuchsia-600 dark:text-fuchsia-400 italic">{rates.usdt.toFixed(2)} Bs</span>
-                </div>
-             )}
-             {rates.bcv > 0 && (
-                <div className="hidden sm:flex flex-col items-end gap-0.5 px-3 py-1 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-                    <span className="text-[7px] font-black uppercase text-emerald-600 dark:text-emerald-400 leading-none">BCV</span>
-                    <span className="text-[10px] font-black text-slate-700 dark:text-emerald-300 leading-none">{rates.bcv.toFixed(2)} Bs</span>
-                </div>
-             )}
-            <button onClick={toggleTheme} className="p-3 bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400 rounded-2xl active:scale-90 transition-all">
-                {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
-            </button>
-            <button onClick={() => setIsOpen(true)} className="p-3 bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400 rounded-2xl active:scale-90 transition-all">
-                <Menu size={26} />
-            </button>
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl z-40 flex items-center justify-between px-6 border-b-2 border-orange-50 dark:border-slate-800 shadow-sm transition-colors duration-500">
+         <button onClick={() => setIsOpen(true)} className="p-3 bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400 rounded-2xl active:scale-90 transition-all">
+             <Menu size={26} />
+         </button>
+         
+         <div className="flex-1 flex flex-col items-center justify-center -mb-1 px-4">
+             <div className="flex items-center gap-1.5 opacity-90 transition-all">
+                 <span className="text-[8px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-tight italic">BCV</span>
+                 <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 italic font-mono">{rates.bcv.toFixed(2)}</span>
+                 <span className="text-[8px] text-slate-200 dark:text-slate-800 mx-0.5 opacity-50">|</span>
+                 <span className="text-[8px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-tight italic">USDT</span>
+                 <span className="text-[10px] font-black text-fuchsia-600 dark:text-fuchsia-400 italic font-mono">{rates.usdt.toFixed(2)}</span>
+             </div>
+             <div className="flex items-center gap-1 opacity-40">
+                <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></div>
+                <p className="text-[6px] font-black text-slate-400 dark:text-slate-600 uppercase tracking-[0.2em] italic">Updated vía RED</p>
+             </div>
          </div>
+
+          <div className="flex items-center gap-2">
+             <button 
+                onClick={undo} 
+                disabled={!canUndo}
+                className={`p-2 rounded-xl active:scale-90 transition-all ${canUndo ? 'bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400' : 'opacity-30 text-slate-400'}`}
+             >
+                 <RotateCcw size={18} />
+             </button>
+             <button 
+                onClick={redo} 
+                disabled={!canRedo}
+                className={`p-2 rounded-xl active:scale-90 transition-all ${canRedo ? 'bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400' : 'opacity-30 text-slate-400'}`}
+             >
+                 <RotateCw size={18} />
+             </button>
+             <button onClick={toggleTheme} className="p-3 bg-orange-50 dark:bg-slate-800 text-orange-600 dark:text-fuchsia-400 rounded-2xl active:scale-90 transition-all ml-1">
+                 {theme === 'light' ? <Moon size={22} /> : <Sun size={22} />}
+             </button>
+          </div>
       </div>
 
       {/* Sidebar Overlay for Mobile */}

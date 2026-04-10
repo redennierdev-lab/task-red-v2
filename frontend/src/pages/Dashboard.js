@@ -1,18 +1,21 @@
 import React, { useContext, useEffect, useState, useMemo } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import { db, logAction, exportData } from '../db/db';
-import { Users, Wrench, FileText, TrendingUp, CheckCircle2, Play, Pause, Navigation, MessageCircle, XCircle, Database, Download, LayoutDashboard, Printer, Bluetooth, LayoutList, ClipboardCheck } from 'lucide-react';
+import { Users, Wrench, FileText, TrendingUp, CheckCircle2, Play, Pause, Navigation, MessageCircle, XCircle, Database, Download, LayoutDashboard, Printer, Bluetooth, LayoutList, ClipboardCheck, CircleDashed, Edit3 } from 'lucide-react';
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import ReciboTicket from '../components/ReciboTicket';
-import PrinterModal from '../components/PrinterModal';
-import BluetoothPrinter from '../utils/BluetoothPrinter';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import BluetoothPrinter from '../utils/BluetoothPrinter';
+import PrinterModal from '../components/PrinterModal';
+import PrinterActionModal from '../components/PrinterActionModal';
+import ComprehensiveDetailModal from '../components/ComprehensiveDetailModal';
+import ReciboTicket from '../components/ReciboTicket';
 
-const AdminView = ({ stats, tareas, clientes, onPrint }) => {
-  const { theme, rates } = useContext(AppContext);
+const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate }) => {
+  const { theme, rates, setRates } = useContext(AppContext);
   const [dbStatus, setDbStatus] = useState({ state: 'checking', ping: 0 });
   const [isExporting, setIsExporting] = useState(false);
 
@@ -157,37 +160,41 @@ const AdminView = ({ stats, tareas, clientes, onPrint }) => {
           </div>
       </div>
 
-      {/* Stats Grid VIP Refined */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3">
         {stats.map((stat, idx) => (
-          <div key={idx} className="premium-card p-0 flex flex-col group overflow-hidden relative transform hover:-translate-y-1 transition-all duration-300">
+          <div 
+            key={idx} 
+            className="premium-card p-0 flex flex-col group overflow-hidden relative transform hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+            onClick={() => stat.path && onNavigate(stat.path)}
+          >
             <div className="h-1 bg-logo-gradient w-full opacity-80 group-hover:h-1.5 transition-all duration-500"></div>
-            <div className="p-5 flex flex-col justify-between h-full relative">
-            <div className="absolute top-0 right-0 w-20 h-20 bg-orange-50 dark:bg-fuchsia-500/5 rounded-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
-            <div className="w-10 h-10 rounded-2xl bg-orange-50 dark:bg-slate-800 flex items-center justify-center mb-3 transition-all duration-500 group-hover:rotate-12 text-orange-500 dark:text-fuchsia-400 group-hover:bg-logo-gradient group-hover:text-white relative z-10">
-              {React.cloneElement(stat.icon, { size: 18 })}
+            <div className="p-3 flex flex-col justify-between h-full relative">
+            <div className="absolute top-0 right-0 w-12 h-12 bg-orange-50 dark:bg-fuchsia-500/5 rounded-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+            <div className="w-8 h-8 rounded-xl bg-orange-50 dark:bg-slate-800 flex items-center justify-center mb-1.5 transition-all duration-500 group-hover:rotate-12 text-orange-500 dark:text-fuchsia-400 group-hover:bg-logo-gradient group-hover:text-white relative z-10">
+              {React.cloneElement(stat.icon, { size: 14 })}
             </div>
             <div className="relative z-10">
-              <div className="flex items-end justify-between mb-0.5">
-                <span className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-fuchsia-400 transition-colors italic">{stat.value}</span>
+              <div className="flex items-end justify-between mb-0">
+                <span className="text-lg font-black tracking-tighter text-slate-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-fuchsia-400 transition-colors italic">{stat.value}</span>
               </div>
-              <p className="text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-[0.2em] text-[8px] italic">{stat.label}</p>
+              <p className="text-slate-400 dark:text-slate-500 font-extrabold uppercase tracking-[0.1em] text-[7px] italic truncate">{stat.label}</p>
             </div>
             </div>
             {stat.label === 'Operaciones Cola' && (
                 <button 
-                  onClick={() => {
-                    const firstPending = tareas.find(t => t.estado === 'Pendiente');
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const firstPending = (tareas || []).find(t => t.estado === 'Pendiente');
                     if (firstPending) {
-                        const cliente = clientes.find(c => c.id === Number(firstPending.cliente_id));
+                        const cliente = (clientes || []).find(c => String(c.id) === String(firstPending.cliente_id));
                         onPrint(firstPending, cliente);
                     } else {
-                        alert('No hay tareas pendientes para imprimir recibo.');
+                        alert('No hay tareas pendientes.');
                     }
                   }} 
-                  className="absolute bottom-4 right-4 p-2 bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200 transition-all z-20 shadow-sm active:scale-95"
+                  className="tactical-icon-button absolute bottom-2 right-2 bg-orange-100 text-orange-600 rounded-full hover:bg-orange-200 z-20 shadow-sm active:scale-95"
                 >
-                    <Printer size={16}/>
+                    <Printer size={13}/>
                 </button>
             )}
           </div>
@@ -195,12 +202,81 @@ const AdminView = ({ stats, tareas, clientes, onPrint }) => {
       </div>
 
       {/* ANALYTICS Refined */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="premium-card p-6 relative overflow-hidden group">
+      {/* Widget de Tasas Manuales y ANALYTICS */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="lg:col-span-1 space-y-4">
+              <div className="premium-card p-6 border-2 border-orange-500/20">
+                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 mb-4 flex items-center gap-2 italic">
+                      <TrendingUp size={16}/> Tasas del Día
+                  </h3>
+                  <div className="space-y-4">
+                      <div>
+                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">BCV (Bs.)</label>
+                          <div className="relative">
+                              <input 
+                                  type="number" 
+                                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-black text-slate-700 dark:text-white outline-none focus:border-orange-500 transition-all"
+                                  value={rates.manualBcv || rates.bcv}
+                                  onChange={(e) => {
+                                      const val = parseFloat(e.target.value) || 0;
+                                      setRates(prev => {
+                                          const updated = { ...prev, manualBcv: val, useManual: true };
+                                          localStorage.setItem('ennier_rates', JSON.stringify(updated));
+                                          return updated;
+                                      });
+                                  }}
+                              />
+                              <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
+                          </div>
+                      </div>
+                      <div>
+                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">USDT (Bs.)</label>
+                          <div className="relative">
+                              <input 
+                                  type="number" 
+                                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-black text-slate-700 dark:text-white outline-none focus:border-orange-500 transition-all"
+                                  value={rates.manualUsdt || rates.usdt}
+                                  onChange={(e) => {
+                                      const val = parseFloat(e.target.value) || 0;
+                                      setRates(prev => {
+                                          const updated = { ...prev, manualUsdt: val, useManual: true };
+                                          localStorage.setItem('ennier_rates', JSON.stringify(updated));
+                                          return updated;
+                                      });
+                                  }}
+                              />
+                              <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                          </div>
+                      </div>
+                      <p className="text-[7px] text-slate-400 dark:text-slate-500 font-bold uppercase text-center italic mt-2">
+                          {rates.useManual ? "MODO SEGURO ACTIVO (MANUAL)" : "SINCRONIZACIÓN AUTOMÁTICA"}
+                      </p>
+                  </div>
+              </div>
+
+              <div className="premium-card p-4 flex flex-col justify-between bg-gradient-to-br from-emerald-500 to-teal-600 text-white border-none shadow-2xl relative overflow-hidden group transition-all duration-500 hover:scale-[1.02] h-40">
+                  <div className="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all"></div>
+                  <div className="relative z-10 flex flex-col h-full justify-between">
+                    <div>
+                      <p className="text-[9px] font-black uppercase tracking-widest text-white/70 mb-1 italic">Capital Captado Mensual</p>
+                      <h3 className="text-3xl font-black text-white tracking-tighter">${totalIngreso.toLocaleString()}<span className="text-xs text-white/40 ml-1">.00</span></h3>
+                    </div>
+                    <div className="mt-4 flex items-center gap-2 bg-white/20 w-fit px-3 py-1 rounded-full backdrop-blur-md border border-white/20">
+                        <TrendingUp size={10} className="text-white fill-white" />
+                        <span className="text-[8px] font-black uppercase tracking-widest italic">Flujo Positivo</span>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-4 right-4 w-12 h-12 bg-white/20 rounded-[1.5rem] flex items-center justify-center text-white backdrop-blur-xl shadow-inner z-10 border border-white/30 transform rotate-3">
+                      <TrendingUp size={20} />
+                  </div>
+              </div>
+          </div>
+
+          <div className="lg:col-span-1 premium-card p-6 relative overflow-hidden group">
               <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-500 mb-6 flex items-center gap-2 italic">
                  <LayoutDashboard size={18} className="text-fuchsia-500"/> Distribución de Tareas
               </h3>
-              <div className="h-[180px] min-h-[180px] w-full relative">
+              <div className="h-[200px] w-full relative">
                   <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                           <Pie 
@@ -237,32 +313,63 @@ const AdminView = ({ stats, tareas, clientes, onPrint }) => {
               </div>
           </div>
 
-          <div className="col-span-1 lg:col-span-2 premium-card p-6 flex flex-col justify-between border-2 border-emerald-50 dark:border-emerald-500/10 transition-all duration-500 hover:border-emerald-400 shadow-emerald-500/5">
-              <div className="flex justify-between items-start mb-6">
-                <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-500 flex items-center gap-2 italic">
-                    <TrendingUp size={18} className="text-emerald-500"/> Flujo de Caja (Real)
-                </h3>
-                <div className="text-right">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Capital Total Auditado</span>
-                    <h4 className="text-2xl font-black text-emerald-600 dark:text-emerald-400 italic">${totalIngreso.toLocaleString()}<span className="text-sm text-emerald-300">.00</span></h4>
+          <div className="lg:col-span-2 premium-card p-6 flex flex-col justify-between border-2 border-emerald-50 dark:border-slate-800 transition-all duration-500 hover:border-emerald-400">
+              <div className="flex justify-between items-center mb-6">
+                <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 flex items-center gap-2 italic">
+                    <TrendingUp size={14} className="text-emerald-500"/> Rendimiento de Cobros Anual
+                </p>
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
+                    <span className="text-[8px] font-black uppercase text-slate-400">Ingresos</span>
                 </div>
               </div>
               
-              <div className="h-[180px] min-h-[180px] w-full">
+              <div className="h-[220px] w-full">
                   <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={ingresosTimeline} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
                           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? '#334155' : '#f1f5f9'} />
-                          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
-                          <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
+                          <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
+                          <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
                           <Tooltip 
                               cursor={{fill: isDark ? '#1e293b' : '#f8fafc', opacity: 0.5}} 
-                              contentStyle={{ backgroundColor: isDark ? '#0f172a' : '#fff', border: 'none', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', color: isDark ? '#fff' : '#1e293b', fontSize: '11px', fontWeight: 900, textTransform: 'uppercase' }} 
+                              contentStyle={{ backgroundColor: isDark ? '#0f172a' : '#fff', border: 'none', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', color: isDark ? '#fff' : '#1e293b', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase' }} 
                           />
-                          <Bar dataKey="ingreso" fill="#10b981" radius={[8, 8, 0, 0]} maxBarSize={40} />
+                          <Bar dataKey="ingreso" fill="#10b981" radius={[8, 8, 0, 0]} maxBarSize={30} />
                       </BarChart>
                   </ResponsiveContainer>
               </div>
           </div>
+      {/* Recent Operations Monitoring (Synced with new UI) */}
+      <div className="space-y-4 mt-8">
+          <div className="flex items-center justify-between px-2">
+              <h3 className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-[0.3em] italic flex items-center gap-2">
+                  <LayoutList size={14} className="text-orange-500"/> Monitor de Operaciones Recientes
+              </h3>
+              <button onClick={() => onNavigate('/tasks')} className="text-[9px] font-black text-orange-500 uppercase tracking-widest italic hover:underline">Ver Historial Maestro</button>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
+              {(tareas || []).slice(-6).reverse().map(t => (
+                  <div key={t.id} onClick={() => onViewDetail(t)} className="compact-task-card group relative p-0 transition-all duration-300 cursor-pointer overflow-hidden border-2 border-orange-50 dark:border-slate-800 hover:border-orange-500">
+                      <div className="p-3 bg-white dark:bg-slate-900 flex flex-col justify-between h-full relative h-[100px]">
+                          <div className="flex justify-between items-start mb-1">
+                              <span className="mini-tag">#{t.ticket_id || t.id}</span>
+                              <div className={`mini-badge text-[6px] px-1 py-0.5
+                                  ${t.estado === 'Completada' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-amber-50 text-amber-600 border-amber-100 animate-pulse'}`}>
+                                  {t.estado}
+                              </div>
+                          </div>
+                          <div>
+                              <h4 className="text-[9px] font-black text-slate-800 dark:text-white uppercase leading-tight line-clamp-1 italic group-hover:text-orange-500">{t.titulo}</h4>
+                              <div className="flex items-center gap-1 mt-1 opacity-60">
+                                  <Wrench size={7} className="text-orange-500"/>
+                                  <p className="text-[7px] font-black text-slate-400 uppercase italic truncate">{t.operador || 'Sistema'}</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              ))}
+            </div>
+        </div>
       </div>
     </div>
   );
@@ -294,7 +401,7 @@ const TaskTimer = ({ started_at }) => {
     );
 };
 
-const TechnicianView = ({ tareas, clientes, updateRecord, refreshAll, onPrint }) => {
+const TechnicianView = ({ tareas, clientes, updateRecord, refreshAll, onPrint, onViewDetail, onDelete, onEdit }) => {
   const activas = (tareas || []).filter(t => t.estado !== 'Completada' && t.estado !== 'No completada');
 
   const updateEstado = async (id, nuevoEstado) => {
@@ -345,9 +452,9 @@ const TechnicianView = ({ tareas, clientes, updateRecord, refreshAll, onPrint })
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
-          {activas.map(t => {
-              const cliente = clientes.find(c => c.id === Number(t.cliente_id));
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-2">
+          {(activas || []).map(t => {
+              const cliente = (clientes || []).find(c => String(c.id) === String(t.cliente_id));
               const enProceso = t.estado === 'En proceso';
               const pausada = t.estado === 'Pausada';
               
@@ -355,65 +462,94 @@ const TechnicianView = ({ tareas, clientes, updateRecord, refreshAll, onPrint })
               const coords = cliente?.coordenadas || '';
 
               return (
-                  <div key={t.id} className={`premium-card p-0 flex flex-col relative overflow-hidden group border-2 transition-all duration-300 transform hover:-translate-y-1 rounded-[2rem]
-                      ${enProceso ? 'border-emerald-400 dark:border-emerald-500/50 ring-2 ring-emerald-50 dark:ring-emerald-500/10' : pausada ? 'border-amber-400 dark:border-amber-500/50 ring-2 ring-amber-50 dark:ring-amber-500/10' : 'border-slate-50 dark:border-slate-800'}`}>
-                      
-                      <div className="h-1 bg-logo-gradient w-full opacity-80 group-hover:h-1.5 transition-all duration-500"></div>
-                      {enProceso && <div className="absolute top-1 left-0 w-full h-1 bg-emerald-500 animate-pulse"></div>}
+                  <div key={t.id} className={`compact-task-card group relative p-0 transition-all duration-300 overflow-hidden ${enProceso ? 'ring-2 ring-emerald-500/20 shadow-lg' : ''}`}>
+                      <div className="h-0.5 bg-logo-gradient w-full opacity-60 group-hover:h-1 transition-all duration-500"></div>
+                      <div className="compact-card-accent"></div>
+                      {enProceso && <div className="absolute top-0 left-0 w-full h-0.5 bg-emerald-500 animate-pulse z-20"></div>}
 
-                      <div className="p-3 bg-white dark:bg-slate-900 flex-1 flex flex-col">
-                      <div className="flex justify-between items-start mb-2">
-                          <div className="flex flex-col gap-1.5 w-full">
-                              <div className="flex items-center justify-between w-full">
-                                  <span className="text-[7px] bg-slate-900 dark:bg-slate-800 text-white font-black px-1.5 py-0.5 rounded shadow-sm tracking-widest uppercase italic">
+                      <div className="p-2.5 bg-white dark:bg-slate-900 flex-1 flex flex-col relative">
+                          <div className="flex justify-between items-start mb-1">
+                              <div className="flex items-center gap-1">
+                                  <span className="mini-tag">
                                       {t.ticket_id || `TSK-${t.id}`}
                                   </span>
-                                  {enProceso && <TaskTimer started_at={t.started_at} />}
+                                  <div className={`mini-badge
+                                      ${enProceso ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20' : 
+                                        pausada ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 
+                                        'bg-slate-50 dark:bg-slate-800 text-slate-400 border-slate-100 dark:border-slate-700'}`}>
+                                      {enProceso ? <TrendingUp size={6} className="animate-pulse"/> : <CircleDashed size={6} className="animate-spin-slow" />}
+                                      {t.estado}
+                                  </div>
                               </div>
-                              <h3 className="text-sm font-black tracking-tighter leading-tight text-slate-900 dark:text-white italic uppercase truncate">{t.titulo}</h3>
+                              <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
+                                  <button onClick={(e) => { e.stopPropagation(); onEdit?.(t); }} className="tactical-icon-button bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-orange-500 rounded-xl shadow-sm">
+                                      <Edit3 size={11}/>
+                                  </button>
+                                  <button onClick={(e) => { e.stopPropagation(); onDelete?.(t.id); }} className="tactical-icon-button bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-xl shadow-sm">
+                                      <XCircle size={11}/>
+                                  </button>
+                              </div>
                           </div>
-                      </div>
-                      
-                      <div className="p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 mb-3 group-hover:bg-white dark:group-hover:bg-slate-800 group-hover:border-orange-100 dark:group-hover:border-fuchsia-500/30 transition-colors">
-                        <p className="text-slate-500 dark:text-slate-400 text-[9px] font-bold leading-tight italic line-clamp-1 mb-1.5">"{t.descripcion}"</p>
-                        <div className="flex items-center gap-1.5 text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest border-t border-slate-200 dark:border-slate-700 pt-1.5 italic truncate">
-                            <Navigation size={8} className="text-orange-500 shrink-0"/>
-                            {cliente?.direccion || 'S/D (Ver GPS)'}
-                        </div>
-                      </div>
 
-                      <div className="mt-auto">
-                          {/* Botonera Inicial */}
-                          {(!enProceso) && (
-                              <button onClick={() => updateEstado(t.id, 'En proceso')} className="w-full btn-gradient py-3 text-[8px]">
-                                  <Play size={14}/> INICIAR MISIÓN
-                              </button>
-                          )}
+                          <div className="flex-1 pt-0.5 relative z-10 cursor-pointer" onClick={() => onViewDetail(t)}>
+                              <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">
+                                  {t.titulo}
+                              </h3>
+                              <p className="text-slate-400 dark:text-slate-500 text-[8px] mb-1.5 leading-tight font-medium line-clamp-1 italic pr-1">
+                                  {t.descripcion || 'Sin descripción.'}
+                              </p>
+                          </div>
 
-                          {/* Botonera Activa - Grilla de 6 Botones Compacta */}
-                          {enProceso && (
-                              <div className="grid grid-cols-3 gap-2">
-                                  <a href={`https://wa.me/${phone.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 hover:text-emerald-500 transition-all border border-slate-100 dark:border-slate-700">
-                                     <MessageCircle size={16}/><span className="text-[6px] font-black uppercase mt-1">Chat</span>
-                                  </a>
-                                  <a href={coords ? `https://www.google.com/maps?q=${coords}` : '#'} target={coords ? "_blank" : "_self"} onClick={() => !coords && alert('No hay coordenadas cargadas para este cliente.')} rel="noreferrer" className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-slate-400 dark:text-slate-500 hover:text-blue-500 transition-all border border-slate-100 dark:border-slate-700">
-                                     <Navigation size={16}/><span className="text-[6px] font-black uppercase mt-1">Ruta</span>
-                                  </a>
-                                  <button onClick={() => onPrint(t, cliente)} className="flex flex-col items-center justify-center p-2 rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 hover:bg-orange-100 transition-all border border-orange-100 dark:border-orange-500/20">
-                                     <Printer size={16}/><span className="text-[6px] font-black uppercase mt-1">Ticket</span>
-                                  </button>
-                                  <button onClick={() => updateEstado(t.id, 'Pausada')} className="flex flex-col items-center justify-center p-2 rounded-xl bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 hover:bg-amber-100 transition-all border border-amber-100 dark:border-amber-500/20">
-                                     <Pause size={16}/><span className="text-[6px] font-black uppercase mt-1">Pausa</span>
-                                  </button>
-                                  <button onClick={() => updateEstado(t.id, 'Completada')} className="flex flex-col items-center justify-center p-2 rounded-xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all">
-                                     <CheckCircle2 size={16}/><span className="text-[6px] font-black uppercase mt-1">Listo</span>
-                                  </button>
-                                  <button onClick={() => updateEstado(t.id, 'No completada')} className="flex flex-col items-center justify-center p-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-500 dark:text-red-400 hover:bg-red-100 transition-all border border-red-100 dark:border-red-500/20">
-                                     <XCircle size={16}/><span className="text-[6px] font-black uppercase mt-1">Abort</span>
-                                  </button>
+                          <div className="mt-auto pt-1.5 border-t border-slate-50 dark:border-slate-800">
+                              <div className="flex items-center justify-between gap-1">
+                                  <div className="flex flex-col">
+                                      <div className="flex gap-1">
+                                          <div className="flex items-center gap-0.5 bg-violet-50 dark:bg-violet-500/5 px-1 py-0.5 rounded-full text-violet-700 dark:text-violet-400 border border-violet-100/50 dark:border-violet-500/20">
+                                              <CircleDashed size={7}/>
+                                              <span className="font-black text-[7px] uppercase truncate max-w-[40px]">{t.servicio_tipo || 'Servicio'}</span>
+                                          </div>
+                                          <div className="flex items-center gap-0.5 bg-orange-50 dark:bg-orange-500/5 px-1 py-0.5 rounded-full text-orange-600 dark:text-orange-400 border border-orange-100/50 dark:border-orange-500/20">
+                                              <Wrench size={7}/>
+                                              <span className="font-black text-[7px] uppercase truncate max-w-[40px]">Técnico</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div className="text-right shrink-0">
+                                      <span className="font-black text-[8px] text-slate-800 dark:text-slate-300 uppercase italic tracking-tighter line-clamp-1 max-w-[70px]">
+                                          {t.operador || 'RED'}
+                                      </span>
+                                  </div>
                               </div>
-                          )}
-                      </div>
+                              
+                              <div className="mt-2 grid grid-cols-6 gap-1">
+                                  <a href={`https://wa.me/${phone.replace(/\D/g,'')}`} target="_blank" rel="noreferrer" className="flex items-center justify-center py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-emerald-500 transition-all border border-slate-100 dark:border-slate-700">
+                                      <MessageCircle size={12}/>
+                                  </a>
+                                  <a href={coords ? `https://www.google.com/maps?q=${coords}` : '#'} target={coords ? "_blank" : "_self"} onClick={() => !coords && alert('No hay coordenadas.')} rel="noreferrer" className="flex items-center justify-center py-1.5 rounded-lg bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-blue-500 transition-all border border-slate-100 dark:border-slate-700">
+                                      <Navigation size={12}/>
+                                  </a>
+                                  <button onClick={() => onViewDetail(t)} className="flex items-center justify-center py-1.5 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-600 hover:bg-orange-100 transition-all border border-orange-100 dark:border-orange-500/20">
+                                      <Printer size={12}/>
+                                  </button>
+                                  {!enProceso ? (
+                                      <button onClick={() => updateEstado(t.id, 'En proceso')} className="col-span-3 flex items-center justify-center py-1.5 bg-logo-gradient text-white rounded-lg gap-2 text-[8px] font-bold italic">
+                                          <Play size={10}/> INICIAR
+                                      </button>
+                                  ) : (
+                                      <>
+                                          <button onClick={() => updateEstado(t.id, 'Pausada')} className="flex items-center justify-center py-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 text-amber-600 hover:bg-amber-100 transition-all border border-amber-100 dark:border-amber-500/20">
+                                              <Pause size={12}/>
+                                          </button>
+                                          <button onClick={() => updateEstado(t.id, 'Completada')} className="flex items-center justify-center py-1.5 rounded-lg bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all">
+                                              <CheckCircle2 size={12}/>
+                                          </button>
+                                          <button onClick={() => updateEstado(t.id, 'No completada')} className="flex items-center justify-center py-1.5 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-500 hover:bg-red-100 transition-all border border-red-100 dark:border-red-500/20">
+                                              <XCircle size={12}/>
+                                          </button>
+                                      </>
+                                  )}
+                              </div>
+                          </div>
                       </div>
                   </div>
               );
@@ -429,20 +565,20 @@ const TechnicianView = ({ tareas, clientes, updateRecord, refreshAll, onPrint })
                
                <button 
                 onClick={async () => {
-                    const cId = await db.customers.add({ nombre: 'Demo Cliente', telefono: '0412-1234567', direccion: 'Av. Principal Local Demo', status: 'Activo' });
+                    const cId = await db.customers.add({ nombre: 'Sede Principal', telefono: '0412-1111111', direccion: 'Avenida Libertad, Edf Task Red', status: 'Activo' });
                     await db.tasks.add({ 
-                        ticket_id: 'DEMO-001',
-                        titulo: 'Misión de Prueba DOOM',
-                        descripcion: 'Soporte técnico de emergencia para validar flujo de caja y cronómetros.',
+                        ticket_id: 'TSK-001',
+                        titulo: 'Inspección Técnica de Enlace',
+                        descripcion: 'Verificación de potencia y alineación de antena principal.',
                         cliente_id: cId,
                         estado: 'Pendiente',
-                        monto: 50
+                        monto: 35
                     });
                     refreshAll();
                 }}
                 className="btn-gradient px-10 py-4 text-[11px] font-black uppercase tracking-[0.2em] italic"
                >
-                 <ClipboardCheck size={18}/> Generar Misión de Prueba
+                 <ClipboardCheck size={18}/> Inicializar Operación
                </button>
              </div>
           )}
@@ -452,13 +588,76 @@ const TechnicianView = ({ tareas, clientes, updateRecord, refreshAll, onPrint })
 };
 
 const Dashboard = () => {
-  const { clientes, tecnicos, tareas, servicios, userRole, refreshAll, updateRecord } = useContext(AppContext);
+  const navigate = useNavigate();
+  const { clientes, tecnicos, tareas, servicios, userRole, refreshAll, updateRecord, deleteRecord } = useContext(AppContext);
   const [printingTask, setPrintingTask] = useState(null);
   const [printingClient, setPrintingClient] = useState(null);
   const [showPrinterModal, setShowPrinterModal] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(localStorage.getItem('printer_address') || '');
   const [selectedPrinterName, setSelectedPrinterName] = useState(localStorage.getItem('printer_name') || '');
   const [isPrinting, setIsPrinting] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+
+  const handleSaveAsFile = async (tarea, cliente) => {
+      try {
+          const fecha = new Date().toLocaleString('es-DO', { dateStyle: 'medium', timeStyle: 'short' });
+          const content = [
+              '================================',
+              '       RED ENNIER TASK          ',
+              '================================',
+              `TICKET  : ${tarea.ticket_id || ('TSK-' + tarea.id)}`,
+              `FECHA   : ${fecha}`,
+              '--------------------------------',
+              `CLIENTE : ${cliente?.nombre || 'N/A'}`,
+              `TEL     : ${cliente?.telefono || 'N/A'}`,
+              `DIR     : ${cliente?.direccion || 'N/A'}`,
+              '--------------------------------',
+              `SERVICIO: ${tarea.titulo}`,
+              `ESTADO  : ${tarea.estado}`,
+              '--------------------------------',
+              `TOTAL   :  $${tarea.monto || '0.00'} USD`,
+              '================================',
+              '   GRACIAS POR SU PREFERENCIA  ',
+              '      redennierdev.com          ',
+              '================================',
+              '\n\n',
+          ].join('\n');
+
+          const fileName = `Recibo_${tarea.ticket_id || tarea.id}.txt`;
+
+          if (Capacitor.isNativePlatform()) {
+              const savedFile = await Filesystem.writeFile({
+                  path: fileName,
+                  data: content,
+                  directory: Directory.Documents,
+                  encoding: 'utf8',
+                  recursive: true
+              });
+              await Share.share({
+                  title: 'Recibo Digital Red Ennier',
+                  text: 'Comprobante de servicio técnico.',
+                  url: savedFile.uri,
+                  dialogTitle: 'Guardar Recibo en el Teléfono',
+              });
+          } else {
+              const blob = new Blob([content], { type: 'text/plain' });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = fileName;
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(url);
+          }
+          setShowPreview(false);
+      } catch (error) {
+          console.error('Error al guardar:', error);
+          alert('Error al guardar archivo: ' + error.message);
+      }
+  };
 
   // Unified Printer Logic
 
@@ -515,13 +714,9 @@ const Dashboard = () => {
   };
 
   const handlePrint = async (tarea, cliente) => {
-      if (!selectedAddress) {
-          setPrintingTask(tarea);
-          setPrintingClient(cliente);
-          setShowPrinterModal(true);
-          return;
-      }
-      await executePrint(tarea, cliente, selectedAddress);
+      setPrintingTask(tarea);
+      setPrintingClient(cliente);
+      setShowPreview(true);
   };
 
   const handleSelectAndPrint = async (addr, name) => {
@@ -534,21 +729,38 @@ const Dashboard = () => {
       }
   };
 
-  const stats = [
-    { label: 'Universo Clientes', value: clientes.length, icon: <Users size={24} />, color: 'bg-white/5 text-blue-400' },
-    { label: 'Fuerza Técnica', value: tecnicos.length, icon: <Wrench size={24} />, color: 'bg-white/5 text-violet-400' },
-    { label: 'Operaciones Cola', value: tareas.filter(t => t.estado === 'Pendiente').length, icon: <FileText size={24} />, color: 'bg-white/5 text-orange-400' },
-    { label: 'Red de Servicios', value: servicios.length, icon: <LayoutList size={24} />, color: 'bg-white/5 text-fuchsia-400' },
+   const stats = [
+    { label: 'Universo Clientes', value: (clientes || []).length, icon: <Users size={24} />, color: 'bg-white/5 text-blue-400', path: '/users' },
+    { label: 'Fuerza Técnica', value: (tecnicos || []).length, icon: <Wrench size={24} />, color: 'bg-white/5 text-violet-400', path: '/technicians' },
+    { label: 'Operaciones Cola', value: (tareas || []).filter(t => t.estado === 'Pendiente').length, icon: <FileText size={24} />, color: 'bg-white/5 text-orange-400', path: '/tasks' },
+    { label: 'Red de Servicios', value: (servicios || []).length, icon: <LayoutList size={24} />, color: 'bg-white/5 text-fuchsia-400', path: '/services' },
   ];
 
   return (
     <div className="space-y-6 page-transition">
       {userRole === 'Admin' ? (
-        <AdminView stats={stats} tareas={tareas} clientes={clientes} onPrint={handlePrint} />
+        <AdminView stats={stats} tareas={tareas} clientes={clientes} onPrint={handlePrint} onViewDetail={(t) => { setSelectedTask(t); setDetailModalOpen(true); }} onNavigate={(p) => navigate(p)} />
       ) : (
-        <TechnicianView tareas={tareas} clientes={clientes} updateRecord={updateRecord} refreshAll={refreshAll} onPrint={handlePrint} />
+        <TechnicianView tareas={tareas} clientes={clientes} updateRecord={updateRecord} refreshAll={refreshAll} onPrint={handlePrint} onViewDetail={(t) => { setSelectedTask(t); setDetailModalOpen(true); }} onDelete={(id) => deleteRecord('tasks', id).then(refreshAll)} onEdit={(t) => { setSelectedTask(t); setDetailModalOpen(true); }} />
       )}
       
+      {/* Preview Modal Integral */}
+      <ComprehensiveDetailModal 
+        isOpen={detailModalOpen}
+        onClose={() => setDetailModalOpen(false)}
+        data={selectedTask}
+        type="task"
+        clientes={clientes}
+        onPrint={(t) => {
+            setDetailModalOpen(false);
+            handlePrint(t, clientes.find(c => c.id === t.cliente_id));
+        }}
+        onSave={(t) => {
+            setDetailModalOpen(false);
+            handleSaveAsFile(t, clientes.find(c => c.id === t.cliente_id));
+        }}
+      />
+
       {/* Indicador de impresora activa en esquina */}
       {selectedAddress && (
           <button
@@ -578,6 +790,27 @@ const Dashboard = () => {
               </div>
           </div>
       )}
+
+      {/* Modal de Impresión / Guardar (Centralizado) */}
+      <PrinterActionModal 
+        isOpen={showPreview}
+        onClose={() => setShowPreview(false)}
+        task={printingTask}
+        client={printingClient}
+        onPrint={(t, c) => {
+            if (!selectedAddress) {
+                setShowPrinterModal(true);
+                setShowPreview(false);
+            } else {
+                executePrint(t, c, selectedAddress);
+                setShowPreview(false);
+            }
+        }}
+        onSave={(t, c) => {
+            handleSaveAsFile(t, c);
+            setShowPreview(false);
+        }}
+      />
 
       {/* Visor Recibo Visual HTML Backup */}
       <ReciboTicket data={printingTask || tareas[0]} cliente={printingClient || clientes[0]} />

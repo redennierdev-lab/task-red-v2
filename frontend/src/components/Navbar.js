@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock, DollarSign, Sun, Moon, TrendingUp, RotateCcw, RotateCw } from 'lucide-react';
+import { Users, Wrench, FileText, LayoutList, Menu, X, Rocket, History, ToggleLeft, ToggleRight, Lock, DollarSign, Sun, Moon, TrendingUp, RotateCcw, RotateCw, Settings2 } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
 const Navbar = () => {
@@ -20,6 +20,7 @@ const Navbar = () => {
     { path: '/users', name: 'Directorio Clientes', icon: <Users size={22} />, roles: ['Admin'] },
     { path: '/technicians', name: 'Equipo Técnico', icon: <Wrench size={22} />, roles: ['Admin'] },
     { path: '/services', name: 'Catálogo Servicios', icon: <Rocket size={22} />, roles: ['Admin'] },
+    { path: '/parametros', name: 'Parámetros', icon: <Settings2 size={22} />, roles: ['Admin'] },
   ].filter(i => i.roles.includes(userRole));
 
   const toggleRole = () => {

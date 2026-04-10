@@ -14,6 +14,7 @@ import { AppContext, AppProvider } from './context/AppContext';
 import Dashboard from './pages/Dashboard';
 import Gastos from './pages/Gastos';
 import Ingresos from './pages/Ingresos';
+import Parametros from './pages/Parametros';
 import BottomNav from './components/BottomNav';
 import SplashScreen from './components/SplashScreen';
 
@@ -73,6 +74,7 @@ const AppContent = () => {
                 <Route path="/services" element={<Servicios />} />
                 <Route path="/gastos" element={<Gastos />} />
                 <Route path="/ingresos" element={<Ingresos />} />
+                <Route path="/parametros" element={<Parametros />} />
               </Routes>
             </div>
             

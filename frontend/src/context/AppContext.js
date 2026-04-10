@@ -121,7 +121,9 @@ export const AppProvider = ({ children }) => {
         'customers': 'customers',
         'technicians': 'technicians',
         'tasks': 'tasks',
-        'services': 'services'
+        'services': 'services',
+        'expenses': 'expenses',
+        'incomes': 'incomes'
     };
     const table = tableMap[endpoint];
     try {
@@ -158,7 +160,9 @@ export const AppProvider = ({ children }) => {
         'customers': 'customers',
         'technicians': 'technicians',
         'tasks': 'tasks',
-        'services': 'services'
+        'services': 'services',
+        'expenses': 'expenses',
+        'incomes': 'incomes'
     };
     const table = tableMap[endpoint];
     try {

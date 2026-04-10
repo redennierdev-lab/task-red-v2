@@ -1,11 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutList, FileText, Users, Wrench, History, DollarSign, TrendingUp, Menu, X, LayoutGrid } from 'lucide-react';
+import { LayoutList, FileText, Users, Wrench, History, DollarSign, TrendingUp, LayoutGrid, Settings2 } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 
 const BottomNav = () => {
   const { userRole } = useContext(AppContext);
-  const [isExpanded, setIsExpanded] = useState(false);
 
   const navItems = [
     { icon: <LayoutList size={20} />, label: 'Inicio', path: '/', roles: ['Admin', 'Técnico'] },
@@ -17,52 +16,28 @@ const BottomNav = () => {
     { icon: <Users size={20} />, label: 'Clientes', path: '/users', roles: ['Admin'] },
     { icon: <Wrench size={20} />, label: 'Staff', path: '/technicians', roles: ['Admin'] },
     { icon: <LayoutGrid size={20} />, label: 'Servicios', path: '/services', roles: ['Admin'] },
+    { icon: <Settings2 size={20} />, label: 'Config', path: '/parametros', roles: ['Admin'] },
   ].filter(i => i.roles.includes(userRole));
 
   return (
-    <nav className={`lg:hidden fixed bottom-6 z-[1000] flex flex-col items-center gap-3 transition-all duration-500 ease-in-out ${isExpanded ? 'left-6' : '-left-10 hover:left-2'}`}>
-      {/* Expanded Menu Items */}
-      <div className={`flex flex-col items-center gap-3 transition-all duration-500 origin-bottom ${isExpanded ? 'scale-100 opacity-100 mb-2' : 'scale-0 opacity-0 h-0 pointer-events-none'}`}>
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-[200] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t-2 border-orange-50 dark:border-slate-800 shadow-2xl px-2 py-1 safe-bottom">
+      <div className="flex items-center justify-around gap-1 overflow-x-auto">
         {navItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
-            onClick={() => setIsExpanded(false)}
             className={({ isActive }) =>
-              `w-14 h-14 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-xl border transition-all duration-300 transform active:scale-90
-              ${isActive 
-                ? 'bg-gradient-to-br from-orange-500 to-orange-600 text-white border-orange-400/50 shadow-orange-500/40 ring-4 ring-orange-500/10' 
-                : 'bg-white/90 dark:bg-slate-900/90 text-slate-500 dark:text-slate-400 border-white/20 dark:border-slate-800'}`
+              `flex flex-col items-center gap-0.5 px-2 py-2 rounded-2xl transition-all duration-200 min-w-[46px] active:scale-90
+              ${isActive
+                ? 'text-orange-500 bg-orange-50 dark:bg-orange-500/10'
+                : 'text-slate-400 dark:text-slate-500 hover:text-orange-400'}`
             }
           >
             {item.icon}
+            <span className="text-[7px] font-black uppercase tracking-wider leading-none">{item.label}</span>
           </NavLink>
         ))}
       </div>
-
-      {/* Main Toggle Button (The "Ball") */}
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className={`w-16 h-16 rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(249,115,22,0.4)] transition-all duration-500 transform active:scale-95 z-10
-          ${isExpanded 
-            ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 rotate-0' 
-            : 'bg-gradient-to-br from-orange-500 to-orange-600 text-white'}`}
-      >
-        {isExpanded ? <X size={28} /> : <Menu size={28} />}
-        
-        {/* Decorative Ring */}
-        {!isExpanded && (
-          <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-ping pointer-events-none"></div>
-        )}
-      </button>
-
-      {/* Backdrop for closing when expanded */}
-      {isExpanded && (
-        <div 
-          className="fixed inset-0 bg-black/5 dark:bg-black/20 backdrop-blur-[2px] z-[-1]" 
-          onClick={() => setIsExpanded(false)}
-        />
-      )}
     </nav>
   );
 };

@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { History, CheckCircle2, XCircle, Search, Printer } from 'lucide-react';
-import ReciboTicket from '../components/ReciboTicket';
-import PrinterModal from '../components/PrinterModal';
-import BluetoothPrinter from '../utils/BluetoothPrinter';
+import ReciboTicket from '../features/printer/components/ReciboTicket';
+import PrinterModal from '../features/printer/components/PrinterModal';
+import BluetoothPrinter from '../features/printer/services/BluetoothPrinter';
+
 import { Capacitor } from '@capacitor/core';
 
 const Historial = () => {
@@ -95,36 +96,34 @@ const Historial = () => {
   const getCliente = (id) => clientes.find(c => c.id === Number(id)) || {};
 
   return (
-    <div className="space-y-8 page-transition">
+    <div className="space-y-6 page-transition">
       <div className="view-header">
-        <div className="relative z-10 flex items-center gap-6">
+        <div className="flex items-center gap-4">
             <div className="brand-icon">
-                <History size={32} />
+                <History size={24} />
             </div>
             <div>
-              <h2 className="view-title italic uppercase tracking-tighter">Historial Técnico</h2>
-              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Registro Operativo Finalizado RED ENNIER</p>
+              <h1 className="view-title">Historial Técnico</h1>
+              <p className="view-subtitle">Registro Operativo Finalizado · RED ENNIER</p>
             </div>
         </div>
       </div>
 
-      {/* Consistency Search */}
-      <div className="max-w-4xl mx-auto md:mx-0">
-        <div className="relative group text-slate-900 dark:text-white">
-          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500 group-focus-within:scale-110">
-            <Search size={22} />
-          </div>
-          <input
-            type="text"
-            placeholder="Rastrear registros operativos finalizados..."
-            className="w-full pl-16 pr-8 py-5 bg-white dark:bg-slate-900 rounded-[2rem] border-2 border-orange-100 dark:border-slate-800 shadow-xl focus:ring-8 focus:ring-orange-500/5 dark:focus:ring-fuchsia-500/5 focus:border-orange-400 dark:focus:border-fuchsia-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-lg"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+      {/* Search */}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+          <Search size={17} />
         </div>
+        <input
+          type="text"
+          placeholder="Rastrear registros finalizados por título o ticket…"
+          className="md-input pl-11"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 pb-20 px-1">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-6 px-1">
         {historialTareas.map(tarea => {
             const cliente = getCliente(tarea.cliente_id);
             return (

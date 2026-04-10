@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { X, ArrowRight, ArrowLeft, Send, DollarSign, Package, Utensils, CreditCard, Calendar, Clock, Tag } from 'lucide-react';
-import { db, logAction } from '../db/db';
-import { AppContext } from '../context/AppContext';
+import { db, logAction } from '../../../services/database';
+import { AppContext } from '../../../context/AppContext';
+
 
 const GastoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     const { refreshAll } = useContext(AppContext);

@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { X, ArrowRight, ArrowLeft, Send, Layers, User, Wrench, ShieldCheck, FileText, CheckCircle2, CircleDashed } from 'lucide-react';
-import { db, logAction } from '../db/db';
-import { AppContext } from '../context/AppContext';
+import { db, logAction } from '../../../services/database';
+import { AppContext } from '../../../context/AppContext';
+
 
 const TareaWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     const { refreshAll, clientes, tecnicos, addRecord, updateRecord } = useContext(AppContext);

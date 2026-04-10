@@ -7,33 +7,46 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#EF4444", 
-        secondary: "#F97316", 
-        accent: "#D946EF", 
+        primary: "#4F46E5", // Indigo 600
+        secondary: "#10B981", // Emerald 500
+        accent: "#8B5CF6", // Violet 500
         success: "#10B981",
-        warning: "#EAB308", 
+        warning: "#F59E0B", 
         danger: "#EF4444",
-        white: "#FFFCFA",
+        background: {
+          light: "#F8FAFC",
+          dark: "#0F172A",
+        },
         slate: {
-          50: '#FFF9F8',
-          100: '#F7EDEA',
-          200: '#EBDCD8',
-          300: '#DBC5BF',
-          400: '#C2A79F',
-          500: '#A1837A',
-          600: '#7D6158',
-          700: '#5C433C',
-          800: '#3D2823',
-          900: '#2A0614', // Deep rich wine/fuchsia black as requested
-          950: '#17030A',
+          50:  '#F8FAFC',
+          100: '#F1F5F9',
+          200: '#E2E8F0',
+          300: '#CBD5E1',
+          400: '#94A3B8',
+          500: '#64748B',
+          600: '#475569',
+          700: '#334155',
+          800: '#1E293B',
+          900: '#0F172A',
+          950: '#020617',
         }
       },
       backgroundImage: {
-        "logo-gradient": "linear-gradient(135deg, #D946EF 0%, #EF4444 33%, #F97316 66%, #EAB308 100%)",
+        "logo-gradient": "linear-gradient(135deg, #4F46E5 0%, #10B981 100%)",
+        "rgb-gradient": "linear-gradient(var(--angle), #4F46E5, #0ea5e9, #10b981, #d946ef, #4F46E5)",
       },
       fontFamily: {
+        sans: ['Inter', 'Plus Jakarta Sans', 'sans-serif'],
         jakarta: ['Plus Jakarta Sans', 'sans-serif'],
         outfit: ['Outfit', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      borderRadius: {
+        'md3-sm':  '8px',
+        'md3-md':  '12px',
+        'md3-lg':  '16px',
+        'md3-xl':  '28px',
+        'md3-full':'1000px',
       },
       animation: {
         'spin-slow': 'spin 3s linear infinite',

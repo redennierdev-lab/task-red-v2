@@ -65,7 +65,7 @@ const ComprehensiveDetailModal = ({ isOpen, onClose, data, type, onPrint, onSave
                                     <div className="space-y-1">
                                         <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest italic">Tipo de Servicio</p>
                                         <div className="flex items-center gap-2">
-                                            <div className="p-1.5 bg-orange-50 dark:bg-orange-500/10 rounded-lg text-orange-600">
+                                            <div className="p-1.5 bg-orange-50 dark:bg-orange-500/10 rounded-xl text-orange-600">
                                                 {data.servicio_tipo === 'Internet' ? <Zap size={14}/> : <Wrench size={14}/>}
                                             </div>
                                             <span className="text-sm font-black text-slate-700 dark:text-slate-200 uppercase italic">{data.servicio_tipo || 'General'}</span>
@@ -115,7 +115,7 @@ const ComprehensiveDetailModal = ({ isOpen, onClose, data, type, onPrint, onSave
                                             </div>
                                             <div className="flex flex-wrap gap-1.5">
                                                 {(sec.items || []).length > 0 ? (sec.items || []).map((it, idx) => (
-                                                    <span key={idx} className="px-2.5 py-1 bg-slate-50 dark:bg-slate-800 text-[8px] font-bold text-slate-600 dark:text-slate-400 rounded-lg border border-slate-100 dark:border-slate-700 uppercase italic">
+                                                    <span key={idx} className="px-2.5 py-1 bg-slate-50 dark:bg-slate-800 text-[8px] font-bold text-slate-600 dark:text-slate-400 rounded-full border border-slate-100 dark:border-slate-700 uppercase italic">
                                                         {it}
                                                     </span>
                                                 )) : <span className="text-[8px] text-slate-300 italic uppercase">Ninguno registrado</span>}

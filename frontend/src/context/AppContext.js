@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { db, logAction } from '../db/db';
+import { db, logAction } from '../services/database';
 
 export const AppContext = createContext();
 
@@ -9,21 +9,10 @@ export const AppProvider = ({ children }) => {
   const [tareas, setTareas] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [userRole, setUserRole] = useState('Admin'); // 'Admin' | 'Técnico'
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [rates, setRates] = useState(() => {
-    const saved = localStorage.getItem('ennier_rates');
-    const defaultRates = { bcv: 0, usdt: 0, lastUpdate: null, manualBcv: 0, manualUsdt: 0, useManual: false };
-    return saved ? { ...defaultRates, ...JSON.parse(saved) } : defaultRates;
-  });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const saveRates = useCallback((newRates) => {
-    setRates(prev => {
-        const updated = { ...prev, ...newRates };
-        localStorage.setItem('ennier_rates', JSON.stringify(updated));
-        return updated;
-    });
-  }, []);
+  const [userRole, setUserRole] = useState('Admin');
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -75,39 +64,6 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
-  const fetchRates = useCallback(async () => {
-    // Si el usuario prefiere manual, no intentamos fetch
-    if (rates.useManual && rates.manualBcv > 0) {
-        setRates(prev => ({ ...prev, bcv: prev.manualBcv, usdt: prev.manualUsdt, offline: false }));
-        return;
-    }
-
-    if (!navigator.onLine) {
-        setRates(prev => ({ ...prev, offline: true }));
-        return;
-    }
-    try {
-        const response = await fetch('https://pydolarvenezuela-api.vercel.app/api/v1/dollar');
-        if (!response.ok) throw new Error('API response not ok');
-        const data = await response.json();
-        const bcv = data?.monitors?.bcv?.price || rates.manualBcv || 0;
-        const usdt = data?.monitors?.binance?.price || data?.monitors?.enparalelovzla?.price || rates.manualUsdt || 0;
-
-        if (bcv > 0 || usdt > 0) {
-            saveRates({ bcv, usdt, lastUpdate: new Date(), offline: false });
-        }
-    } catch (error) {
-        // Silencio el error ruidoso en consola para no asustar al usuario
-        console.warn('API de tasas no disponible (CORS/Network). Usando valores locales.');
-        setRates(prev => ({ ...prev, bcv: prev.manualBcv || prev.bcv, usdt: prev.manualUsdt || prev.usdt, offline: true }));
-    }
-  }, [rates.useManual, rates.manualBcv, rates.manualUsdt, saveRates]);
-
-  useEffect(() => {
-    fetchRates();
-    const interval = setInterval(fetchRates, 600000); // 10 minutos
-    return () => clearInterval(interval);
-  }, [fetchRates]);
 
   const refreshAll = useCallback(async () => {
     setLoading(true);
@@ -208,7 +164,9 @@ export const AppProvider = ({ children }) => {
         'customers': 'customers',
         'technicians': 'technicians',
         'tasks': 'tasks',
-        'services': 'services'
+        'services': 'services',
+        'expenses': 'expenses',
+        'incomes': 'incomes'
     };
     const table = tableMap[endpoint];
     try {
@@ -313,8 +271,7 @@ export const AppProvider = ({ children }) => {
       clientes, tecnicos, tareas, servicios, loading,
       userRole, setUserRole,
       theme, toggleTheme,
-      rates, setRates, fetchRates,
-      isOnline,
+      isOnline, isSidebarOpen, setIsSidebarOpen,
       refreshAll, deleteRecord, updateRecord, addRecord,
       undo, redo, canUndo: historyIndex >= 0, canRedo: historyIndex < history.length - 1,
       fetchClientes, fetchTecnicos, fetchTareas, fetchServicios

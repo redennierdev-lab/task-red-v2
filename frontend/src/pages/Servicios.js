@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Sparkles, DollarSign, Search, Plus, Edit3, Trash2, FileText, Zap, ShieldCheck, Rocket } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
-import ServicioWizard from '../components/ServicioWizard';
-import ConfirmModal from '../components/ConfirmModal';
+import ServicioWizard from '../features/services/components/ServicioWizard';
+import ConfirmModal from '../components/shared/ConfirmModal';
+
 
 const Servicios = () => {
   const { servicios, deleteRecord, refreshAll } = useContext(AppContext);
@@ -35,55 +36,55 @@ const Servicios = () => {
   );
 
   return (
-    <div className="space-y-6 page-transition pb-20">
-      {/* Premium Header */}
+    <div className="space-y-6 page-transition">
+      {/* View Header */}
       <div className="view-header">
-        <div className="relative z-10 flex items-center gap-6">
+        <div className="flex items-center gap-4">
             <div className="brand-icon">
-                <Rocket size={32} />
+                <Rocket size={24} />
             </div>
             <div>
-              <h2 className="view-title italic uppercase tracking-tighter">Red de Servicios</h2>
-              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Catálogo de Operaciones RED ENNIER</p>
+              <h1 className="view-title">Catálogo de Servicios</h1>
+              <p className="view-subtitle">Red de Operaciones · RED ENNIER</p>
             </div>
         </div>
-        <button 
+        <button
           onClick={() => { setEditingId(null); setIsWizardOpen(true); }}
-          className="btn-gradient relative z-10 w-full sm:w-auto px-10 shadow-2xl shadow-orange-500/20"
+          className="btn-gradient px-6 py-3"
         >
-          <Rocket size={18} />
+          <Rocket size={17} />
           <span>Nuevo Servicio</span>
         </button>
       </div>
 
-      {/* Premium Search & Filters */}
-      <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
-        <div className="relative group text-slate-900 dark:text-white">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-emerald-400 group-focus-within:text-emerald-500">
-            <Search size={18} />
+      {/* Search + Chips */}
+      <div className="space-y-3">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+            <Search size={17} />
           </div>
           <input
             type="text"
-            placeholder="Filtrar servicios..."
-            className="w-full pl-12 pr-6 py-2.5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-emerald-100 dark:border-emerald-500/20 shadow-lg focus:ring-4 focus:ring-emerald-500/5 focus:border-emerald-400 dark:focus:border-emerald-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-sm"
+            placeholder="Filtrar por nombre o descripción de servicio…"
+            className="md-input pl-11"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
-        <div className="flex flex-col gap-1.5">
-            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 ml-3 italic">Categoría:</span>
-            <div className="inline-flex flex-wrap p-1 gap-1 bg-white dark:bg-slate-900 border-2 border-emerald-50 dark:border-emerald-500/10 rounded-2xl shadow-lg w-fit">
-                {['Todos', 'Internet', 'Instalación', 'Cámaras', 'Hardware', 'Software'].map(tag => (
-                    <button 
-                      key={tag}
-                      onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)} 
-                      className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/30' : 'text-slate-400 dark:text-slate-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 hover:text-emerald-600'}`}
-                    >
-                        {tag}
-                    </button>
-                ))}
-            </div>
+        <div className="flex flex-wrap gap-2">
+          {['Todos', 'Internet', 'Instalación', 'Cámaras', 'Hardware', 'Software'].map(tag => (
+            <button
+              key={tag}
+              onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)}
+              className={`md-chip transition-all ${
+                (tag === 'Todos' && searchTerm === '') || searchTerm === tag
+                  ? 'md-chip-primary'
+                  : 'md-chip-neutral'
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -95,14 +96,14 @@ const Servicios = () => {
             
             <div className="p-3">
               <div className="flex justify-between items-start mb-2">
-                <div className="w-8 h-8 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-700 shadow-sm border border-slate-100 dark:border-slate-700">
+                <div className="w-8 h-8 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-700 shadow-sm border border-slate-100 dark:border-slate-700">
                   <Sparkles size={14} />
                 </div>
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                  <button onClick={() => handleEdit(servicio)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-emerald-600 rounded-md transition-all shadow-sm">
+                  <button onClick={() => handleEdit(servicio)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-emerald-600 rounded-lg transition-all shadow-sm">
                     <Edit3 size={11} />
                   </button>
-                  <button onClick={(e) => handleDeleteTrigger(e, servicio.id)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-md transition-all shadow-sm">
+                  <button onClick={(e) => handleDeleteTrigger(e, servicio.id)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-lg transition-all shadow-sm">
                     <Trash2 size={11} />
                   </button>
                 </div>
@@ -138,7 +139,7 @@ const Servicios = () => {
           onClick={() => { setEditingId(null); setIsWizardOpen(true); }}
           className="rounded-2xl border-2 border-dashed border-slate-100 dark:border-slate-800 p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:border-emerald-500/20 hover:bg-emerald-500/5 dark:hover:bg-emerald-500/10 transition-all group min-h-[100px]"
         >
-           <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600 group-hover:scale-110 group-hover:text-emerald-500 transition-all mb-1.5 shadow-sm">
+           <div className="w-8 h-8 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-300 dark:text-slate-600 group-hover:scale-110 group-hover:text-emerald-500 transition-all mb-1.5 shadow-sm">
               <Plus size={16} />
            </div>
            <span className="text-[8px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600 group-hover:text-emerald-500 italic">Añadir</span>

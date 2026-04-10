@@ -1,7 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { X, ArrowRight, ArrowLeft, Send, DollarSign, Wallet, CreditCard, Calendar, Clock, Tag, UserCheck, TrendingUp, Landmark, History } from 'lucide-react';
-import { db, logAction } from '../db/db';
-import { AppContext } from '../context/AppContext';
+import { db, logAction } from '../../../services/database';
+import { AppContext } from '../../../context/AppContext';
+
 
 const IngresoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     const { refreshAll } = useContext(AppContext);
@@ -168,13 +169,13 @@ const IngresoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                             <div className="space-y-4">
                                 <div className="space-y-1.5">
                                     <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 italic">Justificación / Descripción</label>
-                                    <textarea 
-                                        rows="4"
-                                        placeholder="Ej: Pago mensualidad Cliente Juan Pérez - Marzo 2026..."
-                                        className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-[1.5rem] focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none resize-none italic shadow-inner"
-                                        value={form.descripcion}
-                                        onChange={e => setForm({...form, descripcion: e.target.value})}
-                                    />
+                                        <textarea 
+                                            rows="4"
+                                            placeholder="Ej: Pago mensualidad Cliente Juan Pérez - Marzo 2026..."
+                                            className="w-full px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-[2rem] focus:bg-white dark:focus:bg-slate-800 focus:border-orange-500 transition-all font-bold text-slate-700 dark:text-slate-200 outline-none resize-none italic shadow-inner"
+                                            value={form.descripcion}
+                                            onChange={e => setForm({...form, descripcion: e.target.value})}
+                                        />
                                 </div>
                                 
                                 <div className="grid grid-cols-2 gap-4">
@@ -228,12 +229,12 @@ const IngresoWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                                 <div className="col-span-2 space-y-1.5 pt-4">
                                     <label className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 pl-4 italic">Plataforma de Cobro</label>
                                     <div className="grid grid-cols-2 gap-2">
-                                        {['Efectivo', 'Zelle', 'Pago Móvil', 'Binance'].map(method => (
+                                        {['Zelle', 'Efectivo', 'Pago Móvil', 'Binance'].map(method => (
                                             <button 
                                                 key={method}
                                                 type="button"
                                                 onClick={() => setForm({...form, metodo_pago: method})}
-                                                className={`py-3 rounded-2xl border-2 font-black text-[10px] uppercase tracking-widest transition-all italic ${form.metodo_pago === method ? 'bg-slate-900 dark:bg-emerald-600 border-slate-900 dark:border-emerald-600 text-white shadow-lg' : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-400 dark:text-slate-500'}`}
+                                                className={`py-3 rounded-full border-2 font-black text-[10px] uppercase tracking-widest transition-all italic ${form.metodo_pago === method ? 'bg-slate-900 dark:bg-emerald-600 border-slate-900 dark:border-emerald-600 text-white shadow-lg' : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-400 dark:text-slate-500'}`}
                                             >
                                                 {method}
                                             </button>

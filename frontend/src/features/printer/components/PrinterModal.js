@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Bluetooth, XCircle, RefreshCw, Check, Printer, ChevronRight } from 'lucide-react';
-import BluetoothPrinter from '../utils/BluetoothPrinter';
+import { Bluetooth, XCircle, RefreshCw, Check, Printer, ChevronRight, Play, X } from 'lucide-react';
+import BluetoothPrinter from '../services/BluetoothPrinter';
+
 
 const PrinterModal = ({ isOpen, onClose, onSelect, selectedAddress }) => {
     const [printers, setPrinters] = useState({ paired: [], unpaired: [] });
     const [isScanning, setIsScanning] = useState(false);
+    const [isBtEnabled, setIsBtEnabled] = useState(true);
+
+    const checkBtStatus = async () => {
+        const enabled = await BluetoothPrinter.checkBT();
+        setIsBtEnabled(enabled);
+        return enabled;
+    };
 
     const scanPrinters = async () => {
         setIsScanning(true);
+        const btOn = await checkBtStatus();
+        if (!btOn) {
+            setIsScanning(false);
+            return;
+        }
+
         setPrinters({ paired: [], unpaired: [] });
         try {
             const ready = await BluetoothPrinter.prepareSystem();
@@ -27,6 +41,14 @@ const PrinterModal = ({ isOpen, onClose, onSelect, selectedAddress }) => {
             console.error("Bluetooth Scan Error:", err);
         }
         setIsScanning(false);
+    };
+
+    const handleEnableBt = async () => {
+        const success = await BluetoothPrinter.enable();
+        if (success) {
+            setIsBtEnabled(true);
+            scanPrinters();
+        }
     };
 
     useEffect(() => {
@@ -60,7 +82,26 @@ const PrinterModal = ({ isOpen, onClose, onSelect, selectedAddress }) => {
 
                 {/* List Area */}
                 <div className="p-6 space-y-4 max-h-[50vh] overflow-y-auto custom-scrollbar">
-                    {hasDevices ? (
+                    {!isBtEnabled ? (
+                        <div className="py-12 text-center space-y-6 animate-in fade-in zoom-in duration-500">
+                             <div className="w-24 h-24 bg-orange-100 dark:bg-orange-500/10 rounded-[2.5rem] flex items-center justify-center mx-auto text-orange-500 border-2 border-orange-200 dark:border-orange-500/20">
+                                <Bluetooth size={48} className="animate-pulse" />
+                             </div>
+                             <div className="space-y-2">
+                                <h4 className="text-lg font-black text-slate-800 dark:text-white uppercase italic tracking-tighter">Bluetooth Desactivado</h4>
+                                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase italic px-10 leading-relaxed">
+                                    Para sincronizar la impresora real de RED ENNIER, activa el Bluetooth del dispositivo.
+                                </p>
+                             </div>
+                             <button 
+                                onClick={handleEnableBt}
+                                className="inline-flex items-center gap-3 px-8 py-4 bg-orange-500 text-white rounded-full font-black uppercase italic tracking-widest text-xs shadow-xl shadow-orange-500/30 active:scale-95 transition-all"
+                             >
+                                <Play size={16} fill="white" />
+                                Activar Ahora
+                             </button>
+                        </div>
+                    ) : hasDevices ? (
                         <div className="space-y-6">
                             {/* Dispositivos Vinculados */}
                             {printers.paired.length > 0 && (
@@ -130,17 +171,17 @@ const PrinterModal = ({ isOpen, onClose, onSelect, selectedAddress }) => {
                         <div className="py-16 text-center space-y-6">
                             {isScanning ? (
                                 <div className="space-y-4">
-                                    <div className="relative w-20 h-20 mx-auto">
-                                        <div className="absolute inset-0 border-4 border-orange-500/10 rounded-full"></div>
-                                        <div className="absolute inset-0 border-4 border-t-orange-500 rounded-full animate-spin"></div>
+                                    <div className="relative w-24 h-24 mx-auto">
+                                        <div className="absolute inset-0 border-4 border-orange-500/10 rounded-[2.5rem]"></div>
+                                        <div className="absolute inset-0 border-4 border-t-orange-500 rounded-[2.5rem] animate-spin"></div>
                                         <Bluetooth size={32} className="absolute inset-0 m-auto text-orange-500 animate-pulse" />
                                     </div>
-                                    <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.2em] italic">Buscando señales locales...</p>
+                                    <p className="text-slate-500 font-black uppercase text-[10px] tracking-[0.2em] italic">Rastreando dispositivos RED ENNIER...</p>
                                 </div>
                             ) : (
                                 <div className="space-y-4 opacity-100 animate-in fade-in zoom-in duration-500">
-                                    <div className="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center mx-auto text-slate-200 dark:text-slate-700">
-                                        <Bluetooth size={40} />
+                                    <div className="w-24 h-24 bg-slate-50 dark:bg-slate-800 rounded-[2.5rem] flex items-center justify-center mx-auto text-slate-200 dark:text-slate-700">
+                                        <Bluetooth size={48} />
                                     </div>
                                     <div>
                                         <p className="text-slate-400 dark:text-slate-500 font-black uppercase text-[10px] tracking-widest italic mb-1">Sin dispositivos a la vista</p>

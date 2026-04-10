@@ -1,5 +1,7 @@
 import React from 'react';
-import { db } from '../db/db';
+import { db } from '../../../services/database';
+
+
 
 const ReciboTicket = ({ data, cliente }) => {
     if (!data) return null;

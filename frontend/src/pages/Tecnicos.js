@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Wrench, Phone, Award, Search, UserPlus, Edit3, Trash2 } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
-import TecnicoWizard from '../components/TecnicoWizard';
-import ConfirmModal from '../components/ConfirmModal';
+import TecnicoWizard from '../features/technicians/components/TecnicoWizard';
+import ConfirmModal from '../components/shared/ConfirmModal';
+
 
 const Tecnicos = () => {
   const { tecnicos, deleteRecord, refreshAll } = useContext(AppContext);
@@ -35,55 +36,55 @@ const Tecnicos = () => {
   );
 
   return (
-    <div className="space-y-6 page-transition pb-20">
-      {/* Premium Header */}
+    <div className="space-y-6 page-transition">
+      {/* View Header */}
       <div className="view-header">
-        <div className="relative z-10 flex items-center gap-6">
+        <div className="flex items-center gap-4">
             <div className="brand-icon">
-                <Wrench size={32} />
+                <Wrench size={24} />
             </div>
             <div>
-              <h2 className="view-title italic uppercase tracking-tighter">Equipo Técnico</h2>
-              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Staff de Especialistas RED ENNIER</p>
+              <h1 className="view-title">Equipo Técnico</h1>
+              <p className="view-subtitle">Staff de Especialistas · RED ENNIER</p>
             </div>
         </div>
-        <button 
+        <button
           onClick={() => { setEditingId(null); setIsWizardOpen(true); }}
-          className="btn-gradient relative z-10 w-full sm:w-auto px-10 shadow-2xl shadow-orange-500/20"
+          className="btn-gradient px-6 py-3"
         >
           <UserPlus size={18} />
           <span>Añadir Especialista</span>
         </button>
       </div>
 
-      {/* Premium Search & Grouped Filter List */}
-      <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
-        <div className="relative group text-slate-900 dark:text-white">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500">
-            <Search size={18} />
+      {/* Search + Filter Chips */}
+      <div className="space-y-3">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+            <Search size={17} />
           </div>
           <input
             type="text"
-            placeholder="Rastrear especialista..."
-            className="w-full pl-12 pr-6 py-2.5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-orange-100 dark:border-slate-800 shadow-lg focus:ring-4 focus:ring-orange-500/5 dark:focus:ring-fuchsia-500/5 focus:border-orange-400 dark:focus:border-fuchsia-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-sm"
+            placeholder="Rastrear especialista por nombre o disciplina…"
+            className="md-input pl-11"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
-        <div className="flex flex-col gap-1.5">
-            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 ml-3 italic">Disciplina:</span>
-            <div className="inline-flex flex-wrap p-1 gap-1 bg-white dark:bg-slate-900 border-2 border-orange-50 dark:border-slate-800 rounded-2xl shadow-lg w-fit">
-                {['Todos', 'Redes', 'Software', 'Cámaras', 'Instalador'].map(tag => (
-                    <button 
-                      key={tag}
-                      onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)} 
-                      className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-logo-gradient text-white shadow-lg shadow-orange-500/30' : 'text-slate-400 dark:text-slate-500 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-fuchsia-400'}`}
-                    >
-                        {tag}
-                    </button>
-                ))}
-            </div>
+        <div className="flex flex-wrap gap-2">
+          {['Todos', 'Redes', 'Software', 'Cámaras', 'Instalador'].map(tag => (
+            <button
+              key={tag}
+              onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)}
+              className={`md-chip transition-all ${
+                (tag === 'Todos' && searchTerm === '') || searchTerm === tag
+                  ? 'md-chip-primary'
+                  : 'md-chip-neutral'
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -95,14 +96,14 @@ const Tecnicos = () => {
             
             <div className="p-3 bg-white dark:bg-slate-900 relative">
             <div className="flex justify-between items-start mb-1.5 relative z-10">
-              <div className="w-8 h-8 bg-slate-900 dark:bg-slate-800 rounded-lg flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
+              <div className="w-8 h-8 bg-slate-900 dark:bg-slate-800 rounded-xl flex items-center justify-center text-white shadow-lg transition-all duration-500 group-hover:scale-110">
                  <Wrench size={14} className={tecnico.status === 'Inactivo' ? 'opacity-30' : ''} />
               </div>
               <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                <button onClick={(e) => { e.stopPropagation(); handleEdit(tecnico); }} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-orange-500 dark:hover:text-fuchsia-400 rounded-md transition-all border border-slate-100 dark:border-slate-700 shadow-sm">
+                <button onClick={(e) => { e.stopPropagation(); handleEdit(tecnico); }} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-orange-500 dark:hover:text-fuchsia-400 rounded-lg transition-all border border-slate-100 dark:border-slate-700 shadow-sm">
                   <Edit3 size={11} />
                 </button>
-                <button onClick={(e) => handleDeleteTrigger(e, tecnico.id)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-red-500 rounded-md transition-all border border-slate-100 dark:border-slate-700 shadow-sm">
+                <button onClick={(e) => handleDeleteTrigger(e, tecnico.id)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-red-500 rounded-lg transition-all border border-slate-100 dark:border-slate-700 shadow-sm">
                   <Trash2 size={11} />
                 </button>
               </div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../db/db';
+import { db } from '../services/database';
 import { History, Clock, Database, User, Search, Printer, Bluetooth as BluetoothIcon } from 'lucide-react';
-import BluetoothPrinter from '../utils/BluetoothPrinter';
-import PrinterModal from '../components/PrinterModal';
+import BluetoothPrinter from '../features/printer/services/BluetoothPrinter';
+import PrinterModal from '../features/printer/components/PrinterModal';
+
 import { Capacitor } from '@capacitor/core';
 
 const HistorialAdmin = () => {
@@ -185,42 +186,37 @@ const HistorialAdmin = () => {
         </div>
       )}
 
-      <div className={`space-y-8 page-transition pb-20 ${printingLog ? 'print:hidden' : ''}`}>
+      <div className={`space-y-6 page-transition ${printingLog ? 'print:hidden' : ''}`}>
         <div className="view-header">
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center w-full gap-8">
-              <div className="flex items-center gap-6">
-                  <div className="brand-icon">
-                      <History size={32} />
-                  </div>
-                  <div>
-                     <h2 className="view-title">Auditoría de Sistema</h2>
-                     <p className="view-subtitle">Registro Maestro de Movimientos</p>
-                  </div>
+          <div className="flex items-center gap-4">
+              <div className="brand-icon">
+                  <History size={24} />
               </div>
-            
-              <button 
-                onClick={fetchLogs} 
-                className="btn-gradient relative overflow-hidden group px-10 shadow-2xl shadow-orange-500/20"
-              >
-                <Clock size={16}/> <span>Sincronizar Auditoría</span>
-              </button>
+              <div>
+                 <h1 className="view-title">Auditoría de Sistema</h1>
+                 <p className="view-subtitle">Registro Maestro de Movimientos · RED ENNIER</p>
+              </div>
           </div>
+          <button
+            onClick={fetchLogs}
+            className="btn-gradient px-6 py-3"
+          >
+            <Clock size={16}/> <span>Sincronizar Logs</span>
+          </button>
         </div>
 
-        {/* Premium Search for Audit Logs */}
-        <div className="max-w-4xl mx-auto md:mx-0">
-          <div className="relative group text-slate-900 dark:text-white">
-            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500">
-              <Search size={18} />
-            </div>
-            <input
-              type="text"
-              placeholder="Rastrear bitácora..."
-              className="w-full pl-12 pr-6 py-2.5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-orange-100 dark:border-slate-800 shadow-lg focus:ring-4 focus:ring-orange-500/5 dark:focus:ring-fuchsia-500/5 focus:border-orange-400 dark:focus:border-fuchsia-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-sm"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        {/* MD3 Search */}
+        <div className="relative">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+            <Search size={17} />
           </div>
+          <input
+            type="text"
+            placeholder="Filtrar bitácora por usuario, acción o módulo…"
+            className="md-input pl-11"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors relative">
@@ -251,7 +247,7 @@ const HistorialAdmin = () => {
                     </td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
-                        <User size={12} className="text-secondary dark:text-fuchsia-400"/>
+                        <User size={12} className="text-indigo-500 dark:text-fuchsia-400"/>
                         <span className="text-[10px] font-black text-slate-700 dark:text-slate-200 uppercase italic">{log.usuario}</span>
                       </div>
                     </td>
@@ -267,7 +263,7 @@ const HistorialAdmin = () => {
                       </div>
                     </td>
                     <td className="p-4">
-                      <span className="text-[10px] font-black text-slate-900 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">
+                      <span className="text-[10px] font-black text-slate-900 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-xl">
                         {log.registro_id}
                       </span>
                     </td>
@@ -279,7 +275,7 @@ const HistorialAdmin = () => {
                     <td className="p-4">
                         <button 
                           onClick={() => handlePrint(log)}
-                          className="p-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-lg hover:bg-slate-200"
+                          className="p-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 rounded-xl hover:bg-slate-200 transition-all active:scale-90"
                         >
                           <Printer size={14} />
                         </button>
@@ -311,7 +307,7 @@ const HistorialAdmin = () => {
       {isPrinting && (
           <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-950/90 backdrop-blur-sm">
               <div className="text-center text-white space-y-4">
-                  <Printer size={64} className="mx-auto text-orange-400 animate-bounce" />
+                  <Printer size={64} className="mx-auto text-indigo-500 animate-bounce" />
                   <p className="font-black uppercase text-xl italic tracking-tighter">Imprimiendo Auditoría...</p>
               </div>
           </div>

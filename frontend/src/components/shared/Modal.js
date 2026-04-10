@@ -13,7 +13,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
       />
       
       {/* Modal Container */}
-      <div className="bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-lg shadow-[0_30px_60px_rgba(0,0,0,0.12)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.4)] relative z-10 overflow-hidden border border-white/50 dark:border-slate-800 animate-in zoom-in-95 slide-in-from-bottom-6 duration-400 ease-out flex flex-col max-h-[95vh] transition-colors">
+      <div className="bg-white dark:bg-slate-900 rounded-[3rem] w-full max-w-lg shadow-[0_30px_60px_rgba(0,0,0,0.12)] dark:shadow-[0_30px_60px_rgba(0,0,0,0.4)] relative z-10 overflow-hidden border border-white/50 dark:border-slate-800 animate-in zoom-in-95 slide-in-from-bottom-6 duration-400 ease-out flex flex-col max-h-[95vh] transition-colors">
         
         {/* Header Decorator Gradient */}
         <div className="h-1.5 w-full bg-logo-gradient shrink-0"></div>

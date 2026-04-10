@@ -1,21 +1,29 @@
 import React, { useContext, useEffect, useState, useMemo } from 'react';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
-import { db, logAction, exportData } from '../db/db';
-import { Users, Wrench, FileText, TrendingUp, CheckCircle2, Play, Pause, Navigation, MessageCircle, XCircle, Database, Download, LayoutDashboard, Printer, Bluetooth, LayoutList, ClipboardCheck, CircleDashed, Edit3 } from 'lucide-react';
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { 
+  LayoutDashboard, Download, Database, Users, Wrench, FileText, 
+  Printer, CircleDashed, Edit3, XCircle, MessageCircle, Navigation, Play, Pause, ClipboardCheck,
+  TrendingUp, LayoutList, Bluetooth, CheckCircle2, ChevronRight, Plus, Search, Trash2, 
+  Building2, UserCircle, ShieldCheck, Calendar, Wifi, MapPin, Sparkles, History
+} from 'lucide-react';
+
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
-import BluetoothPrinter from '../utils/BluetoothPrinter';
-import PrinterModal from '../components/PrinterModal';
-import PrinterActionModal from '../components/PrinterActionModal';
-import ComprehensiveDetailModal from '../components/ComprehensiveDetailModal';
-import ReciboTicket from '../components/ReciboTicket';
+
+import { useLiveQuery } from 'dexie-react-hooks';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
+import { db, logAction, exportData } from '../services/database';
+import BluetoothPrinter from '../features/printer/services/BluetoothPrinter';
+import PrinterModal from '../features/printer/components/PrinterModal';
+import PrinterActionModal from '../features/printer/components/PrinterActionModal';
+import ComprehensiveDetailModal from '../features/tasks/components/ComprehensiveDetailModal';
+import ReciboTicket from '../features/printer/components/ReciboTicket';
+
 
 const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate }) => {
-  const { theme, rates, setRates } = useContext(AppContext);
+  const { theme } = useContext(AppContext);
   const [dbStatus, setDbStatus] = useState({ state: 'checking', ping: 0 });
   const [isExporting, setIsExporting] = useState(false);
 
@@ -89,10 +97,10 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
   const fallidas = (tareas || []).filter(t => t.estado === 'No completada').length;
 
   const taskData = [
-    { name: 'Completadas', value: completadas, color: '#10b981' },
-    { name: 'En Proceso', value: enProceso, color: '#f59e0b' },
-    { name: 'Pendientes', value: pendientes, color: '#64748b' },
-    { name: 'Fallidas', value: fallidas, color: '#ef4444' }
+    { name: 'Completadas', value: completadas, color: '#10b981' }, // emerald
+    { name: 'En Proceso', value: enProceso, color: '#4F46E5' }, // indigo
+    { name: 'Pendientes', value: pendientes, color: '#64748b' }, // slate
+    { name: 'Fallidas', value: fallidas, color: '#EF4444' }     // red
   ];
 
   // Ingresos Reales
@@ -127,20 +135,20 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
                 <button 
                   onClick={handleBackup}
                   disabled={isExporting}
-                  className="btn-gradient px-6 py-2.5 shadow-xl shadow-orange-500/10"
+                  className="btn-gradient px-6 py-2.5 shadow-xl shadow-indigo-500/10"
                 >
                   <Download size={14} className={isExporting ? 'animate-bounce' : ''} />
                   <span className="relative z-10 text-[9px]">{isExporting ? 'Generando...' : 'Respaldo Maestro'}</span>
                 </button>
 
-                <div className="flex items-center gap-3 bg-orange-50 dark:bg-slate-800 px-4 py-2.5 rounded-2xl border border-orange-100 dark:border-slate-700">
+                <div className="flex items-center gap-3 bg-indigo-50 dark:bg-slate-800 px-4 py-2.5 rounded-2xl border border-indigo-100 dark:border-slate-700">
                     <div className="relative flex h-3 w-3">
                       {(dbStatus.state === 'online') && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
                       <span className={`relative inline-flex rounded-full h-3 w-3 ${dbStatus.state === 'online' ? 'bg-emerald-500' : 'bg-red-500'}`}></span>
                     </div>
                     <div className="flex flex-col">
                         <span className="text-[10px] font-black text-slate-800 dark:text-slate-200 uppercase italic leading-none">
-                            Vault <span className="text-orange-500 opacity-60 ml-0.5">{dbStatus.ping}ms</span>
+                            Vault <span className="text-indigo-500 opacity-60 ml-0.5">{dbStatus.ping}ms</span>
                         </span>
                     </div>
                 </div>
@@ -150,12 +158,12 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
       {/* Text Carousel - Compact & Professional */}
       <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-2 px-6 py-2 bg-slate-100/50 dark:bg-slate-800/20 rounded-2xl border border-slate-200/50 dark:border-slate-700/30 overflow-hidden w-full">
           <div className="flex-1 w-full min-w-0">
-              <marquee className="text-[10px] sm:text-[11px] font-black uppercase text-orange-600 dark:text-orange-400 tracking-[0.2em] italic flex items-center pt-0.5">
+              <marquee className="text-[10px] sm:text-[11px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-[0.2em] italic flex items-center pt-0.5">
                   DIOS PRIMERO CARLOS.! SALMOS 16:8
               </marquee>
           </div>
           <div className="hidden sm:flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-8 shrink-0">
-              <Database size={12} className="text-orange-500/50" />
+              <Database size={12} className="text-indigo-500/50" />
               <span className="text-[8px] font-bold uppercase text-slate-400 tracking-[0.2em] italic">MODO AUTÓNOMO</span>
           </div>
       </div>
@@ -170,7 +178,7 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
             <div className="h-1 bg-logo-gradient w-full opacity-80 group-hover:h-1.5 transition-all duration-500"></div>
             <div className="p-3 flex flex-col justify-between h-full relative">
             <div className="absolute top-0 right-0 w-12 h-12 bg-orange-50 dark:bg-fuchsia-500/5 rounded-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
-            <div className="w-8 h-8 rounded-xl bg-orange-50 dark:bg-slate-800 flex items-center justify-center mb-1.5 transition-all duration-500 group-hover:rotate-12 text-orange-500 dark:text-fuchsia-400 group-hover:bg-logo-gradient group-hover:text-white relative z-10">
+            <div className="w-8 h-8 rounded-xl bg-orange-50 dark:bg-slate-800 flex items-center justify-center mb-1.5 transition-all duration-500 group-hover:rotate-12 text-indigo-500 dark:text-fuchsia-400 group-hover:bg-logo-gradient group-hover:text-white relative z-10">
               {React.cloneElement(stat.icon, { size: 14 })}
             </div>
             <div className="relative z-10">
@@ -204,57 +212,8 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
       {/* ANALYTICS Refined */}
       {/* Widget de Tasas Manuales y ANALYTICS */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-1 space-y-4">
-              <div className="premium-card p-6 border-2 border-orange-500/20">
-                  <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 mb-4 flex items-center gap-2 italic">
-                      <TrendingUp size={16}/> Tasas del Día
-                  </h3>
-                  <div className="space-y-4">
-                      <div>
-                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">BCV (Bs.)</label>
-                          <div className="relative">
-                              <input 
-                                  type="number" 
-                                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-black text-slate-700 dark:text-white outline-none focus:border-orange-500 transition-all"
-                                  value={rates.manualBcv || rates.bcv}
-                                  onChange={(e) => {
-                                      const val = parseFloat(e.target.value) || 0;
-                                      setRates(prev => {
-                                          const updated = { ...prev, manualBcv: val, useManual: true };
-                                          localStorage.setItem('ennier_rates', JSON.stringify(updated));
-                                          return updated;
-                                      });
-                                  }}
-                              />
-                              <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
-                          </div>
-                      </div>
-                      <div>
-                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-1">USDT (Bs.)</label>
-                          <div className="relative">
-                              <input 
-                                  type="number" 
-                                  className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-xl px-4 py-2 text-sm font-black text-slate-700 dark:text-white outline-none focus:border-orange-500 transition-all"
-                                  value={rates.manualUsdt || rates.usdt}
-                                  onChange={(e) => {
-                                      const val = parseFloat(e.target.value) || 0;
-                                      setRates(prev => {
-                                          const updated = { ...prev, manualUsdt: val, useManual: true };
-                                          localStorage.setItem('ennier_rates', JSON.stringify(updated));
-                                          return updated;
-                                      });
-                                  }}
-                              />
-                              <div className="absolute right-3 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                          </div>
-                      </div>
-                      <p className="text-[7px] text-slate-400 dark:text-slate-500 font-bold uppercase text-center italic mt-2">
-                          {rates.useManual ? "MODO SEGURO ACTIVO (MANUAL)" : "SINCRONIZACIÓN AUTOMÁTICA"}
-                      </p>
-                  </div>
-              </div>
-
-              <div className="premium-card p-4 flex flex-col justify-between bg-gradient-to-br from-emerald-500 to-teal-600 text-white border-none shadow-2xl relative overflow-hidden group transition-all duration-500 hover:scale-[1.02] h-40">
+          <div className="lg:col-span-1">
+              <div className="premium-card p-4 flex flex-col justify-between bg-gradient-to-br from-indigo-500 to-indigo-700 text-white border-none shadow-2xl relative overflow-hidden group transition-all duration-500 hover:scale-[1.02] h-40">
                   <div className="absolute -right-4 -top-4 w-32 h-32 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-all"></div>
                   <div className="relative z-10 flex flex-col h-full justify-between">
                     <div>
@@ -293,7 +252,16 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
                               ))}
                           </Pie>
                           <Tooltip 
-                              contentStyle={{ backgroundColor: isDark ? '#0f172a' : '#fff', borderColor: isDark ? '#334155' : '#f1f5f9', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', fontSize: '11px', color: isDark ? '#fff' : '#1e293b', fontWeight: 900, textTransform: 'uppercase' }} 
+                              contentStyle={{ 
+                                  backgroundColor: isDark ? '#0f172a' : '#fff', 
+                                  borderColor: isDark ? '#334155' : '#f1f5f9', 
+                                  borderRadius: '1.5rem', 
+                                  boxShadow: '0 20px 50px rgba(0,0,0,0.1)', 
+                                  fontSize: '11px', 
+                                  color: isDark ? '#fff' : '#1e293b', 
+                                  fontWeight: 900, 
+                                  textTransform: 'uppercase' 
+                              }} 
                               itemStyle={{ color: isDark ? '#fff' : '#1e293b' }}
                           />
                       </PieChart>
@@ -332,7 +300,16 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
                           <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 9, fill: isDark ? '#475569' : '#cbd5e1', fontWeight: 900 }} />
                           <Tooltip 
                               cursor={{fill: isDark ? '#1e293b' : '#f8fafc', opacity: 0.5}} 
-                              contentStyle={{ backgroundColor: isDark ? '#0f172a' : '#fff', border: 'none', borderRadius: '1.2rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', color: isDark ? '#fff' : '#1e293b', fontSize: '10px', fontWeight: 900, textTransform: 'uppercase' }} 
+                              contentStyle={{ 
+                                  backgroundColor: isDark ? '#0f172a' : '#fff', 
+                                  border: 'none', 
+                                  borderRadius: '1.5rem', 
+                                  boxShadow: '0 20px 50px rgba(0,0,0,0.1)', 
+                                  color: isDark ? '#fff' : '#1e293b', 
+                                  fontSize: '10px', 
+                                  fontWeight: 900, 
+                                  textTransform: 'uppercase' 
+                              }} 
                           />
                           <Bar dataKey="ingreso" fill="#10b981" radius={[8, 8, 0, 0]} maxBarSize={30} />
                       </BarChart>
@@ -343,13 +320,13 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
       <div className="space-y-4 mt-8">
           <div className="flex items-center justify-between px-2">
               <h3 className="text-[10px] font-black uppercase text-slate-400 dark:text-slate-500 tracking-[0.3em] italic flex items-center gap-2">
-                  <LayoutList size={14} className="text-orange-500"/> Monitor de Operaciones Recientes
+                  <LayoutList size={14} className="text-indigo-500"/> Monitor de Operaciones Recientes
               </h3>
-              <button onClick={() => onNavigate('/tasks')} className="text-[9px] font-black text-orange-500 uppercase tracking-widest italic hover:underline">Ver Historial Maestro</button>
+              <button onClick={() => onNavigate('/tasks')} className="text-[9px] font-black text-indigo-500 uppercase tracking-widest italic hover:underline">Ver Historial Maestro</button>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2">
               {(tareas || []).slice(-6).reverse().map(t => (
-                  <div key={t.id} onClick={() => onViewDetail(t)} className="compact-task-card group relative p-0 transition-all duration-300 cursor-pointer overflow-hidden border-2 border-orange-50 dark:border-slate-800 hover:border-orange-500">
+                  <div key={t.id} onClick={() => onViewDetail(t)} className="compact-task-card group relative p-0 transition-all duration-300 cursor-pointer overflow-hidden border-2 border-orange-50 dark:border-slate-800 hover:border-indigo-500">
                       <div className="p-3 bg-white dark:bg-slate-900 flex flex-col justify-between h-full relative h-[100px]">
                           <div className="flex justify-between items-start mb-1">
                               <span className="mini-tag">#{t.ticket_id || t.id}</span>
@@ -359,9 +336,9 @@ const AdminView = ({ stats, tareas, clientes, onPrint, onViewDetail, onNavigate 
                               </div>
                           </div>
                           <div>
-                              <h4 className="text-[9px] font-black text-slate-800 dark:text-white uppercase leading-tight line-clamp-1 italic group-hover:text-orange-500">{t.titulo}</h4>
+                              <h4 className="text-[9px] font-black text-slate-800 dark:text-white uppercase leading-tight line-clamp-1 italic group-hover:text-indigo-500">{t.titulo}</h4>
                               <div className="flex items-center gap-1 mt-1 opacity-60">
-                                  <Wrench size={7} className="text-orange-500"/>
+                                  <Wrench size={7} className="text-indigo-500"/>
                                   <p className="text-[7px] font-black text-slate-400 uppercase italic truncate">{t.operador || 'Sistema'}</p>
                               </div>
                           </div>
@@ -394,7 +371,7 @@ const TaskTimer = ({ started_at }) => {
     }, [started_at]);
 
     return (
-        <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-lg border border-emerald-500/20 font-mono text-[10px] font-black tracking-tighter shadow-inner">
+        <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-2xl border border-emerald-500/20 font-mono text-[10px] font-black tracking-tighter shadow-inner">
             <TrendingUp size={12} className="animate-pulse" />
             {elapsed}
         </div>
@@ -761,16 +738,8 @@ const Dashboard = () => {
         }}
       />
 
-      {/* Indicador de impresora activa en esquina */}
-      {selectedAddress && (
-          <button
-            onClick={() => { setShowPrinterModal(true); }}
-            className="fixed bottom-24 right-4 z-50 flex items-center gap-2 px-4 py-2 bg-emerald-500 text-white rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/30 hover:bg-emerald-600 transition-all animate-in zoom-in duration-500"
-          >
-              <Bluetooth size={12} className="animate-pulse" />
-              <span>{selectedPrinterName || 'Impresora Local'}</span>
-          </button>
-      )}
+
+
 
       {/* Nuevo Modal Premium Unificado */}
       <PrinterModal 

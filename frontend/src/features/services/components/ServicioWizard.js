@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { X, ArrowRight, ArrowLeft, Send, Sparkles, FileText, DollarSign, Info, ShieldCheck } from 'lucide-react';
-import { db, logAction } from '../db/db';
-import { AppContext } from '../context/AppContext';
+import { db, logAction } from '../../../services/database';
+
+import { AppContext } from '../../../context/AppContext';
+
 
 const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
     const { refreshAll } = useContext(AppContext);
@@ -157,7 +159,7 @@ const ServicioWizard = ({ isOpen, setIsOpen, editingId, setEditingId }) => {
                                 </p>
                             </div>
 
-                            <div className="bg-emerald-50 dark:bg-emerald-500/10 p-4 rounded-[1.5rem] border border-emerald-100 dark:border-emerald-500/20 flex items-center gap-3 mt-10 transition-colors">
+                            <div className="bg-emerald-50 dark:bg-emerald-500/10 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-500/20 flex items-center gap-3 mt-10 transition-colors">
                                 <ShieldCheck className="text-emerald-500 dark:text-emerald-400 shrink-0" size={24} />
                                 <p className="text-[9px] font-bold text-emerald-800 dark:text-emerald-400 uppercase leading-relaxed italic">
                                     Los servicios en el catálogo local ayudan a estandarizar los cobros en campo.

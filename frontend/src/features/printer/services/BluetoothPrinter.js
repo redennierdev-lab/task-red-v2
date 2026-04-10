@@ -46,8 +46,9 @@ const BluetoothPrinter = {
         return [];
       }
       
-      // Asegurar permisos antes de listar
-      await checkPermissions();
+      // Asegurar permisos y estado antes de listar
+      const btReady = await BluetoothPrinter.prepareSystem();
+      if (!btReady) return [];
 
       return new Promise((resolve) => {
         window.BluetoothSerial.list(
@@ -56,6 +57,7 @@ const BluetoothPrinter = {
         );
       });
     }
+    // Solo mostramos SYSTEM-PRINT en Web
     return [{ name: 'Sistema (Web/PDF)', address: 'SYSTEM-PRINT' }];
   },
 
@@ -158,24 +160,21 @@ const BluetoothPrinter = {
     if (isAndroidNative()) {
       if (!window.BluetoothSerial) return false;
       
-      // Intento persistente de activación
-      let attempts = 0;
       let enabled = await BluetoothPrinter.checkBT();
-      
-      while (!enabled && attempts < 3) {
-        enabled = await new Promise((resolve) => {
-          window.BluetoothSerial.enable(
-            () => resolve(true),
-            () => resolve(false)
-          );
-        });
-        if (!enabled) {
-          console.warn("Bluetooth activation declined or failed.");
-          break;
-        }
+      if (enabled) return true;
 
-        attempts++;
-      }
+      // Solicitar activación nativa
+      enabled = await new Promise((resolve) => {
+        window.BluetoothSerial.enable(
+          () => resolve(true),
+          () => {
+              // Si falla o el usuario cancela, intentamos forzar con un mensaje
+              console.warn("Bluetooth activation declined.");
+              resolve(false);
+          }
+        );
+      });
+
       return enabled;
     }
     return true;

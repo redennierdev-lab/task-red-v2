@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Bluetooth, Settings2, Printer, Trash2, Check, RefreshCw, ChevronRight, Save, RotateCcw, Wifi } from 'lucide-react';
-import BluetoothPrinter from '../utils/BluetoothPrinter';
+import BluetoothPrinter from '../features/printer/services/BluetoothPrinter';
+
 
 const Parametros = () => {
     // Bluetooth settings
@@ -88,16 +89,16 @@ const Parametros = () => {
     };
 
     return (
-        <div className="space-y-6 page-transition pb-24">
-            {/* Header */}
+        <div className="space-y-6 page-transition">
+            {/* MD3 Header */}
             <div className="view-header">
-                <div className="relative z-10 flex items-center gap-4">
-                    <div className="brand-icon w-12 h-12">
+                <div className="flex items-center gap-4">
+                    <div className="brand-icon">
                         <Settings2 size={24} />
                     </div>
                     <div>
-                        <h2 className="view-title">Parámetros</h2>
-                        <p className="view-subtitle">Configuración del Sistema de Impresión</p>
+                        <h1 className="view-title">Parámetros</h1>
+                        <p className="view-subtitle">Configuración del Sistema · Impresión Bluetooth</p>
                     </div>
                 </div>
             </div>
@@ -105,13 +106,13 @@ const Parametros = () => {
             {/* Sección 1: Dispositivo Bluetooth */}
             <div className="premium-card p-6 space-y-4">
                 <div className="flex items-center justify-between">
-                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 flex items-center gap-2 italic">
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-500 flex items-center gap-2 italic">
                         <Bluetooth size={14}/> Dispositivo de Impresión
                     </h3>
                     <button
                         onClick={scanPaired}
                         disabled={isScanning}
-                        className="flex items-center gap-1.5 text-[8px] font-black text-slate-400 uppercase tracking-widest italic hover:text-orange-500 transition-colors"
+                        className="flex items-center gap-1.5 text-[8px] font-black text-slate-400 uppercase tracking-widest italic hover:text-indigo-500 transition-colors"
                     >
                         <RefreshCw size={11} className={isScanning ? 'animate-spin' : ''} />
                         {isScanning ? 'Buscando...' : 'Actualizar'}
@@ -150,11 +151,11 @@ const Parametros = () => {
                                 onClick={() => selectDevice(d.address, d.name)}
                                 className={`w-full p-3 rounded-2xl border-2 transition-all flex items-center justify-between
                                     ${printerAddress === d.address
-                                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/5'
+                                        ? 'border-indigo-500 bg-orange-50 dark:bg-indigo-500/5'
                                         : 'border-slate-100 dark:border-slate-800 hover:border-orange-300'}`}
                             >
                                 <div className="flex items-center gap-3">
-                                    <Bluetooth size={14} className="text-orange-500"/>
+                                    <Bluetooth size={14} className="text-indigo-500"/>
                                     <div className="text-left">
                                         <p className="text-[10px] font-black text-slate-700 dark:text-white uppercase italic">{d.name || 'Dispositivo'}</p>
                                         <p className="text-[8px] font-mono text-slate-400 tracking-widest">{d.address}</p>
@@ -171,7 +172,7 @@ const Parametros = () => {
 
             {/* Sección 2: Configuración de Papel */}
             <div className="premium-card p-6 space-y-4">
-                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 flex items-center gap-2 italic">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-500 flex items-center gap-2 italic">
                     <Printer size={14}/> Configuración de Papel
                 </h3>
 
@@ -185,7 +186,7 @@ const Parametros = () => {
                                 onClick={() => setPaperWidth(w)}
                                 className={`py-2.5 rounded-2xl border-2 text-[9px] font-black uppercase italic transition-all
                                     ${paperWidth === w
-                                        ? 'border-orange-500 bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                                        ? 'border-indigo-500 bg-indigo-500 text-white shadow-lg shadow-indigo-500/20'
                                         : 'border-slate-100 dark:border-slate-800 text-slate-500 hover:border-orange-200'}`}
                             >
                                 {w}mm
@@ -200,7 +201,7 @@ const Parametros = () => {
                     <select
                         value={encoding}
                         onChange={e => setEncoding(e.target.value)}
-                        className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-xs font-black text-slate-700 dark:text-white outline-none focus:border-orange-500 transition-all"
+                        className="w-full bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-2xl px-4 py-3 text-xs font-black text-slate-700 dark:text-white outline-none focus:border-indigo-500 transition-all"
                     >
                         <option value="UTF-8">UTF-8 (Recomendado)</option>
                         <option value="CP1252">CP1252 (Windows)</option>
@@ -212,9 +213,9 @@ const Parametros = () => {
                 <div>
                     <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest block mb-2 italic">Número de Copias</label>
                     <div className="flex items-center gap-3">
-                        <button onClick={() => setCopies(Math.max(1, copies - 1))} className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-white font-black text-xl hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-all">-</button>
+                        <button onClick={() => setCopies(Math.max(1, copies - 1))} className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-white font-black text-xl hover:bg-orange-50 dark:hover:bg-indigo-500/10 transition-all">-</button>
                         <span className="flex-1 text-center text-2xl font-black text-slate-800 dark:text-white italic">{copies}</span>
-                        <button onClick={() => setCopies(Math.min(5, copies + 1))} className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-white font-black text-xl hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-all">+</button>
+                        <button onClick={() => setCopies(Math.min(5, copies + 1))} className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-white font-black text-xl hover:bg-orange-50 dark:hover:bg-indigo-500/10 transition-all">+</button>
                     </div>
                 </div>
 
@@ -229,7 +230,7 @@ const Parametros = () => {
                             <span className="text-[9px] font-black text-slate-600 dark:text-slate-300 uppercase italic">{opt.label}</span>
                             <button
                                 onClick={() => opt.setter(!opt.value)}
-                                className={`relative w-12 h-6 rounded-full transition-all duration-300 ${opt.value ? 'bg-orange-500' : 'bg-slate-200 dark:bg-slate-700'}`}
+                                className={`relative w-12 h-6 rounded-full transition-all duration-300 ${opt.value ? 'bg-indigo-500' : 'bg-slate-200 dark:bg-slate-700'}`}
                             >
                                 <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ${opt.value ? 'translate-x-6' : 'translate-x-0'}`}/>
                             </button>
@@ -243,7 +244,7 @@ const Parametros = () => {
                 {/* Test Print */}
                 <button
                     onClick={testPrint}
-                    className="w-full btn-gradient py-4 flex items-center justify-center gap-3 text-sm font-black uppercase tracking-widest italic shadow-xl shadow-orange-500/20"
+                    className="w-full btn-gradient py-4 flex items-center justify-center gap-3 text-sm font-black uppercase tracking-widest italic shadow-xl shadow-indigo-500/20"
                 >
                     <Printer size={18}/>
                     Imprimir Ticket de Prueba

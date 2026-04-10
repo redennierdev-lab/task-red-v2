@@ -1,7 +1,9 @@
 import React, { useState, useContext, useMemo } from 'react';
 import { X, ArrowRight, ArrowLeft, Send, CheckCircle2, UserCircle, Building2, MapPin, ShieldCheck, Wifi, Map as MapIcon, ChevronDown } from 'lucide-react';
-import { AppContext } from '../context/AppContext';
-import { db, logAction } from '../db/db';
+import { AppContext } from '../../../context/AppContext';
+
+import { db, logAction } from '../../../services/database';
+
 
 const ClientWizard = ({ isOpen, setIsOpen }) => {
     const { refreshAll, addRecord } = useContext(AppContext);

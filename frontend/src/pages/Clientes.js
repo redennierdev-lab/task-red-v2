@@ -1,13 +1,14 @@
 import React, { useContext, useState, useMemo } from 'react';
 import { AppContext } from '../context/AppContext';
-import Modal from '../components/Modal';
-import ClientWizard from '../components/ClientWizard';
-import ComprehensiveDetailModal from '../components/ComprehensiveDetailModal';
+import Modal from '../components/shared/Modal';
+import ClientWizard from '../features/clients/components/ClientWizard';
+import ComprehensiveDetailModal from '../features/tasks/components/ComprehensiveDetailModal';
 import { Search, Edit3, Trash2, Phone, Rocket, Users, MapPin, ChevronDown, Printer, Download } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
-import ConfirmModal from '../components/ConfirmModal';
+import ConfirmModal from '../components/shared/ConfirmModal';
+
 
 const Clientes = () => {
   const { clientes, fetchClientes, deleteRecord, updateRecord, refreshAll } = useContext(AppContext);
@@ -198,85 +199,85 @@ const Clientes = () => {
 
   return (
     <div className="space-y-6 page-transition">
-      {/* Premium Header */}
+      {/* MD3 View Header */}
       <div className="view-header">
-        <div className="relative z-10 flex items-center gap-6">
+        <div className="flex items-center gap-4">
             <div className="brand-icon">
-                <Users size={32} />
+                <Users size={24} />
             </div>
             <div>
-              <h2 className="view-title italic uppercase">Directorio de Clientes</h2>
-              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Gestión de Base de Datos Maestro</p>
+              <h1 className="view-title">Directorio de Clientes</h1>
+              <p className="view-subtitle">Base de Datos Maestro · RED ENNIER</p>
             </div>
         </div>
-        <button onClick={() => setIsWizardOpen(true)} className="btn-gradient relative z-10 w-full sm:w-auto">
-          <Users size={18} />
+        <button onClick={() => setIsWizardOpen(true)} className="btn-gradient px-6 py-3">
+          <Users size={17} />
           <span>Nuevo Cliente</span>
         </button>
       </div>
 
-      {/* Premium Search & Filters */}
-      <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
-        <div className="relative group text-slate-900 dark:text-white">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500">
-            <Search size={18} />
+      {/* MD3 Search + Chips */}
+      <div className="space-y-3">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+            <Search size={17} />
           </div>
           <input
             type="text"
-            placeholder="Rastrear identidad o nombre..."
-            className="w-full pl-12 pr-6 py-2.5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-orange-100 dark:border-slate-800 shadow-lg focus:ring-4 focus:ring-orange-500/5 dark:focus:ring-fuchsia-500/5 focus:border-orange-400 dark:focus:border-fuchsia-500 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-sm"
+            placeholder="Buscar por nombre o identificación…"
+            className="md-input pl-11"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
-        <div className="flex flex-col gap-1.5">
-            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 ml-3 italic">Segmento:</span>
-            <div className="inline-flex flex-wrap p-1 gap-1 bg-white dark:bg-slate-900 border-2 border-orange-50 dark:border-slate-800 rounded-2xl shadow-lg w-fit">
-                {['Todos', 'Corporativo', 'Residencial', 'Internet', 'Soporte'].map(tag => (
-                    <button 
-                      key={tag}
-                      onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)} 
-                      className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-logo-gradient text-white shadow-lg shadow-orange-500/30' : 'text-slate-400 dark:text-slate-500 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-fuchsia-400'}`}
-                    >
-                        {tag}
-                    </button>
-                ))}
-            </div>
+        <div className="flex flex-wrap gap-2">
+          {['Todos', 'Corporativo', 'Residencial', 'Internet', 'Soporte'].map(tag => (
+            <button
+              key={tag}
+              onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)}
+              className={`md-chip transition-all ${
+                (tag === 'Todos' && searchTerm === '') || searchTerm === tag
+                  ? 'md-chip-primary'
+                  : 'md-chip-neutral'
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 px-1">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
         {filteredClientes.map((cliente) => (
           <div key={cliente.id} className="compact-task-card group relative p-0 transition-all duration-300 cursor-pointer" onClick={() => { setSelectedClient(cliente); setDetailModalOpen(true); }}>
             <div className="compact-card-accent"></div>
             
             <div className="p-3 bg-white dark:bg-slate-900 flex-1 relative flex flex-col">
               <div className="flex justify-between items-start mb-1.5 relative z-10">
-                <div className="w-7 h-7 bg-slate-50 dark:bg-slate-800 rounded-lg flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-500 shadow-sm border border-slate-100 dark:border-slate-700">
+                <div className="w-7 h-7 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-logo-gradient group-hover:text-white transition-all duration-500 shadow-sm border border-slate-100 dark:border-slate-700">
                   <Users size={12} />
                 </div>
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                  <button onClick={(e) => handleEdit(e, cliente)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-orange-500 dark:hover:text-fuchsia-400 rounded-md transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
+                  <button onClick={(e) => handleEdit(e, cliente)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-indigo-500 dark:hover:text-emerald-400 rounded-lg transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
                     <Edit3 size={11} />
                   </button>
-                  <button onClick={(e) => handleDeleteTrigger(e, cliente.id)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-red-500 dark:hover:text-red-400 rounded-md transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
+                  <button onClick={(e) => handleDeleteTrigger(e, cliente.id)} className="p-1 bg-white dark:bg-slate-800 text-slate-400 hover:text-red-500 dark:hover:text-red-400 rounded-lg transition-all border border-slate-50 dark:border-slate-700 shadow-sm">
                     <Trash2 size={11} />
                   </button>
                 </div>
               </div>
               
               <div className="relative z-10">
-                <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
+                <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-indigo-500 transition-colors line-clamp-1 italic">{cliente.nombre}</h3>
                 <p className="text-[7px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 italic truncate">ID: {cliente.cedula || cliente.identificacion}</p>
                 
                 <div className="space-y-1.5 pt-2 border-t border-slate-50 dark:border-slate-800 text-slate-500 dark:text-slate-400">
                   <div className="flex items-center gap-1.5">
-                    <Phone size={8} className="text-orange-500/50" />
+                    <Phone size={8} className="text-indigo-500/50" />
                     <span className="text-[8px] font-bold font-mono">{cliente.telefono}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <MapPin size={8} className="text-orange-500/50" />
+                    <MapPin size={8} className="text-indigo-500/50" />
                     <span className="text-[8px] font-black uppercase tracking-wider line-clamp-1 italic">{cliente.direccion}</span>
                   </div>
                 </div>
@@ -287,12 +288,17 @@ const Clientes = () => {
       </div>
 
       {filteredClientes.length === 0 && (
-        <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-[3rem] border-2 border-dashed border-slate-100 dark:border-slate-800 shadow-sm transition-colors">
-          <div className="mx-auto w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-3xl flex items-center justify-center mb-6 text-slate-200 dark:text-slate-700">
-            <Users size={40} />
+        <div className="col-span-full flex flex-col items-center justify-center py-20 rounded-[2rem] border-2 border-dashed border-slate-100 dark:border-slate-800 gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center">
+            <Users size={28} className="text-slate-300 dark:text-slate-600" />
           </div>
-          <h3 className="text-lg font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">No se encontraron clientes</h3>
-          <p className="text-slate-300 dark:text-slate-600 text-sm mt-2 font-medium">Prueba con otros términos de búsqueda</p>
+          <div className="text-center">
+            <p className="text-sm font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest">Sin resultados</p>
+            <p className="text-xs text-slate-300 dark:text-slate-700 mt-1">No se encontraron clientes con ese criterio</p>
+          </div>
+          <button onClick={() => setSearchTerm('')} className="md-chip md-chip-neutral">
+            Limpiar filtro
+          </button>
         </div>
       )}
 
@@ -307,11 +313,11 @@ const Clientes = () => {
       >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
-            <label className="block text-[10px] font-black text-orange-500 uppercase tracking-widest ml-0.5">Nombre Completo</label>
+            <label className="block text-[10px] font-black text-indigo-500 uppercase tracking-widest ml-0.5">Nombre Completo</label>
             <input 
               required
               type="text" 
-              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-full outline-none focus:bg-white focus:border-orange-500 transition-all font-bold text-slate-700 shadow-inner text-sm"
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-full outline-none focus:bg-white focus:border-indigo-500 transition-all font-bold text-slate-700 shadow-inner text-sm"
               value={formData.nombre}
               onChange={e => setFormData({...formData, nombre: e.target.value})}
             />
@@ -319,7 +325,7 @@ const Clientes = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div className="space-y-0.5">
               <label className="block text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-0.5">ID / RIF</label>
-              <div className="flex bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:border-orange-500 transition-all shadow-inner overflow-hidden">
+              <div className="flex bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:border-indigo-500 transition-all shadow-inner overflow-hidden">
                   <select className="bg-transparent pl-3 pr-1 font-black text-slate-600 dark:text-slate-400 outline-none border-r border-slate-200 dark:border-slate-700 text-xs py-1.5" value={editPrefijo} onChange={e => { setEditPrefijo(e.target.value); setEditDocNum(''); }}>
                       <option value="V">V</option>
                       <option value="E">E</option>
@@ -343,7 +349,7 @@ const Clientes = () => {
                 <span>Teléfono (WhatsApp)</span>
                 {editPhoneCode === '+58' && editPhoneNum.length > 0 && editPhoneNum.length !== 7 && <span className="text-red-500 text-[8px]">Incompleto</span>}
               </label>
-              <div className={`flex items-center bg-slate-50 dark:bg-slate-800/50 border rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 transition-all shadow-inner overflow-hidden ${editPhoneCode === '+58' && editPhoneNum.length > 0 && editPhoneNum.length !== 7 ? 'border-red-400' : 'border-slate-200 dark:border-slate-700 focus-within:border-orange-500'}`}>
+              <div className={`flex items-center bg-slate-50 dark:bg-slate-800/50 border rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 transition-all shadow-inner overflow-hidden ${editPhoneCode === '+58' && editPhoneNum.length > 0 && editPhoneNum.length !== 7 ? 'border-red-400' : 'border-slate-200 dark:border-slate-700 focus-within:border-indigo-500'}`}>
                   <div className="relative border-r border-slate-200 dark:border-slate-700">
                     <select 
                       className="appearance-none bg-transparent pl-2 pr-5 py-1.5 font-black text-slate-600 dark:text-slate-400 outline-none text-xs" 
@@ -357,9 +363,9 @@ const Clientes = () => {
                     <ChevronDown size={9} className="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
                   </div>
 
-                  <div className="relative border-r border-slate-200 dark:border-slate-700 bg-orange-500/5">
+                  <div className="relative border-r border-slate-200 dark:border-slate-700 bg-indigo-500/5">
                     <select 
-                      className="appearance-none bg-transparent pl-2 pr-5 py-1.5 font-black text-orange-600 dark:text-orange-400 outline-none text-xs" 
+                      className="appearance-none bg-transparent pl-2 pr-5 py-1.5 font-black text-indigo-600 dark:text-indigo-400 outline-none text-xs" 
                       value={editPhoneOperator} 
                       onChange={e => setEditPhoneOperator(e.target.value)}
                     >
@@ -367,7 +373,7 @@ const Clientes = () => {
                             <option key={o.value} value={o.value}>{o.label}</option>
                         ))}
                     </select>
-                    <ChevronDown size={9} className="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-orange-400" />
+                    <ChevronDown size={9} className="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-indigo-400" />
                   </div>
 
                   <input 
@@ -390,7 +396,7 @@ const Clientes = () => {
             <textarea 
               required
               rows="2"
-              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.5rem] outline-none focus:bg-white focus:border-orange-500 transition-all font-bold text-slate-700 shadow-inner resize-none text-sm"
+              className="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-3xl outline-none focus:bg-white focus:border-indigo-500 transition-all font-bold text-slate-700 shadow-inner resize-none text-sm"
               value={formData.direccion}
               onChange={e => setFormData({...formData, direccion: e.target.value})}
             />

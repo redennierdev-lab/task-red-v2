@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Layers, CheckCircle2, CircleDashed, Edit3, Trash2, Wrench, ShieldCheck, Search, LayoutGrid, FileText, Printer } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
-import TareaWizard from '../components/TareaWizard';
-import ConfirmModal from '../components/ConfirmModal';
-import PrinterActionModal from '../components/PrinterActionModal';
-import BluetoothPrinter from '../utils/BluetoothPrinter';
+import TareaWizard from '../features/tasks/components/TareaWizard';
+import ConfirmModal from '../components/shared/ConfirmModal';
+import PrinterActionModal from '../features/printer/components/PrinterActionModal';
+import BluetoothPrinter from '../features/printer/services/BluetoothPrinter';
+
 import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
@@ -143,55 +144,55 @@ const Tareas = () => {
   );
 
   return (
-    <div className="space-y-6 page-transition pb-20">
-      {/* Header Premium */}
+    <div className="space-y-6 page-transition">
+      {/* MD3 Header */}
       <div className="view-header">
-        <div className="relative z-10 flex items-center gap-6">
+        <div className="flex items-center gap-4">
             <div className="brand-icon">
-                <FileText size={32} />
+                <FileText size={24} />
             </div>
             <div>
-              <h2 className="view-title italic uppercase tracking-tighter">Gestión Operativa</h2>
-              <p className="view-subtitle tracking-[0.4em] font-black opacity-80 uppercase italic">Tickets de Despliegue Técnico</p>
+              <h1 className="view-title">Gestión Operativa</h1>
+              <p className="view-subtitle">Tickets de Despliegue Técnico · RED ENNIER</p>
             </div>
         </div>
-        <button 
+        <button
           onClick={() => { setEditingId(null); setIsWizardOpen(true); }}
-          className="btn-gradient relative z-10 w-full sm:w-auto px-10 shadow-2xl shadow-orange-500/20"
+          className="btn-gradient px-6 py-3"
         >
-          <Layers size={18} />
+          <Layers size={17} />
           <span>Nuevo Ticket</span>
         </button>
       </div>
 
-      {/* Premium Search & Filters */}
-      <div className="max-w-4xl mx-auto md:mx-0 space-y-6">
-        <div className="relative group text-slate-900 dark:text-white">
-          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none transition-all duration-500 text-orange-400 group-focus-within:text-fuchsia-500">
-            <Search size={18} />
+      {/* MD3 Search + Chips */}
+      <div className="space-y-3">
+        <div className="relative">
+          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400">
+            <Search size={17} />
           </div>
           <input
             type="text"
-            placeholder="Rastrear ticket o cliente..."
-            className="w-full pl-12 pr-6 py-2.5 bg-white dark:bg-slate-900 rounded-2xl border-2 border-orange-100 dark:border-slate-800 shadow-lg focus:ring-4 focus:ring-orange-500/5 focus:border-orange-400 transition-all outline-none font-bold text-slate-700 dark:text-slate-200 placeholder:text-slate-300 dark:placeholder:text-slate-600 tracking-wide text-sm"
+            placeholder="Rastrear ticket por título, estado o cliente…"
+            className="md-input pl-11"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
-        <div className="flex flex-col gap-1.5">
-            <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500 ml-3 italic">Estado:</span>
-            <div className="inline-flex flex-wrap p-1 gap-1 bg-white dark:bg-slate-900 border-2 border-orange-50 dark:border-slate-800 rounded-2xl shadow-lg w-fit">
-                {['Todos', 'Pendiente', 'En proceso', 'Completada'].map(tag => (
-                    <button 
-                      key={tag}
-                      onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)} 
-                      className={`px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all ${searchTerm === tag || (tag === 'Todos' && searchTerm === '') ? 'bg-logo-gradient text-white shadow-lg shadow-orange-500/30' : 'text-slate-400 dark:text-slate-500 hover:bg-orange-50 dark:hover:bg-slate-800 hover:text-orange-600 dark:hover:text-fuchsia-400'}`}
-                    >
-                        {tag}
-                    </button>
-                ))}
-            </div>
+        <div className="flex flex-wrap gap-2">
+          {['Todos', 'Pendiente', 'En proceso', 'Completada'].map(tag => (
+            <button
+              key={tag}
+              onClick={() => setSearchTerm(tag === 'Todos' ? '' : tag)}
+              className={`md-chip transition-all ${
+                (tag === 'Todos' && searchTerm === '') || searchTerm === tag
+                  ? 'md-chip-primary'
+                  : 'md-chip-neutral'
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -210,7 +211,7 @@ const Tareas = () => {
                       </span>
                       <div className={`mini-badge
                         ${tarea.estado === 'Pendiente' ? 'bg-amber-50 dark:bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-100 dark:border-amber-500/20' : 
-                          tarea.estado === 'En proceso' ? 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-100 dark:border-orange-500/20' :
+                          tarea.estado === 'En proceso' ? 'bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-500/20' :
                           'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-500/20'}`}>
                         {tarea.estado === 'Pendiente' ? <CircleDashed size={6} className="animate-spin-slow"/> : <CheckCircle2 size={6}/>}
                         {tarea.estado}
@@ -218,20 +219,20 @@ const Tareas = () => {
                   </div>
                   
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-all">
-                    <button onClick={(e) => handlePrintTrigger(e, tarea)} className="p-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-blue-500 rounded-md shadow-sm transition-all">
+                    <button onClick={(e) => handlePrintTrigger(e, tarea)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-blue-500 rounded-lg shadow-sm transition-all">
                       <Printer size={10} />
                     </button>
-                    <button onClick={() => handleEdit(tarea)} className="p-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-orange-500 rounded-md shadow-sm transition-all">
+                    <button onClick={() => handleEdit(tarea)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-indigo-500 rounded-lg shadow-sm transition-all">
                       <Edit3 size={10} />
                     </button>
-                    <button onClick={(e) => handleDeleteTrigger(e, tarea.id)} className="p-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-md shadow-sm transition-all">
+                    <button onClick={(e) => handleDeleteTrigger(e, tarea.id)} className="p-1.5 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-slate-400 hover:text-red-500 rounded-lg shadow-sm transition-all">
                       <Trash2 size={10} />
                     </button>
                   </div>
               </div>
               
               <div className="flex-1 pt-0.5 relative z-10">
-                 <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-orange-500 transition-colors line-clamp-1 italic">{tarea.titulo}</h3>
+                 <h3 className="text-[10px] font-black text-slate-800 dark:text-white mb-0.5 uppercase tracking-tight group-hover:text-indigo-500 transition-colors line-clamp-1 italic">{tarea.titulo}</h3>
                  <p className="text-slate-400 dark:text-slate-500 text-[8px] mb-1.5 leading-tight font-medium line-clamp-1 italic pr-1">{tarea.descripcion || 'Sin descripción.'}</p>
               </div>
               
@@ -243,7 +244,7 @@ const Tareas = () => {
                                   <ShieldCheck size={7} />
                                   <span className="font-black text-[7px] uppercase truncate max-w-[40px]">{getTecnicoNombre(tarea.tecnico_admin_id).split(' ')[0] || 'N/A'}</span>
                               </div>
-                              <div className="flex items-center gap-0.5 bg-orange-50 dark:bg-orange-500/5 px-1 py-0.5 rounded-full text-orange-600 dark:text-orange-400 border border-orange-100/50 dark:border-orange-500/20">
+                              <div className="flex items-center gap-0.5 bg-indigo-50 dark:bg-indigo-500/5 px-1 py-0.5 rounded-full text-indigo-600 dark:text-indigo-400 border border-indigo-100/50 dark:border-indigo-500/20">
                                   <Wrench size={7} />
                                   <span className="font-black text-[7px] uppercase truncate max-w-[40px]">{getTecnicoNombre(tarea.instalador_id).split(' ')[0] || 'N/A'}</span>
                               </div>
@@ -302,7 +303,7 @@ const Tareas = () => {
       {isPrinting && (
           <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-slate-950/90 backdrop-blur-sm">
               <div className="text-center text-white space-y-4">
-                  <Printer size={64} className="mx-auto text-orange-400 animate-bounce" />
+                  <Printer size={64} className="mx-auto text-indigo-400 animate-bounce" />
                   <p className="font-black uppercase text-xl italic tracking-tighter">Enviando a impresora...</p>
                   <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Asegúrate de que el Bluetooth esté activo</p>
               </div>

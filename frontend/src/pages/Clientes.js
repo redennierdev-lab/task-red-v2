@@ -316,67 +316,65 @@ const Clientes = () => {
               onChange={e => setFormData({...formData, nombre: e.target.value})}
             />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-0.5">ID / RIF</label>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="space-y-0.5">
+              <label className="block text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-0.5">ID / RIF</label>
               <div className="flex bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:border-orange-500 transition-all shadow-inner overflow-hidden">
-                  <select className="bg-transparent pl-4 pr-1 font-black text-slate-600 dark:text-slate-400 outline-none border-r border-slate-200 dark:border-slate-700" value={editPrefijo} onChange={e => { setEditPrefijo(e.target.value); setEditDocNum(''); }}>
+                  <select className="bg-transparent pl-3 pr-1 font-black text-slate-600 dark:text-slate-400 outline-none border-r border-slate-200 dark:border-slate-700 text-xs py-1.5" value={editPrefijo} onChange={e => { setEditPrefijo(e.target.value); setEditDocNum(''); }}>
                       <option value="V">V</option>
                       <option value="E">E</option>
                       <option value="J">J</option>
                       <option value="G">G</option>
                       <option value="P">P</option>
                   </select>
-                  <div className="flex items-center text-slate-400 font-black pl-2">-</div>
+                  <div className="flex items-center text-slate-400 font-black pl-1.5 text-xs">-</div>
                   <input 
                     required 
                     type="text" 
                     placeholder={['J','G'].includes(editPrefijo) ? "12345678-9" : "12.345.678"} 
-                    className="flex-1 bg-transparent px-3 py-3.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-wider text-sm" 
+                    className="flex-1 bg-transparent px-2 py-1.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-wider text-xs" 
                     value={formatID(editPrefijo, editDocNum)} 
                     onChange={e => setEditDocNum(e.target.value.replace(/\D/g, ''))} 
                   />
               </div>
             </div>
-            <div className="space-y-1">
-              <label className="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-0.5 flex justify-between">
+            <div className="space-y-0.5">
+              <label className="block text-[9px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-0.5 flex justify-between">
                 <span>Teléfono (WhatsApp)</span>
                 {editPhoneCode === '+58' && editPhoneNum.length > 0 && editPhoneNum.length !== 7 && <span className="text-red-500 text-[8px]">Incompleto</span>}
               </label>
               <div className={`flex items-center bg-slate-50 dark:bg-slate-800/50 border rounded-full focus-within:bg-white dark:focus-within:bg-slate-800 transition-all shadow-inner overflow-hidden ${editPhoneCode === '+58' && editPhoneNum.length > 0 && editPhoneNum.length !== 7 ? 'border-red-400' : 'border-slate-200 dark:border-slate-700 focus-within:border-orange-500'}`}>
                   <div className="relative border-r border-slate-200 dark:border-slate-700">
                     <select 
-                      className="appearance-none bg-transparent pl-4 pr-7 py-3.5 font-black text-slate-600 dark:text-slate-400 outline-none" 
+                      className="appearance-none bg-transparent pl-2 pr-5 py-1.5 font-black text-slate-600 dark:text-slate-400 outline-none text-xs" 
                       value={editPhoneCode} 
-                      onChange={e => { setEditPhoneCode(e.target.value); setEditPhoneNum(''); }}
+                      onChange={e => setEditPhoneCode(e.target.value)}
                     >
                         {countries.map(c => (
                             <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
                         ))}
                     </select>
-                    <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
+                    <ChevronDown size={9} className="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400" />
                   </div>
 
-                  {editPhoneCode === '+58' && (
-                    <div className="relative border-r border-slate-200 dark:border-slate-700 bg-orange-500/5">
-                      <select 
-                        className="appearance-none bg-transparent pl-4 pr-7 py-3.5 font-black text-orange-600 dark:text-orange-400 outline-none" 
-                        value={editPhoneOperator} 
-                        onChange={e => setEditPhoneOperator(e.target.value)}
-                      >
-                          {vzlaOperators.map(o => (
-                              <option key={o.value} value={o.value}>{o.label}</option>
-                          ))}
-                      </select>
-                      <ChevronDown size={10} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-orange-400" />
-                    </div>
-                  )}
+                  <div className="relative border-r border-slate-200 dark:border-slate-700 bg-orange-500/5">
+                    <select 
+                      className="appearance-none bg-transparent pl-2 pr-5 py-1.5 font-black text-orange-600 dark:text-orange-400 outline-none text-xs" 
+                      value={editPhoneOperator} 
+                      onChange={e => setEditPhoneOperator(e.target.value)}
+                    >
+                        {vzlaOperators.map(o => (
+                            <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                    </select>
+                    <ChevronDown size={9} className="absolute right-1 top-1/2 -translate-y-1/2 pointer-events-none text-orange-400" />
+                  </div>
 
                   <input 
                     required 
                     type="text" 
                     placeholder={editPhoneCode === '+58' ? "123-4567" : "1234567890"} 
-                    className="flex-1 bg-transparent px-3 py-3.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-widest text-sm" 
+                    className="flex-1 bg-transparent px-2 py-1.5 outline-none font-black text-slate-700 dark:text-slate-200 tracking-widest text-xs" 
                     value={editPhoneCode === '+58' ? formatPhoneLocal(editPhoneNum) : editPhoneNum} 
                     onChange={e => {
                       let val = e.target.value.replace(/\D/g, '');

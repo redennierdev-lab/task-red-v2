@@ -15,7 +15,6 @@ import Dashboard from './pages/Dashboard';
 import Gastos from './pages/Gastos';
 import Ingresos from './pages/Ingresos';
 import Parametros from './pages/Parametros';
-import BottomNav from './components/BottomNav';
 import SplashScreen from './components/SplashScreen';
 
 const AppContent = () => {
@@ -77,11 +76,8 @@ const AppContent = () => {
                 <Route path="/parametros" element={<Parametros />} />
               </Routes>
             </div>
-            
-            <div className="h-24 lg:hidden"></div>
           </main>
 
-          {!showSplash && <BottomNav />}
         </div>
       </Router>
     </div>

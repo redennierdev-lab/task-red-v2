@@ -111,9 +111,9 @@ export const AppProvider = ({ children }) => {
 
   const refreshAll = useCallback(async () => {
     setLoading(true);
-    await Promise.all([fetchClientes(), fetchTecnicos(), fetchTareas(), fetchServicios(), fetchRates()]);
+    await Promise.all([fetchClientes(), fetchTecnicos(), fetchTareas(), fetchServicios()]);
     setLoading(false);
-  }, [fetchClientes, fetchTecnicos, fetchTareas, fetchServicios, fetchRates]);
+  }, [fetchClientes, fetchTecnicos, fetchTareas, fetchServicios]);
 
   const deleteRecord = async (endpoint, id) => {
     if (!id) return false;

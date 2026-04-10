@@ -143,12 +143,8 @@ const Historial = () => {
                         <span>{tarea.estado}</span>
                       </div>
                     </div>
-                    <button 
-                        onClick={() => handlePrint(tarea, cliente)}
-                        className="p-1 bg-slate-900 text-white rounded shadow-sm hover:bg-black transition-all"
-                    >
-                        <Printer size={10}/>
-                    </button>
+
+
                   </div>
                   
                   <div className="flex-1 pt-0.5">
